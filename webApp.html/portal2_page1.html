@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+    .sidebar {
+      background-color: #202020;
+      height: 100vh;
+      width: 250px;
+      padding: 20px;
+      position: fixed;
+      left: 0;
+      top: 0;
+      overflow-y: auto;
+    }
+    body{
+      background-color: #131b2f;
+    }
+    .sidebar-button {
+      background-color: #005288;
+      border: none;
+      color: white;
+      padding: 3px 30px;
+      text-align: center;
+      text-decoration: none;
+      display: block;
+      font-size: 12.5px;
+      margin: -2.5px 0;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      transition: all 0.3s;
+      flex: 1;
+    }
+    .sidebar-button:hover {
+      background-color: #05424b;
+      cursor: pointer;
+      box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+    .dash {
+      color: white;
+      padding: 10px 25px;
+      font-weight: bold;
+      display: block;
+      font-size: 16px;
+      margin: 10px 10;
+    }
+    .nav-link {
+      border-radius: 5px;
+      padding: 8px 16px;
+      margin: 5px 0;
+      display: inline-flex; 
+    }
+    .content {
+      margin-left: 250px;
+      /* padding: 20px; */
+      background-color: #131b2f;
+      height:auto;
+      color: white;
+    }
+    hr.rounded {
+      border-top: 4px solid #4d5357;
+      border-radius: 5px;
+    }
+    /* hr.solid {
+      border-top: 3px solid #1e3673;
+    } */
+    .graph-container1{
+      width: 650px;
+      height: 290px;
+      border: 1px solid #1e3673;
+      margin-top: 20px;
+      margin-left: 50px;
+      margin-bottom: 10px;
+    }
+    .graph-container2{
+      width: 650px;
+      height: 290px;
+      border: 1px solid #1e3673;
+      margin-left: 50px;
+    }
+    .graph-container3{
+      width: 320px;
+      height: 520px;
+      margin-top: 50px;
+      margin-right: 30px;
+      border-radius: 9px;
+      float: right;
+      border: 1px solid #1e3673;
+    }
+    .footer {
+      color: white;
+      font-size: 12px;
+      background-color: #202020;
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 250px;
+    }
+
+ /* dropup */
+    /* .dropbtn {
+      background-color: #202020;
+      color: white;
+      padding: 5px;
+      font-size: 14px;
+      border: none;
+      float: right;
+      text-align: right;
+    } */
+    
+    .dropup {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .dropup-content {
+      display: none;
+      position: absolute;
+      background-color: #4d5357;
+      min-width: 160px;
+      bottom: 50px;
+      z-index: 1;
+    }
+    
+    /* .dropup-content a {
+      color: white;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+    
+    .dropup-content a:hover {background-color: #4d5357}
+    
+    .dropup:hover .dropup-content {
+      display: block;
+    }
+    
+    .dropup:hover .dropbtn {
+      background-color: #4d5357;
+    } */
+
+    </style>
+
+</head>
+<body>
+    <div class="sidebar">
+        <li class="dash" style="font-family: Poppins; font-size: 22px;"> &#128202; Dashboard </li>
+        <nav class="nav flex-column">
+        <a class="nav-link" href="#"><button class="sidebar-button" style="width:170px; height: 26px; margin-top: 10px;"> Report </button></a>
+        <a class="nav-link" href="#"><button class="sidebar-button" style="width:90px; height: 24px;"> Back </button></a>
+        </nav>
+    </div>
+
+    <div class="content">
+        <main role="main">
+          
+          <!-- <hr class="solid"> -->
+          <div class="graph-container3"></div>
+          <div class="graph-container1"></div>
+          <div class="graph-container2"></div>
+
+        </main>
+      </div>
+  <footer class="footer flex-column">
+    <div>
+        <a class="nav-link" href="#"><button class="sidebar-button" style="width:170px; height: 29px;"> Export File </button></a>
+        <hr class="rounded">
+          <div id="myDropup" class="dropup-content">
+            <a href="#">Log Out</a>
+          </div>
+    </div>
+    
+    <span class="nav-link"> SAS Executive </span>
+    <span>🔔</span>
+
+  </footer>
+
+</body>
+</html>
