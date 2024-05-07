@@ -84,46 +84,51 @@
     }
  
     /* dropup */
-    .dropbtn {
-      background-color: #202020;
-      color: white;
-      padding: 5px;
-      font-size: 14px;
-      border: none;
-      float: right;
-      text-align: right;
-    }
-    
-    .dropup {
-      position: relative;
-      display: inline-block;
-    }
-    
-    .dropup-content {
-      display: none;
-      position: absolute;
-      background-color: #4d5357;
-      min-width: 160px;
-      bottom: 50px;
-      z-index: 1;
-    }
-    
-    .dropup-content a {
-      color: white;
-      padding: 12px 16px;
-      text-decoration: none;
-      display: block;
-    }
-    
-    .dropup-content a:hover {background-color: #4d5357}
-    
-    .dropup:hover .dropup-content {
-      display: block;
-    }
-    
-    .dropup:hover .dropbtn {
-      background-color: #4d5357;
-    }
+  /* dropup */
+.dropbtn {
+  background-color: #202020;
+  color: white;
+  padding: 5px;
+  font-size: 14px;
+  border: none;
+  float: right;
+  text-align: right;
+}
+
+.dropup {
+  position: relative;
+  display: inline-block;
+}
+
+.dropup-content {
+  display: none;
+  position: absolute;
+  background-color: #4d5357;
+  min-width: 160px;
+  bottom: 35px; /* Adjusted to make sure it doesn't overlap with the button */
+  z-index: 1;
+  border-radius: 5px; /* Added border-radius for styling */
+}
+
+.dropup-content a {
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropup-content a:hover {
+  background-color: #62696D; /* Adjusted hover color for better visibility */
+}
+
+.dropup:hover .dropup-content {
+  display: block;
+}
+
+.dropup:hover .dropbtn {
+  background-color: #4d5357;
+}
+
 
     #graph-container {
       width: 950px;
@@ -142,8 +147,8 @@
       <a class="nav-link" href="#"><button class="sidebar-button">Segmentation & Revenue</button></a>
       <a class="nav-link" href="reviewanalysis.html"><button class="sidebar-button">Review Analysis</button></a>
       <a class="nav-link" href="presentation.html"><button class="sidebar-button">Presentation</button></a>
-      <a class="nav-link" href="#"><button class="sidebar-button">Report</button></a>
-      <a class="nav-link" href="#"><button class="sidebar-button">Back</button></a>
+      <a class="nav-link" href="reportportal1.html"><button class="sidebar-button">Report</button></a>
+      <a class="nav-link" href="decisionn.html"><button class="sidebar-button">Back</button></a>
     </nav>
     <footer class="footer flex-column">
       <a class="nav-link" href="#"><button class="sidebar-button">Import File</button></a>
@@ -151,11 +156,13 @@
       <hr class="rounded">
 
       <div class="dropup">
-        <button onclick="myFunction()" class="dropbtn"> ⇧ </button>
+        <button onclick="toggleDropup()" class="dropbtn">⇧</button>
         <div id="myDropup" class="dropup-content">
-          <a href="#">Log Out</a>
+          <a href="settings.php">⚙️ Settings</a>
+          <a href="index.php">🚪 Log Out</a>
         </div>
-      </div>
+    </div>
+    
 
       <span class="nav-link">SAS Executive</span>
       <span>🔔</span>
@@ -187,22 +194,24 @@
 
   <script>
     /* for dropup */
-    function myFunction() {
-      document.getElementById("myDropup").classList.toggle("show");
-    }
-    window.onclick = function(event) {
-      if (!event.target.matches('.dropbtn')) {
+function toggleDropup() {
+    var dropupContent = document.getElementById("myDropup");
+    dropupContent.classList.toggle("show");
+}
+
+window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
         var dropups = document.getElementsByClassName("dropup-content");
-        var i;
-        for (i = 0; i < dropups.length; i++) {
-          var openDropup = dropups[i];
-          if (openDropup.classList.contains('show')) {
-            openDropup.classList.remove('show');
-          }
+        for (var i = 0; i < dropups.length; i++) {
+            var openDropup = dropups[i];
+            if (openDropup.classList.contains('show')) {
+                openDropup.classList.remove('show');
+            }
         }
-      }
     }
-    </script>
+}
+
+</script>
 </body>
 
 </html>

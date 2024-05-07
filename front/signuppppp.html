@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    *{
+      margin: 0px;
+      padding: 0px;
+    }
+    
+    .SIGNUP{
+        border-radius: 15px;
+        padding: 30px 20px 0px 30px;
+        font-family: calibri;
+        float: right;
+        background-color: aliceblue;
+        text-align: center;
+        padding: 60px 0px 100px 0px;
+    }
+    h{
+      font-size: 39px;
+      font-family: calibri;
+      letter-spacing: -1px;
+    }
+    input{
+      margin-top: 15px;
+      padding-left: 20px;      
+    }
+    button{
+      border: 1px solid;
+      border-radius: 3px;
+      font-family: inter;
+      background-color: #005288;
+    }
+    .signupwith{
+      margin-top: 45px;
+      background-color: aliceblue;
+      margin-bottom: 35px;
+    }
+    .signupwith:hover{
+      color: #005288;
+      cursor: pointer;
+      
+    }
+    .signUp{
+      color: white;
+      font-family: calibri;
+      font-weight: bold;
+      font-size: 17px;
+      letter-spacing: 0.6px;
+      margin-top: 35px;
+      border: none;
+    }
+    .signUp:hover{
+      cursor: pointer;
+    }
+    p{
+      margin-top: 71px;
+    }
+    a{
+      color: rgb(50, 50, 50);
+      font-weight: bold;
+    }
+    a:hover{
+      color: #005288;
+    }
+  </style>
+</head>
+<body>
+  <img src="graph.jpeg" style= "height: 100vh; width: 100vw; position: absolute; z-index: -1;">
+    <div class= "SIGNUP" style="height: 100%; width: 38%;">
+      <h> Create your Account </h><br>
+
+      <button class="signupwith" type="google" style="height: 28px; width: 85px; margin: 10px 30px 0px 0px;"> Google </button>
+      <button class="signupwith" type="facebook" style="height: 28px; width: 105px;;"> Facebook </button><br>
+
+      <input type="text" id="name" name="name" placeholder="User Name" style="width:260px; height:30px" required><br>  
+        
+       <input type="email" id="email" name="email" placeholder="Email" style="width:260px; height:30px" required><br>        
+        
+      <input type="password" id="password" name="password" placeholder="Password" style="width:260px; height:30px" required> <br><br>
+        
+      <a href="decisionn.html"><button class="signUp" type="signUp" style="height: 35px; width: 288px;" > Sign up </button></a>
+
+      <p> Already have an account? 
+      <a href="loginnnn.html"> Log in </a>
+    </p>
+    </div>
+
+
+    <script>
+        document.getElementById('signup-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            fetch('signup.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('message').textContent = data.message;
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+    
+
+
+</body>
+</html>
