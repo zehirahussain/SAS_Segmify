@@ -17,3 +17,7 @@ ADD PRIMARY KEY (`id`);
 ALTER TABLE `users`
 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
+DELETE FROM `users`
+WHERE email = (`email`)
+
+

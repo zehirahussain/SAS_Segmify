@@ -5,7 +5,7 @@ $password = "";
 $database = "loginandanalysis";
 session_start();
 
-// Check if user is not logged in
+// Check if user is not logged i
 if (!isset($_SESSION['email'])) {
     // Redirect to login page
     header("Location: login.php");
@@ -41,6 +41,7 @@ if ($result->num_rows > 0) {
 $conn->close();
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,9 +67,6 @@ $conn->close();
         p {
             margin-bottom: 10px;
         }
-        button {
-            margin-right: 10px;
-        }
         .BOX {
             border-radius: 27px;
             font-family: calibri;
@@ -77,47 +75,72 @@ $conn->close();
             padding: 100px 0px 80px 0px;
             width: 34vw;
         }
-
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        .input-group input {
+            margin-right: 10px;
+        }
+        .input-group button {
+            background-color: #005288;
+            border: none;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+        .input-group button:hover {
+            background-color: #003d66;
+            cursor: pointer;
+        }
         .button {
             background-color: #005288;
             border: none;
             color: white;
-            padding: 3px 30px;
-            text-align: center;
-            text-decoration: none;
-            display: block;
-            font-size: 12.5px;
-            margin: auto; /* Center horizontally */
-            margin-top: 10px; /* Add some space between buttons */
+            padding: 10px 30px;
             border-radius: 10px;
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
             transition: all 0.3s;
-            flex: 1;
+            margin-top: 15px;
         }
-        
+        .button:hover {
+            background-color: #003d66;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <div class="BOX">
         <h1>User Settings</h1>
         <form action="update.php" method="post">
-            <p>Name: </p>
-            <input type="text" class="req" name="name" value="<?php echo $name; ?>">
-            <br>
-            <p>Email:</p> 
-            <input type="text" class="req" name="email" value="<?php echo $email; ?>">
-            <br>
-            <p>Password:</p>
-            <input type="text" class="req" name="password" value="<?php echo $password; ?>">
-            <br>
-            <button type="submit" class="button">Update</button>
-            <br>
+            <div class="input-group">
+                <p>Name: </p>
+                <input type="text" class="req" name="name" value="<?php echo $name; ?>">
+                <a href="updatedata.php?id=<?php echo $Id; ?>"><button type="submit">Edit</button></a>
+            </div>
+            <div class="input-group">
+                <p>Email:</p> 
+                <input type="text" class="req" name="email" value="<?php echo $email; ?>">
+            </div>
+            <div class="input-group">
+                <p>Password:</p>
+                <input type="text" class="req" name="password" value="<?php echo $password; ?>">
+                <a href="updatedata.php?id=<?php echo $Id; ?>"><button type="submit">Edit</button></a>
+            </div>
+            <button type="submit" class="button">Submit</button>
         </form>
-        <a href="index.php"><button class="button">Delete Account</button></a>
-        <br>
+        <a href="index.php" href="deletedata.php?id=<?php echo $Id; ?>"><button class="button">Delete Account</button></a> <br>
         <a href="segmentationandrevenue.html"><button class="button">Back</button></a>
+
     </div>
 </body>
 </html>
-
-       

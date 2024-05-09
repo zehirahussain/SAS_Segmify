@@ -62,8 +62,9 @@
             font-family: calibri;
             background-color: aliceblue;
             text-align: center;
-            padding: 50px; /* Adjust padding */
+         
             max-width: 600px; /* Adjust max-width */
+            padding: 40px 35px 90px 35px;
         }
         .SignIn{
         border: 1px solid;
@@ -84,10 +85,11 @@
 <body>
 
 <header>
+   
     <div>
-    <a href="#"><img src="output-onlinepngtools (1).png" style="width: 20px;"> </a>
-        <a href="aoutus.html">About Us</a>
-        <a href="contactus.html">Contact Us</a>
+        <a href="#"><img src="output-onlinepngtools.png" style="width: 20px;"></a>
+        <a href="aoutus.html"><button class="SignIn" style="height: 28px; width: 80px; margin-right: 1px; font-weight: bold;"> About Us</button></a>
+        <a href="contactus.html"><button class="SignIn" style="height: 28px; width: 100px; margin-right: 1px; font-weight: bold;">Contact Us</button></a>
     </div>
     <a href="signuppppp.html"><button class="SignIn" style="height: 28px; width: 80px; margin-right: 20px; font-weight: bold;"> Sign In </button></a>
 </header>
