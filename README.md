@@ -4,4 +4,4 @@ using html,css,js for frontend
 will use php for xampp and database...not sure or will use new tech like taipy ...ah yes we will be using python for
 rfm analysis and graph plotting, so for that we may use taipy.
 this is for web app...
-we will see mobile app in next semester
+we will see mobile app in next semester...if survive :)
