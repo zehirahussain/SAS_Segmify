@@ -1,0 +1,191 @@
+<?php
+// Establish database connection
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "loginandanalysis";
+
+$conn = new mysqli($servername, $username, $password, $database);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$checkEmailStmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
+$checkEmailStmt->bind_param("s", $email);
+$checkEmailStmt->execute();
+$result = $checkEmailStmt->get_result(); // Get the result
+
+// Check if an email exists
+if ($result->num_rows > 0) {
+    echo json_encode(['message' => 'Email already exists']);
+    exit();
+}
+
+// Prepare statement
+$stmt = $conn->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
+
+// Bind parameters
+$stmt->bind_param("sss", $name, $email, $password);
+
+// Set parameters and execute
+$name = $_POST['name'];
+$email = $_POST['email'];
+
+// Validate email format
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    echo json_encode(['message' => 'Invalid email format']); 
+    exit(); 
+} 
+
+
+
+$password = $_POST['password']; // Hash password for security
+$stmt->execute();
+
+// Close statement and connection
+$stmt->close();
+$conn->close();
+
+
+
+// Redirect back to registration page or any other page
+header("Location: loginnnn.html");
+exit();
+?>
+
+
+
+
+and signupppp.html
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    *{
+      margin: 0px;
+      padding: 0px;
+    }
+    
+    .SIGNUP{
+        border-radius: 15px;
+        padding: 30px 20px 0px 30px;
+        font-family: calibri;
+        float: right;
+        background-color: aliceblue;
+        text-align: center;
+        padding: 60px 0px 100px 0px;
+    }
+    h{
+      font-size: 39px;
+      font-family: calibri;
+      letter-spacing: -1px;
+    }
+    input{
+      margin-top: 15px;
+      padding-left: 20px;      
+    }
+    button{
+      border: 1px solid;
+      border-radius: 3px;
+      font-family: inter;
+      background-color: #005288;
+    }
+    .signupwith{
+      margin-top: 45px;
+      background-color: aliceblue;
+      margin-bottom: 35px;
+    }
+    .signupwith:hover{
+      color: #005288;
+      cursor: pointer;
+      
+    }
+    .signUp{
+      color: white;
+      font-family: calibri;
+      font-weight: bold;
+      font-size: 17px;
+      letter-spacing: 0.6px;
+      margin-top: 35px;
+      border: none;
+    }
+    .signUp:hover{
+      cursor: pointer;
+    }
+    p{
+      margin-top: 71px;
+    }
+    a{
+      color: rgb(50, 50, 50);
+      font-weight: bold;
+    }
+    a:hover{
+      color: #005288;
+    }
+
+    .error-message {
+      color: red;
+      margin-bottom: 15px;
+  }
+  </style>
+</head>
+<body>
+
+
+  <script>
+    document.getElementById('signup-form').addEventListener('submit', function(e) {
+     
+  fetch('signup.php', { /* ... */ })
+  .then(response => response.json())
+  .then(data => {
+      if (data.message === 'Signup successful!') {
+          alert(data.message); 
+          window.location.href = "loginnnn.html"; // Redirect to login
+      } else if (data.message === 'Email already exists') {
+          alert(data.message); 
+      } else {
+          alert(data.message); // Display other potential error messages
+      }
+  })
+
+ // ... (your complete JavaScript code for signup.php interaction) ...
+    });
+  </script>
+
+  <?php
+  session_start();
+  if (isset($_SESSION['error_message'])) {
+      echo '<div class="error-message">' . $_SESSION['error_message'] . '</div>';
+      unset($_SESSION['error_message']);
+  }
+  ?>
+
+  <img src="graph.jpeg" style= "height: 100vh; width: 100vw; position: absolute; z-index: -1;">
+    <div class= "SIGNUP" style="height: 100%; width: 38%;">
+      <h1> Create your Account </h1><br>
+
+      <button class="signupwith" type="google" style="height: 28px; width: 85px; margin: 10px 30px 0px 0px;"><img src="icons8-google-16.png"> Google </button>
+      <button class="signupwith" type="facebook" style="height: 28px; width: 105px;;"><img src="icons8-facebook-16.png"> Facebook </button><br>
+
+		<form action="signup.php" method="post">
+			<input type="text" id="name" name="name" placeholder="User Name" style="width:260px; height:30px" required><br>
+			<input type="email" id="email" name="email" placeholder="Email" style="width:260px; height:30px" required><br>
+			<input type="password" id="password" name="password" placeholder="Password" style="width:260px; height:30px" required><br><br>
+			<button class="signUp" type="submit" style="height: 35px; width: 288px;"> Sign up </button>
+		</form>
+
+      <p> Already have an account? 
+      <a href="loginnnn.html"> Log in </a>
+    </p>
+    </div>
+
+</body>
+   
+    
+</html>
