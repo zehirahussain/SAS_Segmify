@@ -134,11 +134,11 @@ $conn->close();
                 <input type="text" class="req" name="name" value="<?php echo $name; ?>">
                 <a href="updatedata.php?id=<?php echo $Id; ?>"><button type="submit">Edit</button></a>
             </div>
-            <div class="input-group">
+          <div class="input-group">
                 <p>Email:</p> 
-                <input type="text" class="req" name="email" value="<?php echo $email; ?>">
-                
-            </div>
+                <input type="text" class="req" name="email" value="
+                <?php echo $email; ?>">    
+            </div> 
             <div class="input-group">
                 <p>Password:</p>
                 <input type="text" class="req" name="password" value="<?php echo $password; ?>">

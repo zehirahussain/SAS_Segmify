@@ -21,14 +21,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Query to check if user exists
     $sql = "SELECT id, email, password FROM users WHERE email = '$email' AND password = '$password'";
-	$result = $conn->query($sql);
+    $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
         // User found, set session variables and redirect to dashboard
-	    $row = $result->fetch_assoc();
-	    $userId = $row['id'];  // Access the fetched ID
+        $row = $result->fetch_assoc();
+        $userId = $row['id'];  // Access the fetched ID
         $_SESSION['email'] = $email;
-		
+        $_SESSION['user_id'] = $userId;
+        $updateLoginStatus = "UPDATE users SET current_login = TRUE WHERE id = $userId";
+        $conn->query($updateLoginStatus);
         header('Location: decisionn.php');
         exit;
     } else {

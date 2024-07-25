@@ -130,18 +130,24 @@
 }
 
 
-    #graph-container {
-      width: 950px;
-      height: 500px;
-      margin: 0 auto;
-      border: 1px solid #1e3673;
-  }
-  #graph-container2 {
+#graph-container {
+  width: 950px;
+  height: 500px;
+  margin: 0 auto;
+  border: 1px solid #1e3673;
+  position: relative;
+}
+#pdfViewer {
+  width: 950px;
+  height: 500px;
+  border: none;
+}
+ /* #graph-container2 {
     width: 950px;
     height: 500px;
     margin: 0 auto;
     border: 1px solid #1e3673;
-}
+} */
 
   </style>
 </head>
@@ -158,8 +164,11 @@
     </nav>
     <footer class="footer flex-column">
       <a class="nav-link" href="sendto.html"><button class="sidebar-button">Send via email</button></a>
-      <a class="nav-link" href="#"><button class="sidebar-button">Export File</button></a>
+      <a class="nav-link" href="static/reports/monthly_report.pdf" id="exportBtn" ><button class="sidebar-button">Export File</button></a>
+      <a class="nav-link" href="static/reports/monthly_report.pdf" download="monthly_report.pdf" id="downloadLink" style="display:none;"></a>
 
+
+      
       <hr class="rounded">
 
       <div class="dropup">
@@ -180,8 +189,13 @@
       
       <hr class="solid">
       <!-- Main content -->
-      <div id="graph-container"></div>
-      <div id="graph-container2"></div>
+      <div id="graph-container">
+        <div id="pdfContainer">
+          <embed id="pdfViewer" src="static/reports/monthly_report.pdf" width="800px" height="2100px" />
+
+      </div>
+      </div>
+
     </main>
   </div>
 
@@ -197,6 +211,47 @@
     });
   </script>
   
+<script>
+ // document.getElementById('generateReportBtn').addEventListener('click', function () {
+   // fetch('generate_report.php')
+     // .then(response => response.text())
+      //.then(data => {
+       // document.getElementById('pdfViewer').src = 'static/reports/monthly_report.pdf';
+       // document.getElementById('pdfViewer').style.display = 'block';
+     // });
+ // });
+
+ //function getQueryParam(param) {
+  //const urlParams = new URLSearchParams(window.location.search);
+  //return urlParams.get(param);
+//}
+
+// Show the PDF in the iframe
+//const pdfUrl = getQueryParam('report');
+//if (pdfUrl) {
+ // document.getElementById('pdfViewer').src = pdfUrl;
+ // document.getElementById('pdfViewer').style.display = 'block';
+//}
+
+
+
+  try {
+    document.getElementById('pdfViewer').src = 'static/reports/monthly_report.pdf';
+    document.getElementById('pdfViewer').style.display = 'block';
+  } catch (error) {
+    console.error("Error displaying report:", error);
+    // Display user-friendly message like: "Report not found"
+    document.getElementById('pdfContainer').innerHTML = "Report not found";
+  }
+
+
+
+  document.getElementById('exportBtn').addEventListener('click', function () {
+    document.getElementById('downloadLink').click();
+  });
+</script>
+
+
   <script>
     /* for dropup */
 function toggleDropup() {

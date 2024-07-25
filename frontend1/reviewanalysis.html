@@ -153,7 +153,7 @@
       <a class="nav-link" href="segmentationandrevenue.html"><button class="sidebar-button">Segmentation & Revenue</button></a>
       <a class="nav-link" href="#"><button class="sidebar-button">Review Analysis</button></a>
       <a class="nav-link" href="presentation.html"><button class="sidebar-button">Presentation</button></a>
-      <a class="nav-link" href="reportportal1.html"><button class="sidebar-button">Report</button></a>
+      <a class="nav-link" href="reportportal1.html" id="generateReportBtn"><button class="sidebar-button">Report</button></a>
       <a class="nav-link" href="decisionn.html"><button class="sidebar-button">Back</button></a>
     </nav>
     <footer class="footer flex-column">
@@ -196,6 +196,42 @@
     });
   </script>
   
+
+  <script>
+   // document.getElementById('generateReportBtn').addEventListener('click', function () {
+     // fetch('generate_report.php')
+       // .then(response => {
+         // if (!response.ok) {
+          //  throw new Error('Failed to generate report');
+         // }
+     //     return response.text();
+   //     })
+   //     .then(data => {
+          // Redirect to reportportal1.html with the generated report
+     //     window.location.href = 'reportportal1.html?report=static/reports/monthly_report.pdf';
+   //     })
+     //   .catch(error => {
+       //   alert('Error: ' + error.message);
+  ///      });
+  //  });
+
+  
+    document.getElementById('generateReportBtn').addEventListener('click', function () {
+      fetch('generate_report.php')
+        .then(response => response.text())
+        .then(data => {
+          alert(data);  // Show the result of the report generation
+          // Redirect to reportportal1.php after the report is generated
+          window.location.href = 'reportportal1.php';
+        })
+        .catch(error => {
+          alert('Error: ' + error.message);
+        });
+    });
+ 
+  </script>
+
+
   <script>
     /* for dropup */
 function toggleDropup() {

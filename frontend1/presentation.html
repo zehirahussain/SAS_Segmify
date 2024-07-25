@@ -4,8 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard - presentation</title>
+  <title>Dashboard</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://d3js.org/d3.v6.min.js"></script>
   <style>
     #sidebar {
       background-color: #202020;
@@ -53,7 +54,7 @@
       border-radius: 5px;
       padding: 8px 16px;
       margin: 5px 0;
-      display: inline-flex; 
+      display: inline-flex;
     }
 
     .footer {
@@ -72,149 +73,125 @@
       margin-left: 250px;
       padding: 20px;
       background-color: #131b2f;
-      height: 100vh;
+      height: 430vh;
       color: white;
     }
+
     hr.rounded {
       border-top: 4px solid #4d5357;
       border-radius: 5px;
     }
+
     hr.solid {
       border-top: 3px solid #1e3673;
     }
- 
-    /* dropup */
-    /* dropup */
-.dropbtn {
-  background-color: #202020;
-  color: white;
-  padding: 5px;
-  font-size: 14px;
-  border: none;
-  float: right;
-  text-align: right;
-}
 
-.dropup {
-  position: relative;
-  display: inline-block;
-}
+    .dropbtn {
+      background-color: #202020;
+      color: white;
+      padding: 5px;
+      font-size: 14px;
+      border: none;
+      float: right;
+      text-align: right;
+    }
 
-.dropup-content {
-  display: none;
-  position: absolute;
-  background-color: #4d5357;
-  min-width: 160px;
-  bottom: 35px; /* Adjusted to make sure it doesn't overlap with the button */
-  z-index: 1;
-  border-radius: 5px; /* Added border-radius for styling */
-}
+    .dropup {
+      position: relative;
+      display: inline-block;
+    }
 
-.dropup-content a {
-  color: white;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
+    .dropup-content {
+      display: none;
+      position: absolute;
+      background-color: #4d5357;
+      min-width: 160px;
+      bottom: 35px;
+      z-index: 1;
+      border-radius: 5px;
+    }
 
-.dropup-content a:hover {
-  background-color: #62696D; /* Adjusted hover color for better visibility */
-}
+    .dropup-content a {
+      color: white;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
 
-.dropup:hover .dropup-content {
-  display: block;
-}
+    .dropup-content a:hover {
+      background-color: #62696D;
+    }
 
-.dropup:hover .dropbtn {
-  background-color: #4d5357;
-}
+    .dropup:hover .dropup-content {
+      display: block;
+    }
 
+    .dropup:hover .dropbtn {
+      background-color: #4d5357;
+    }
 
     #graph-container {
       width: 950px;
-      height: 400px;
+      height: 520px;
       margin: 0 auto;
       border: 1px solid #1e3673;
-  }
-  #graph-container2 {
-    width: 950px;
-    height: 100px;
-    margin: 0 auto;
-    border: 1px solid #1e3673;
-}
+    }
 
+    .image-container img {
+      margin: 10px 0;
+      display: block;
+    }
   </style>
 </head>
-
 <body>
   <div id="sidebar">
     <li class="dash"> &#128202; Dashboard</li>
     <nav class="nav flex-column">
       <a class="nav-link" href="segmentationandrevenue.html"><button class="sidebar-button">Segmentation & Revenue</button></a>
       <a class="nav-link" href="reviewanalysis.html"><button class="sidebar-button">Review Analysis</button></a>
-      <a class="nav-link" href="#"><button class="sidebar-button">Presentation</button></a>
+      <a class="nav-link" href="presentation.html"><button class="sidebar-button">Presentation</button></a>
       <a class="nav-link" href="reportportal1.html"><button class="sidebar-button">Report</button></a>
       <a class="nav-link" href="decisionn.html"><button class="sidebar-button">Back</button></a>
     </nav>
-    <footer class="footer flex-column">
-
+    <footer class="footer">
       <hr class="rounded">
-
       <div class="dropup">
         <button onclick="toggleDropup()" class="dropbtn">⇧</button>
         <div id="myDropup" class="dropup-content">
           <a href="settings.php">⚙️ Settings</a>
           <a href="index.php">🚪 Log Out</a>
         </div>
-    </div>
-    
-
+      </div>
       <span class="nav-link">SAS Executive</span>
       <span>🔔</span>
     </footer>
   </div>
   <div class="content">
     <main role="main">
-      
       <hr class="solid">
-      <!-- Main content -->
-      <div id="graph-container"></div>
-      <div id="graph-container2"></div>
+      <!-- Display the presentation -->
+      <iframe id="presentation-frame" src="fetch_serve.php?user_id=user1" frameborder="0"></iframe>
     </main>
   </div>
-
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
   <script>
-    document.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', function (event) {
-        event.preventDefault(); 
-        const href = this.getAttribute('href');
-        window.location.href = href;
-      });
-    });
-  </script>
-  
-  <script>
-    /* for dropup */
-function toggleDropup() {
-    var dropupContent = document.getElementById("myDropup");
-    dropupContent.classList.toggle("show");
-}
+    function toggleDropup() {
+      var dropupContent = document.getElementById("myDropup");
+      dropupContent.classList.toggle("show");
+    }
 
-window.onclick = function(event) {
-    if (!event.target.matches('.dropbtn')) {
+    window.onclick = function(event) {
+      if (!event.target.matches('.dropbtn')) {
         var dropups = document.getElementsByClassName("dropup-content");
         for (var i = 0; i < dropups.length; i++) {
-            var openDropup = dropups[i];
-            if (openDropup.classList.contains('show')) {
-                openDropup.classList.remove('show');
-            }
+          var openDropup = dropups[i];
+          if (openDropup.classList.contains('show')) {
+            openDropup.classList.remove('show');
+          }
         }
+      }
     }
-}
-
-</script>
+  </script>
 </body>
-
 </html>

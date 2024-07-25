@@ -4,8 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>report_portal_2</title>
+  <title>Dashboard</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://d3js.org/d3.v6.min.js"></script>
   <style>
     #sidebar {
       background-color: #202020;
@@ -72,7 +73,7 @@
       margin-left: 250px;
       padding: 20px;
       background-color: #131b2f;
-      height: 200vh;
+      height: 430vh;
       color: white;
     }
     hr.rounded {
@@ -84,70 +85,59 @@
     }
  
     /* dropup */
-   /* dropup */
+  /* dropup */
 .dropbtn {
-    background-color: #202020;
-    color: white;
-    padding: 5px;
-    font-size: 14px;
-    border: none;
-    float: right;
-    text-align: right;
+  background-color: #202020;
+  color: white;
+  padding: 5px;
+  font-size: 14px;
+  border: none;
+  float: right;
+  text-align: right;
 }
 
 .dropup {
-    position: relative;
-    display: inline-block;
+  position: relative;
+  display: inline-block;
 }
 
 .dropup-content {
-    display: none;
-    position: absolute;
-    background-color: #4d5357;
-    min-width: 160px;
-    bottom: 35px; /* Adjusted to make sure it doesn't overlap with the button */
-    z-index: 1;
-    border-radius: 5px; /* Added border-radius for styling */
+  display: none;
+  position: absolute;
+  background-color: #4d5357;
+  min-width: 160px;
+  bottom: 35px; /* Adjusted to make sure it doesn't overlap with the button */
+  z-index: 1;
+  border-radius: 5px; /* Added border-radius for styling */
 }
 
 .dropup-content a {
-    color: white;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
 }
 
 .dropup-content a:hover {
-    background-color: #62696D; /* Adjusted hover color for better visibility */
+  background-color: #62696D; /* Adjusted hover color for better visibility */
 }
 
 .dropup:hover .dropup-content {
-    display: block;
+  display: block;
 }
 
 .dropup:hover .dropbtn {
-    background-color: #4d5357;
+  background-color: #4d5357;
 }
 
 
-#graph-container {
-  width: 950px;
-  height: 500px;
-  margin: 0 auto;
-  border: 1px solid #1e3673;
-  position: relative;
-}
-#pdfViewer {
-  width: 950px;
-  height: 500px;
-  border: none;
-}
- /* #graph-container2 {
-    width: 950px;
-    height: 500px;
-    margin: 0 auto;
-    border: 1px solid #1e3673;
-} */
+    #graph-container {
+      width: 950px;
+      height: 520px;
+      margin: 0 auto;
+      border: 1px solid #1e3673;
+  }
+
   </style>
 </head>
 
@@ -155,16 +145,14 @@
   <div id="sidebar">
     <li class="dash"> &#128202; Dashboard</li>
     <nav class="nav flex-column">
-      <a class="nav-link" href="#"><button class="sidebar-button">Report</button></a>
+      <a class="nav-link" href="#"><button class="sidebar-button">Segmentation & Revenue</button></a>
+      <a class="nav-link" href="reviewanalysis.html"><button class="sidebar-button">Review Analysis</button></a>
+      <a class="nav-link" href="presentation.html"><button class="sidebar-button">Presentation</button></a>
+      <a class="nav-link" href="reportportal1.html"><button class="sidebar-button">Report</button></a>
       <a class="nav-link" href="decisionn.html"><button class="sidebar-button">Back</button></a>
     </nav>
     <footer class="footer flex-column">
-      <a class="nav-link" href="static/reports/monthly_report.pdf" id="exportBtn" ><button class="sidebar-button">Export File</button></a>
-      <a class="nav-link" href="static/reports/monthly_report.pdf" download="monthly_report.pdf" id="downloadLink" style="display:none;"></a>
-
-
-
-
+      <a class="nav-link" href="#"><button class="sidebar-button">Import File</button></a>
 
       <hr class="rounded">
 
@@ -172,7 +160,7 @@
         <button onclick="toggleDropup()" class="dropbtn">⇧</button>
         <div id="myDropup" class="dropup-content">
           <a href="settings.php">⚙️ Settings</a>
-          <a href="index.php">🚪 Log Out</a> 
+          <a href="index.php">🚪 Log Out</a>
         </div>
     </div>
     
@@ -181,15 +169,21 @@
       <span>🔔</span>
     </footer>
   </div>
-  <div class="content">
+  <div class="content">  <!-- main content for python graphs -->
     <main role="main">
       
       <hr class="solid">
       <!-- Main content -->
       <div id="graph-container">
-        <div id="pdfContainer">
-          <embed id="pdfViewer" src="static/reports/monthly_report.pdf" width="800px" height="2100px" />
+        <img src="static/images/mrr_by_bu.png" alt="MRR by BU" id="graphImage"><br>
+      
+      <!-- Display the pie chart -->
+      <img src="static/images/revenue_by_product_bar_chart.png" alt="Revenue by Product" id="barChartImage"> <br>
+      <img src="static/images/churn_rate_pie_chart.png" alt="Churn Rate" id="churnChartImage">
+      <img src="static/images/revenue_by_product_pie_chart.png" alt="Revenue by Product" id="pieChartImage"> <br>
 
+
+    </div>
     </main>
   </div>
 
@@ -199,54 +193,31 @@
     document.querySelectorAll('.nav-link').forEach(link => {
       link.addEventListener('click', function (event) {
         event.preventDefault(); 
+        // Get the href attribute of the clicked link
         const href = this.getAttribute('href');
+        // Navigate to the new page
         window.location.href = href;
       });
     });
+
+
+// Trigger the PHP script to generate the graph when the page loads
+window.onload = function() {
+  fetch('generate_graph.php')
+    .then(response => response.text())
+    .then(data => {
+      console.log(data);
+      // Refresh the image
+      document.getElementById('graphImage').src = 'static/images/mrr_by_bu.png?random=' + new Date().getTime();
+      document.getElementById('barChartImage').src = 'static/images/revenue_by_product_bar_chart.png?random=' + new Date().getTime();
+      document.getElementById('churnChartImage').src = 'static/images/churn_rate_pie_chart.png?random=' + new Date().getTime();
+      document.getElementById('pieChartImage').src = 'static/images/revenue_by_product_pie_chart.png?random=' + new Date().getTime();
+
+    });
+};
+
   </script>
   
-
-  <script>
-    // document.getElementById('generateReportBtn').addEventListener('click', function () {
-      // fetch('generate_report.php')
-        // .then(response => response.text())
-         //.then(data => {
-          // document.getElementById('pdfViewer').src = 'static/reports/monthly_report.pdf';
-          // document.getElementById('pdfViewer').style.display = 'block';
-        // });
-    // });
-   
-    //function getQueryParam(param) {
-     //const urlParams = new URLSearchParams(window.location.search);
-     //return urlParams.get(param);
-   //}
-   
-   // Show the PDF in the iframe
-   //const pdfUrl = getQueryParam('report');
-   //if (pdfUrl) {
-    // document.getElementById('pdfViewer').src = pdfUrl;
-    // document.getElementById('pdfViewer').style.display = 'block';
-   //}
-   
-   
-   
-     try {
-       document.getElementById('pdfViewer').src = 'static/reports/monthly_report.pdf';
-       document.getElementById('pdfViewer').style.display = 'block';
-     } catch (error) {
-       console.error("Error displaying report:", error);
-       // Display user-friendly message like: "Report not found"
-       document.getElementById('pdfContainer').innerHTML = "Report not found";
-     }
-   
-   
-   
-     document.getElementById('exportBtn').addEventListener('click', function () {
-       document.getElementById('downloadLink').click();
-     });
-   </script>
-
-
 
   <script>
     /* for dropup */
@@ -268,7 +239,8 @@ window.onclick = function(event) {
 }
 
 </script>
-    
+
+
 </body>
 
 </html>

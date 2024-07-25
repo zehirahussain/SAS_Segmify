@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://d3js.org/d3.v6.min.js"></script>
   <style>
     #sidebar {
       background-color: #202020;
@@ -53,7 +54,7 @@
       border-radius: 5px;
       padding: 8px 16px;
       margin: 5px 0;
-      display: inline-flex; 
+      display: inline-flex;
     }
 
     .footer {
@@ -72,71 +73,74 @@
       margin-left: 250px;
       padding: 20px;
       background-color: #131b2f;
-      height: 100vh;
+      height: 430vh;
       color: white;
     }
+
     hr.rounded {
       border-top: 4px solid #4d5357;
       border-radius: 5px;
     }
+
     hr.solid {
       border-top: 3px solid #1e3673;
     }
- 
-    /* dropup */
-  /* dropup */
-.dropbtn {
-  background-color: #202020;
-  color: white;
-  padding: 5px;
-  font-size: 14px;
-  border: none;
-  float: right;
-  text-align: right;
-}
 
-.dropup {
-  position: relative;
-  display: inline-block;
-}
+    .dropbtn {
+      background-color: #202020;
+      color: white;
+      padding: 5px;
+      font-size: 14px;
+      border: none;
+      float: right;
+      text-align: right;
+    }
 
-.dropup-content {
-  display: none;
-  position: absolute;
-  background-color: #4d5357;
-  min-width: 160px;
-  bottom: 35px; /* Adjusted to make sure it doesn't overlap with the button */
-  z-index: 1;
-  border-radius: 5px; /* Added border-radius for styling */
-}
+    .dropup {
+      position: relative;
+      display: inline-block;
+    }
 
-.dropup-content a {
-  color: white;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
+    .dropup-content {
+      display: none;
+      position: absolute;
+      background-color: #4d5357;
+      min-width: 160px;
+      bottom: 35px;
+      z-index: 1;
+      border-radius: 5px;
+    }
 
-.dropup-content a:hover {
-  background-color: #62696D; /* Adjusted hover color for better visibility */
-}
+    .dropup-content a {
+      color: white;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
 
-.dropup:hover .dropup-content {
-  display: block;
-}
+    .dropup-content a:hover {
+      background-color: #62696D;
+    }
 
-.dropup:hover .dropbtn {
-  background-color: #4d5357;
-}
+    .dropup:hover .dropup-content {
+      display: block;
+    }
 
+    .dropup:hover .dropbtn {
+      background-color: #4d5357;
+    }
 
     #graph-container {
       width: 950px;
       height: 520px;
       margin: 0 auto;
       border: 1px solid #1e3673;
-  }
+    }
 
+    .image-container img {
+      margin: 10px 0;
+      display: block;
+    }
   </style>
 </head>
 
@@ -151,30 +155,58 @@
       <a class="nav-link" href="decisionn.html"><button class="sidebar-button">Back</button></a>
     </nav>
     <footer class="footer flex-column">
-      <a class="nav-link" href="#"><button class="sidebar-button">Import File</button></a>
-
+      <a class="nav-link" href="#" data-toggle="modal" data-target="#uploadModal"><button class="sidebar-button">Import File</button></a>
       <hr class="rounded">
-
       <div class="dropup">
         <button onclick="toggleDropup()" class="dropbtn">⇧</button>
         <div id="myDropup" class="dropup-content">
           <a href="settings.php">⚙️ Settings</a>
           <a href="index.php">🚪 Log Out</a>
         </div>
-    </div>
-    
-
+      </div>
       <span class="nav-link">SAS Executive</span>
       <span>🔔</span>
     </footer>
   </div>
   <div class="content">
     <main role="main">
-      
+      <div id="message" class="text-center mt-5">
+        <h2>Please upload the data set</h2>
+      </div>
       <hr class="solid">
       <!-- Main content -->
-      <div id="graph-container"></div>
+      <div id="graph-container" class="image-container" style="display: none;">
+        <img src="static/images/mrr_by_bu.png" alt="MRR by BU" id="graphImage">
+        <img src="static/images/revenue_by_product_bar_chart.png" alt="Revenue by Product" id="barChartImage">
+        <img src="static/images/churn_rate_stacked_bar_chart.png" alt="Churn Rate" id="churnChartImage">
+        <img src="static/images/revenue_by_product_pie_chart.png" alt="Revenue by Product" id="pieChartImage">
+      </div>
     </main>
+  </div>
+
+  <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="uploadModalLabel">Upload .xlsx File</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="uploadForm" action="upload.php" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="fileInput">Select file</label>
+              <input type="file" class="form-control-file" id="fileInput" name="file">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="document.getElementById('uploadForm').submit();">Upload</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -183,35 +215,44 @@
     document.querySelectorAll('.nav-link').forEach(link => {
       link.addEventListener('click', function (event) {
         event.preventDefault(); 
-        // Get the href attribute of the clicked link
         const href = this.getAttribute('href');
-        // Navigate to the new page
         window.location.href = href;
       });
     });
-  </script>
-  
 
-  <script>
-    /* for dropup */
-function toggleDropup() {
-    var dropupContent = document.getElementById("myDropup");
-    dropupContent.classList.toggle("show");
-}
+    // Trigger the PHP script to generate the graph when the page loads
+    window.onload = function() {
+      fetch('generate_graph.php')
+        .then(response => response.text())
+        .then(data => {
+          console.log(data);
+          document.getElementById('graphImage').src = 'static/images/mrr_by_bu.png?random=' + new Date().getTime();
+          document.getElementById('barChartImage').src = 'static/images/revenue_by_product_bar_chart.png?random=' + new Date().getTime();
+          document.getElementById('churnChartImage').src = 'static/images/churn_rate_stacked_bar_chart.png?random=' + new Date().getTime();
+          document.getElementById('pieChartImage').src = 'static/images/revenue_by_product_pie_chart.png?random=' + new Date().getTime();
 
-window.onclick = function(event) {
-    if (!event.target.matches('.dropbtn')) {
+          document.getElementById('message').style.display = 'none';
+          document.getElementById('graph-container').style.display = 'block';
+        });
+    };
+
+    function toggleDropup() {
+      var dropupContent = document.getElementById("myDropup");
+      dropupContent.classList.toggle("show");
+    }
+
+    window.onclick = function(event) {
+      if (!event.target.matches('.dropbtn')) {
         var dropups = document.getElementsByClassName("dropup-content");
         for (var i = 0; i < dropups.length; i++) {
-            var openDropup = dropups[i];
-            if (openDropup.classList.contains('show')) {
-                openDropup.classList.remove('show');
-            }
+          var openDropup = dropups[i];
+          if (openDropup.classList.contains('show')) {
+            openDropup.classList.remove('show');
+          }
         }
+      }
     }
-}
-
-</script>
+  </script>
 </body>
 
 </html>
