@@ -10,6 +10,7 @@ pip install ploty, pip install flask-sqlalchemy, pip install fpdf2, <br>
 install composer from its site, xampp, php on desktop...<br>
 localhost/fyp0.3/frontend1/index,php ..<br>
 pip install python-pptx, pip install openpyxl, pip install mysql-connector-python, <br>
+install all aboe in frontend1 folder through cmd or terminal <br>
 Save space in your laptops.
 This is for web app...
 We will see mobile app in next semester...
