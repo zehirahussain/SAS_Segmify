@@ -1,0 +1,6 @@
+{
+    "require": {
+        "guzzlehttp/guzzle": "^7.9",
+        "google/cloud-vision": "^1.9"
+    }
+}

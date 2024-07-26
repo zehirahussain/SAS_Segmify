@@ -4,6 +4,7 @@ import os
 import mysql.connector
 from pptx import Presentation
 from pptx.util import Inches
+import json
 
 # Database connection function
 def get_db_connection():
@@ -14,46 +15,53 @@ def get_db_connection():
         database="loginandanalysis"
     )
 
-# Function to save image details to the database
+# Function to save or update image details in the database
 def save_image_to_db(user_id, image_path, image_type):
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute(
-        "INSERT INTO user_images (user_id, image_path, image_type) VALUES (%s, %s, %s)",
+        "SELECT id FROM user_images WHERE user_id = %s AND image_path = %s AND image_type = %s",
         (user_id, image_path, image_type)
     )
+    result = cursor.fetchone()
+
+    if result:
+        cursor.execute(
+            "UPDATE user_images SET image_path = %s WHERE id = %s",
+            (image_path, result[0])
+        )
+    else:
+        cursor.execute(
+            "INSERT INTO user_images (user_id, image_path, image_type) VALUES (%s, %s, %s)",
+            (user_id, image_path, image_type)
+        )
+
     conn.commit()
     cursor.close()
     conn.close()
 
-# Function to update PowerPoint presentation with new image
-def update_presentation(user_id, image_path):
-    conn = get_db_connection()
-    cursor = conn.cursor()
+# Function to create a new PowerPoint presentation with images and analysis
+def create_presentation(user_id, image_path, analysis_text):
+    # Define the path for the new presentation
+    presentation_path = f'static/presentations/user{user_id}_presentation.pptx'
 
-    # Fetch or create the presentation for the user
-    cursor.execute("SELECT presentation_path FROM user_presentations WHERE user_id = %s", (user_id,))
-    result = cursor.fetchone()
+    # Create a new presentation
+    prs = Presentation()
 
-    if result:
-        ppt_path = result[0]
-    else:
-        ppt_path = f'static/presentations/user{user_id}_presentation.pptx'
-        prs = Presentation()
-        prs.save(ppt_path)
-        cursor.execute(
-            "INSERT INTO user_presentations (user_id, presentation_path) VALUES (%s, %s)",
-            (user_id, ppt_path)
-        )
-        conn.commit()
-
-    prs = Presentation(ppt_path)
-    slide = prs.slides.add_slide(prs.slide_layouts[5])
+    # Add the image slide
+    slide = prs.slides.add_slide(prs.slide_layouts[5])  # Blank slide layout
     slide.shapes.add_picture(image_path, Inches(1), Inches(1), width=Inches(8), height=Inches(5.5))
-    prs.save(ppt_path)
 
-    cursor.close()
-    conn.close()
+    # Add analysis text on a new slide
+    analysis_slide = prs.slides.add_slide(prs.slide_layouts[5])
+    textbox = analysis_slide.shapes.add_textbox(Inches(1), Inches(1), Inches(8), Inches(5.5))
+    text_frame = textbox.text_frame
+    p = text_frame.add_paragraph()
+    p.text = analysis_text
+    p.font.size = Inches(0.5)  # Adjust font size as needed
+
+    prs.save(presentation_path)
+    print(f"Presentation saved at {presentation_path}")
 
 # Read the dataset from Excel
 uploads_dir = "uploads"
@@ -79,12 +87,6 @@ df = df[relevant_cols]
 # Aggregate MRR by Business Unit
 mrr_by_bu = df.groupby("BU")["Revenue Billed"].sum().reset_index()
 
-# print on Visula studio code console
-print("Aggregated Revenue by BU:")
-print(mrr_by_bu)
-
-
-
 # Bar chart with white background
 plt.figure(figsize=(10, 8), facecolor='white')  # Set figure background color to white
 plt.bar(mrr_by_bu["BU"], mrr_by_bu["Revenue Billed"], color='skyblue')
@@ -106,7 +108,7 @@ plt.gca().spines['left'].set_color('black')
 plt.gca().spines['bottom'].set_color('black')
 
 # Add grid lines with black color for better readability
-plt.grid(color='black', linestyle='--', linewidth=0.5)
+plt.grid(color='black', linestyle='--', linewidth=0.2)
 
 plt.tight_layout()
 
@@ -125,5 +127,13 @@ image_type = "MRR by BU"
 # Save image details to the database
 save_image_to_db(user_id, plot_path, image_type)
 
-# Update PowerPoint presentation with the new image
-update_presentation(user_id, plot_path)
+# Read the analysis results from the file
+results_file = 'static/analysis_results.json'
+with open(results_file, 'r') as file:
+    results = json.load(file)
+
+# Use the MRR analysis result
+analysis_text = results['mrr_by_bu']
+
+# Create a new PowerPoint presentation with the new image and analysis
+create_presentation(user_id, plot_path, analysis_text)

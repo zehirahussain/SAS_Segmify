@@ -14,20 +14,34 @@ def get_db_connection():
         database="loginandanalysis"
     )
 
-# Function to save image details to the database
-def save_image_to_db(user_id, image_path, image_type):
+# Function to save or update image details in the database
+def save_or_update_image_in_db(user_id, image_path, image_type):
     conn = get_db_connection()
     cursor = conn.cursor()
+
     cursor.execute(
-        "INSERT INTO user_images (user_id, image_path, image_type) VALUES (%s, %s, %s)",
+        "SELECT id FROM user_images WHERE user_id = %s AND image_path = %s AND image_type = %s",
         (user_id, image_path, image_type)
     )
+    result = cursor.fetchone()
+
+    if result:
+        cursor.execute(
+            "UPDATE user_images SET image_path = %s WHERE id = %s",
+            (image_path, result[0])
+        )
+    else:
+        cursor.execute(
+            "INSERT INTO user_images (user_id, image_path, image_type) VALUES (%s, %s, %s)",
+            (user_id, image_path, image_type)
+        )
+
     conn.commit()
     cursor.close()
     conn.close()
 
-# Function to update PowerPoint presentation with new image
-def update_presentation(user_id, image_path):
+# Function to update PowerPoint presentation with new image and analysis results
+def update_presentation(user_id, image_path, analysis_text):
     conn = get_db_connection()
     cursor = conn.cursor()
 
@@ -48,8 +62,19 @@ def update_presentation(user_id, image_path):
         conn.commit()
 
     prs = Presentation(ppt_path)
+
+    # Add the image slide
     slide = prs.slides.add_slide(prs.slide_layouts[5])
     slide.shapes.add_picture(image_path, Inches(1), Inches(1), width=Inches(8), height=Inches(5.5))
+
+    # Add analysis text on a new slide
+    analysis_slide = prs.slides.add_slide(prs.slide_layouts[5])
+    textbox = analysis_slide.shapes.add_textbox(Inches(1), Inches(1), Inches(8), Inches(5.5))
+    text_frame = textbox.text_frame
+    p = text_frame.add_paragraph()
+    p.text = analysis_text
+    p.font.size = Inches(0.2)  # Reduced font size for analysis text
+
     prs.save(ppt_path)
 
     cursor.close()
@@ -78,13 +103,6 @@ df = df[['Product', 'Revenue Billed']]
 # Aggregate Revenue by Product
 revenue_by_product = df.groupby('Product')['Revenue Billed'].sum().reset_index()
 
-# print on Visula studio code console
-print("Aggregated Revenue by Product:")
-print(revenue_by_product)
-
-
-
-
 # Pie chart
 plt.figure(figsize=(10, 8))
 plt.pie(revenue_by_product['Revenue Billed'], labels=revenue_by_product['Product'], 
@@ -106,8 +124,11 @@ print(f'Pie chart for revenue billed by product saved to {plot_path}')
 user_id = 1  # Replace with actual user ID
 image_type = "Revenue by Product"
 
-# Save image details to the database
-save_image_to_db(user_id, plot_path, image_type)
+# Save or update image details in the database
+save_or_update_image_in_db(user_id, plot_path, image_type)
 
-# Update PowerPoint presentation with the new image
-update_presentation(user_id, plot_path)
+# Example analysis text
+analysis_text = "This pie chart shows the distribution of revenue billed by different products. Each slice represents the proportion of total revenue billed by each product."
+
+# Update PowerPoint presentation with the new image and analysis results
+update_presentation(user_id, plot_path, analysis_text)

@@ -159,7 +159,7 @@
         <button onclick="toggleDropup()" class="dropbtn">⇧</button>
         <div id="myDropup" class="dropup-content">
           <a href="settings.php">⚙️ Settings</a>
-          <a href="index.php">🚪 Log Out</a>
+          <a href="logout.php">🚪 Log Out</a>
         </div>
       </div>
       <span class="nav-link">SAS Executive</span>
@@ -169,8 +169,14 @@
   <div class="content">
     <main role="main">
       <hr class="solid">
-      <!-- Display the presentation -->
-      <iframe id="presentation-frame" src="fetch_serve.php?user_id=user1" frameborder="0"></iframe>
+      <!-- Link to view or download the presentation -->
+      <div class="container">
+        <h2 class="text-center">Your Presentation</h2>
+        <div class="text-center">
+          <a href="static/presentations/user1_presentation.pptx" class="btn btn-primary" download>Download Presentation</a>
+         
+        </div>
+      </div>
     </main>
   </div>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

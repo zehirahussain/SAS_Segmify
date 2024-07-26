@@ -161,7 +161,7 @@
         <button onclick="toggleDropup()" class="dropbtn">⇧</button>
         <div id="myDropup" class="dropup-content">
           <a href="settings.php">⚙️ Settings</a>
-          <a href="index.php">🚪 Log Out</a>
+          <a href="logout.php">🚪 Log Out</a>
         </div>
       </div>
       <span class="nav-link">SAS Executive</span>
@@ -175,11 +175,23 @@
       </div>
       <hr class="solid">
       <!-- Main content -->
-      <div id="graph-container" class="image-container" style="display: none;">
-        <img src="static/images/mrr_by_bu.png" alt="MRR by BU" id="graphImage">
-        <img src="static/images/revenue_by_product_bar_chart.png" alt="Revenue by Product" id="barChartImage">
-        <img src="static/images/churn_rate_stacked_bar_chart.png" alt="Churn Rate" id="churnChartImage">
-        <img src="static/images/revenue_by_product_pie_chart.png" alt="Revenue by Product" id="pieChartImage">
+      <div id="graph-container" class="image-container">
+        <div>
+          <img src="static/images/mrr_by_bu.png" alt="MRR by BU" id="graphImage">
+          <p id="analysis1">Loading analysis...</p>
+        </div>
+        <div>
+          <img src="static/images/revenue_by_product_bar_chart.png" alt="Revenue by Product" id="barChartImage">
+          <p id="analysis2">Loading analysis...</p>
+        </div>
+        <div>
+          <img src="static/images/churn_rate_stacked_bar_chart.png" alt="Churn Rate" id="churnChartImage">
+          <p id="analysis3">Loading analysis...</p>
+        </div>
+        <div>
+          <img src="static/images/revenue_by_product_pie_chart.png" alt="Revenue by Product" id="pieChartImage">
+          <p id="analysis4">Loading analysis...</p>
+        </div>
       </div>
     </main>
   </div>
@@ -196,32 +208,27 @@
         <div class="modal-body">
           <form id="uploadForm" action="upload.php" method="post" enctype="multipart/form-data">
             <div class="form-group">
-              <label for="fileInput">Select file</label>
-              <input type="file" class="form-control-file" id="fileInput" name="file">
+              <label for="fileInput">Select .xlsx file</label>
+              <input type="file" class="form-control-file" id="fileInput" name="file" accept=".xlsx" required>
             </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
           </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="document.getElementById('uploadForm').submit();">Upload</button>
         </div>
       </div>
     </div>
   </div>
 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
   <script>
     document.querySelectorAll('.nav-link').forEach(link => {
       link.addEventListener('click', function (event) {
-        event.preventDefault(); 
+        event.preventDefault();
         const href = this.getAttribute('href');
         window.location.href = href;
       });
     });
 
     // Trigger the PHP script to generate the graph when the page loads
-    window.onload = function() {
+    window.onload = function () {
       fetch('generate_graph.php')
         .then(response => response.text())
         .then(data => {
@@ -233,6 +240,21 @@
 
           document.getElementById('message').style.display = 'none';
           document.getElementById('graph-container').style.display = 'block';
+
+          // Fetch analysis results directly from the Python script output
+          fetch('start_analysis.php')
+            .then(response => response.json())
+            .then(data => {
+              if (data.status === 'success') {
+                const analysisResults = data.results;
+                document.getElementById('analysis1').innerText = analysisResults[0] || 'No analysis result';
+                document.getElementById('analysis2').innerText = analysisResults[1] || 'No analysis result';
+                document.getElementById('analysis3').innerText = analysisResults[2] || 'No analysis result';
+                document.getElementById('analysis4').innerText = analysisResults[3] || 'No analysis result';
+              } else {
+                console.error('Failed to start analysis.');
+              }
+            });
         });
     };
 
@@ -241,7 +263,7 @@
       dropupContent.classList.toggle("show");
     }
 
-    window.onclick = function(event) {
+    window.onclick = function (event) {
       if (!event.target.matches('.dropbtn')) {
         var dropups = document.getElementsByClassName("dropup-content");
         for (var i = 0; i < dropups.length; i++) {

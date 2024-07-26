@@ -69,7 +69,7 @@
         <a href="portal2_page3_notification.html"><button class="decision" type="decision" style=" height: 35px; width: 238px; margin-top: 18px;"> View Report </button><br></a>
 
 <!-- logIn button -->
-        <a href="index.php"><button class="logOut" type="logOut" style="margin-top: 200px; height: 35px; width: 178px;"> Log out </button></a><br><br><br>
+        <a href="logout.php"><button class="logOut" type="logOut" style="margin-top: 200px; height: 35px; width: 178px;"> Log out </button></a><br><br><br>
     </div>
 </body>
 </html>
