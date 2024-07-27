@@ -26,16 +26,28 @@
             margin-bottom: 10px;
             color: white;
         }
+       .BOX {
+        border-radius: 27px;
+        font-family: calibri;
+        background-color: aliceblue;
+        text-align: center;
+        padding: 40px 35px;
+        width: 90vw;
+        max-width: 600px;
+        margin-top: 60px; /* Adjusted for header height */
+    }
+
+    @media (max-width: 768px) {
         .BOX {
-            border-radius: 27px;
-            font-family: calibri;
-            background-color: aliceblue;
-            text-align: center;
-            margin-top: 32px;
-           /* padding: 70px 0px 28px 0px; */
-            padding: 60px 0px 70px 0px;
-            width: 34vw;
+            width: 80vw;
         }
+    }
+
+    @media (max-width: 480px) {
+        .BOX {
+            width: 90vw;
+        }
+    }
         input[type="text"],
         input[type="email"],
         textarea {
@@ -76,60 +88,105 @@
             color: white;
             text-decoration: none;
             margin-right: 30px;
-
         }
+
         header a:hover{
             color: black;
         }
-    .SignIn{
-        border: 1px solid;
-        border-radius: 6px;
-        background-color: #005288;
-        color: white;
-        font-family: calibri;
-        font-weight: bold;
-        font-size: 15px;
-        letter-spacing: 0.6px;
-      }    
-      .logo{
-        border: 1px solid;
-        border-radius: 6px;
-        background-color: #ffffff;
-        color: white;
-        font-family: calibri;
-        font-weight: bold;
-      }    
-    .SignIn:hover{
-      cursor: pointer;
-      color: rgb(28, 29, 29);
-    }
-    h1{
-        text-align: center;
-        font-family: Times New Roman;
-    
-    }
+
+        .SignIn{
+            border: 1px solid;
+            border-radius: 6px;
+            background-color: #005288;
+            color: white;
+            font-family: calibri;
+            font-weight: bold;
+            font-size: 15px;
+            letter-spacing: 0.6px;
+        }
+
+        .SignIn:hover{
+            cursor: pointer;
+            color: rgb(28, 29, 29);
+        }
+
+        h1{
+            text-align: center;
+            font-family: Times New Roman;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            header a {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .SignIn {
+                width: 100%;
+            }
+
+            .BOX {
+                width: 80vw;
+                padding: 20px;
+            }
+
+            input[type="text"],
+            input[type="email"],
+            textarea {
+                width: 90%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .BOX {
+                width: 90vw;
+            }
+
+            input[type="text"],
+            input[type="email"],
+            textarea {
+                width: 95%;
+            }
+
+            input[type="submit"] {
+                font-size: 14px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
     </style>
 </head>
 <body>
+    <header>
+        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+            <div style="display: flex; align-items: center;">
+                <a href="index.php"><img src="SAS Segmify logo (2).png" style="width: 60px;"></a>
+                <a href="aoutus.html"><button class="SignIn" style="height: 28px; width: 80px; margin-left: 10px; font-weight: bold;">About Us</button></a>
+                <a href="#"><button class="SignIn" style="height: 28px; width: 100px; margin-left: 10px; font-weight: bold;">Contact Us</button></a>
+            </div>
+            <div>
+                <a href="signuppppp.html"><button class="SignIn" style="height: 28px; width: 80px; margin-right: 20px; font-weight: bold;">Sign Up</button></a>
+            </div>
+        </div>
+    </header>
 
-<header>
-    <div>
-        <a href="index.php"><img src="output-onlinepngtools.png" style="width: 20px;"></a>
-        <a href="aoutus.html"><button class="SignIn" style="height: 28px; width: 80px; margin-right: 1px; font-weight: bold;"> About Us</button></a>
-        <a href="#"><button class="SignIn" style="height: 28px; width: 100px; margin-right: 1px; font-weight: bold;">Contact Us</button></a>
+    <div class="BOX">
+        <h1> Contact Us </h1>
+        <form action="contact_form_handler.php" method="POST">
+            <input type="text" id="name" name="name" placeholder="Your Name" required><br>
+            <input type="email" id="email" name="email" placeholder="Your Email" required><br>
+            <textarea id="comment" name="comment" rows="4" placeholder="Your Comment or Question" required></textarea><br>
+            <input type="submit" value="Submit" style="margin-top: 40px; width: 140px; border-radius: 8px;">
+        </form>
+        <br>
     </div>
-    <a href="signuppppp.html"><button class="SignIn" style="height: 28px; width: 80px; margin-right: 20px; font-weight: bold;"> Sign In </button></a>
-</header>
-
-<div class="BOX">
-    <h1> Contact Us </h1>
-    <form action="contact_form_handler.php" method="POST">
-        <input type="text" id="name" name="name" placeholder="Your Name" required><br>
-        <input type="email" id="email" name="email" placeholder="Your Email" required><br>
-        <textarea id="comment" name="comment" rows="4" placeholder="Your Comment or Question" required></textarea><br>
-        <input type="submit" value="Submit" style="margin-top: 40px; width: 140px; border-radius: 8px;">
-    </form>
-    <br>
-</div>
 </body>
 </html>

@@ -18,6 +18,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         header a {
@@ -33,6 +34,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 20px;
         }
 
         .centered {
@@ -40,7 +42,8 @@
         }
 
         .lock {
-            width: 200px;
+            width: 100%;
+            max-width: 300px;
             height: auto;
         }
 
@@ -57,55 +60,111 @@
             font-size: 24px;
             margin-top: 20px;
         }
-        .BOX{
+        
+        .BOX {
             border-radius: 27px;
             font-family: calibri;
             background-color: aliceblue;
             text-align: center;
-         
-            max-width: 600px; /* Adjust max-width */
-            padding: 40px 35px 90px 35px;
+            padding: 40px 35px;
+            width: 90vw;
+            max-width: 600px;
+            margin-top: 60px; /* Adjusted for header height */
         }
-        .SignIn{
-        border: 1px solid;
-        border-radius: 6px;
-        background-color: #005288;
-        color: white;
-        font-family: calibri;
-        font-weight: bold;
-        font-size: 15px;
-        letter-spacing: 0.6px;
-      }    
-    .SignIn:hover{
-      cursor: pointer;
-      color: rgb(28, 29, 29);
-    }
+
+        @media (max-width: 768px) {
+            .BOX {
+                width: 80vw;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .BOX {
+                width: 90vw;
+            }
+        }
+
+        .SignIn {
+            border: 1px solid;
+            border-radius: 6px;
+            background-color: #005288;
+            color: white;
+            font-family: calibri;
+            font-weight: bold;
+            font-size: 15px;
+            letter-spacing: 0.6px;
+        }
+
+        .SignIn:hover {
+            cursor: pointer;
+            color: rgb(28, 29, 29);
+        }
+
+        .h1 {
+            color: darkblue;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            header a {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .SignIn {
+                width: 100%;
+            }
+
+            .BOX {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .description {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .description {
+                font-size: 16px;
+            }
+
+            .SignIn {
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 <body>
 
 <header>
-   
-    <div>
-        <a href="#"><img src="output-onlinepngtools.png" style="width: 20px;"></a>
-        <a href="aoutus.html"><button class="SignIn" style="height: 28px; width: 80px; margin-right: 1px; font-weight: bold;"> About Us</button></a>
-        <a href="contactus.html"><button class="SignIn" style="height: 28px; width: 100px; margin-right: 1px; font-weight: bold;">Contact Us</button></a>
+    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+        <div style="display: flex; align-items: center;">
+            <a href="#"><img src="SAS Segmify logo (2).png" style="width: 60px;"></a>
+            <a href="aoutus.html"><button class="SignIn" style="height: 28px; width: 80px; margin-left: 10px; font-weight: bold;">About Us</button></a>
+            <a href="contactus.html"><button class="SignIn" style="height: 28px; width: 100px; margin-left: 10px; font-weight: bold;">Contact Us</button></a>
+        </div>
+        <div>
+            <a href="signuppppp.html"><button class="SignIn" style="height: 28px; width: 80px; margin-right: 20px; font-weight: bold;">Sign Up</button></a>
+        </div>
     </div>
-    <a href="signuppppp.html"><button class="SignIn" style="height: 28px; width: 80px; margin-right: 20px; font-weight: bold;"> Sign Up </button></a>
 </header>
-
-<!--<img src="graph.jpeg" style= "height: 100vh; width: 100vw; position: absolute; z-index: -1;"> -->
-  
 
 <div class="background-image">
     <div class="container">
         <div class="BOX"> 
             <div class="centered">
-                <img src="logo.png" alt="Lock" class="lock">
+                <img src="SAS Segmify logo (1).png" alt="Lock" class="lock">
                 <h1><?php echo "Customer Segmentation and Classification for SAS Company"; ?></h1>
                 <p class="description" style="color: black;"> 
                     <?php 
-                        $description = "Technology continues to evolve, businesses are increasingly involved in data-driven insights to improve their products and services to meet customer expectations. SAS Segmify generates a robust customer segmentation, classification, and review analysis system, utilizing innovative technologies such as machine learning and natural language processing.";
+                        $description = "Harness data-driven insights with SAS Segmify for advanced customer segmentation, classification, and review analysis using cutting-edge machine learning.";
                         echo $description; 
                     ?>
                 </p>

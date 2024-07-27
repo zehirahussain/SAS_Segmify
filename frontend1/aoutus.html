@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us</title>
     <style>
-        body{
+        body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -16,27 +16,43 @@
             background-image: url('graph.jpeg');
             background-size: cover;
         }
-       
-        h1{
+
+        h1 {
             text-align: center;
             font-family: Times New Roman;
             padding-bottom: 22px;
         }
-        p{
+
+        p {
             padding: 15px 35px 5px 40px;
             margin-bottom: 10px;
             font-family: serif;
         }
-        .BOX{
-            border-radius: 27px;
-            font-family: calibri;
-            background-color: aliceblue;
-            text-align: center;
-            margin-top: 32px;
-            padding: 35px 0px 70px 0px;
-            width: 34vw;
+
+      .BOX {
+        border-radius: 27px;
+        font-family: calibri;
+        background-color: aliceblue;
+        text-align: center;
+        padding: 40px 35px;
+        width: 90vw;
+        max-width: 600px;
+        margin-top: 60px; /* Adjusted for header height */
+    }
+
+    @media (max-width: 768px) {
+        .BOX {
+            width: 80vw;
         }
-        header{
+    }
+
+    @media (max-width: 480px) {
+        .BOX {
+            width: 90vw;
+        }
+    }
+
+        header {
             background-color: #1b1b1c;
             color: white;
             padding: 10px;
@@ -54,46 +70,89 @@
             color: white;
             text-decoration: none;
             margin-right: 30px;
-
         }
-        header a:hover{
+
+        header a:hover {
             color: black;
         }
-    .SignIn{
-        border: 1px solid;
-        border-radius: 6px;
-        background-color: #005288;
-        color: white;
-        font-family: calibri;
-        font-weight: bold;
-        font-size: 15px;
-        letter-spacing: 0.6px;
-      }    
-    .SignIn:hover{
-      cursor: pointer;
-      color: rgb(28, 29, 29);
-    }
+
+        .SignIn {
+            border: 1px solid;
+            border-radius: 6px;
+            background-color: #005288;
+            color: white;
+            font-family: calibri;
+            font-weight: bold;
+            font-size: 15px;
+            letter-spacing: 0.6px;
+        }
+
+        .SignIn:hover {
+            cursor: pointer;
+            color: rgb(28, 29, 29);
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px 0;
+            }
+
+            header a {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .SignIn {
+                width: 100%;
+            }
+
+            .BOX {
+                width: 80vw;
+                padding: 20px;
+            }
+
+            p {
+                padding: 10px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .BOX {
+                width: 90vw;
+            }
+
+            p {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
     </style>
 </head>
-<header>
-
-    <div>
-        <a href="index.php"><img src="output-onlinepngtools.png" style="width: 20px;"></a>
-        <a href="#"><button class="SignIn" style="height: 28px; width: 80px; margin-right: 1px; font-weight: bold;"> About Us</button></a>
-        <a href="contactus.html"><button class="SignIn" style="height: 28px; width: 100px; margin-right: 1px; font-weight: bold;">Contact Us</button></a>
-    </div>
-    <a href="signuppppp.html"><button class="SignIn" style="height: 28px; width: 80px; margin-right: 20px; font-weight: bold;"> Sign In </button></a>
-</header>
-
 <body>
+    <header>
+        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+            <div style="display: flex; align-items: center;">
+                <a href="index.php"><img src="SAS Segmify logo (2).png" style="width: 60px;"></a>
+                <a href="#"><button class="SignIn" style="height: 28px; width: 80px; margin-left: 10px; font-weight: bold;">About Us</button></a>
+                <a href="contactus.html"><button class="SignIn" style="height: 28px; width: 100px; margin-left: 10px; font-weight: bold;">Contact Us</button></a>
+            </div>
+            <div>
+                <a href="signuppppp.html"><button class="SignIn" style="height: 28px; width: 80px; margin-right: 20px; font-weight: bold;">Sign Up</button></a>
+            </div>
+        </div>
+    </header>
+
     <div class="BOX">
         <h1>About Us</h1>
         <p><strong>Empowering Businesses Through Data Insights</strong></p>
-        <p> Our purpose is to revolutionize the way businesses understand and leverage data to drive growth and innovation.
-        Our team is composed of passionate individuals dedicated to delivering exceptional results and value to our clients.
-        We are driven by our passion for data analytics and its potential to transform businesses and industries.</p>
-        <p>We are committed to delivering high-performance solutions that exceed our clients' expectations and drive tangible results.
-        We recognize the importance of sustainability and strive to minimize our environmental footprint through responsible practices.</p>
+        <p>Our purpose is to revolutionize the way businesses understand and leverage data to drive growth and innovation. Our team is composed of passionate individuals dedicated to delivering exceptional results and value to our clients. We are driven by our passion for data analytics and its potential to transform businesses and industries.</p>
+        <p>We are committed to delivering high-performance solutions that exceed our clients' expectations and drive tangible results. We recognize the importance of sustainability and strive to minimize our environmental footprint through responsible practices.</p>
     </div>
 </body>
 </html>
