@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -162,6 +164,18 @@
                 font-size: 24px;
             }
         }
+        #popup {
+            display: none;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
@@ -180,7 +194,7 @@
 
     <div class="BOX">
         <h1> Contact Us </h1>
-        <form action="contact_form_handler.php" method="POST">
+        <form id="contactForm" method="POST">
             <input type="text" id="name" name="name" placeholder="Your Name" required><br>
             <input type="email" id="email" name="email" placeholder="Your Email" required><br>
             <textarea id="comment" name="comment" rows="4" placeholder="Your Comment or Question" required></textarea><br>
@@ -188,5 +202,27 @@
         </form>
         <br>
     </div>
+    <div id="popup"></div>
+    
+    <script>
+        $(document).ready(function() {
+            $('#contactForm').on('submit', function(event) {
+                event.preventDefault();
+                
+                $.ajax({
+                    url: 'contact_form_handler.php', // PHP file to handle the form submission
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#popup').html(response).fadeIn().delay(3000).fadeOut();
+                        $('#contactForm')[0].reset(); // Clear the form after successful submission
+                    },
+                    error: function() {
+                        $('#popup').html('Oops! Something went wrong. Please try again later.').fadeIn().delay(3000).fadeOut();
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

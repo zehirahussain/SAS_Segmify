@@ -88,8 +88,8 @@
 .dropbtn {
     background-color: #202020;
     color: white;
-    padding: 5px;
-    font-size: 14px;
+    padding: 0px;
+    font-size: 20px;
     border: none;
     float: right;
     text-align: right;
@@ -148,6 +148,11 @@
     margin: 0 auto;
     border: 1px solid #1e3673;
 } */
+.username {
+    font-size: 24px; /* Adjust font size as needed */
+    color: #005288; /* Adjust text color */
+    font-weight: bold; /* Adjust font weight */
+}
   </style>
 </head>
 
@@ -172,13 +177,13 @@
         <button onclick="toggleDropup()" class="dropbtn">⇧</button>
         <div id="myDropup" class="dropup-content">
           <a href="settings.php">⚙️ Settings</a>
-          <a href="index.php">🚪 Log Out</a> 
+          <a href="logout.php">🚪 Log Out</a> 
         </div>
     </div>
     
 
-      <span class="nav-link">SAS Executive</span>
-      <span>🔔</span>
+    <span id="username" class="username"></span>
+    <span>🔔</span>
     </footer>
   </div>
   <div class="content">
@@ -207,6 +212,16 @@
   
 
   <script>
+    fetch('session_check.php')
+            .then(response => response.text())
+            .then(data => {
+                if (data === "NA") {
+                    window.location.href = 'loginnnn.html'; // Redirect to login page if NA
+                } else {
+                    document.getElementById('username').innerText = data;
+                }
+            })
+            .catch(error => console.error('Error:', error));
     // document.getElementById('generateReportBtn').addEventListener('click', function () {
       // fetch('generate_report.php')
         // .then(response => response.text())

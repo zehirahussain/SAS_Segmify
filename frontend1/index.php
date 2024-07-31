@@ -9,6 +9,7 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
+            overflow-x: hidden; /* Prevent horizontal scroll */
         }
 
         header {
@@ -37,10 +38,6 @@
             padding: 20px;
         }
 
-        .centered {
-            /* No need for absolute positioning */
-        }
-
         .lock {
             width: 100%;
             max-width: 300px;
@@ -57,7 +54,7 @@
 
         .description {
             color: white;
-            font-size: 24px;
+            font-size: 20px;
             margin-top: 20px;
         }
         
@@ -68,8 +65,8 @@
             text-align: center;
             padding: 40px 35px;
             width: 90vw;
-            max-width: 600px;
-            margin-top: 60px; /* Adjusted for header height */
+            max-width: 620px;
+            margin-top: -20px; /* Adjusted to move the box up */
         }
 
         @media (max-width: 768px) {
@@ -123,16 +120,17 @@
             .BOX {
                 width: 100%;
                 padding: 20px;
+                margin-top: 0; /* Remove top margin on smaller screens */
             }
 
             .description {
-                font-size: 18px;
+                font-size: 15px;
             }
         }
 
         @media (max-width: 480px) {
             .description {
-                font-size: 16px;
+                font-size: 15px;
             }
 
             .SignIn {

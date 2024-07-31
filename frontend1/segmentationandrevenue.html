@@ -1,280 +1,292 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <script src="https://d3js.org/d3.v6.min.js"></script>
-  <style>
-    #sidebar {
-      background-color: #202020;
-      height: 100vh;
-      width: 250px;
-      padding: 20px;
-      position: fixed;
-      left: 0;
-      top: 0;
-      overflow-y: auto;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+        #sidebar {
+            background-color: #202020;
+            height: 100vh;
+            width: 250px;
+            padding: 20px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+        }
 
-    .sidebar-button {
-      background-color: #005288;
-      border: none;
-      color: white;
-      padding: 3px 30px;
-      text-align: center;
-      text-decoration: none;
-      display: block;
-      font-size: 12.5px;
-      margin: -2.5px 0;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-      transition: all 0.3s;
-      flex: 1;
-    }
+        .sidebar-button {
+            background-color: #005288;
+            border: none;
+            color: white;
+            padding: 3px 30px;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            font-size: 12.5px;
+            margin: -2.5px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            flex: 1;
+        }
 
-    .dash {
-      color: white;
-      padding: 10px 25px;
-      font-weight: bold;
-      display: block;
-      font-size: 16px;
-      margin: 10px 10;
-    }
+        .dash {
+            color: white;
+            padding: 10px 25px;
+            font-weight: bold;
+            display: block;
+            font-size: 16px;
+            margin: 10px 10;
+        }
 
-    .sidebar-button:hover {
-      background-color: #05424b;
-      box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.3);
-      overflow: hidden;
-    }
+        .sidebar-button:hover {
+            background-color: #05424b;
+            box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
 
-    .nav-link {
-      border-radius: 5px;
-      padding: 8px 16px;
-      margin: 5px 0;
-      display: inline-flex;
-    }
+        .nav-link {
+            border-radius: 5px;
+            padding: 8px 16px;
+            margin: 5px 0;
+            display: inline-flex;
+        }
 
-    .footer {
-      color: white;
-      font-size: 12px;
-      background-color: #202020;
-      text-align: center;
-      padding: 10px;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 250px;
-    }
+        .footer {
+            color: white;
+            font-size: 12px;
+            background-color: #202020;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 250px;
+        }
 
-    .content {
-      margin-left: 250px;
-      padding: 20px;
-      background-color: #131b2f;
-      height: 430vh;
-      color: white;
-    }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            background-color: #131b2f;
+            height: 430vh;
+            color: white;
+        }
 
-    hr.rounded {
-      border-top: 4px solid #4d5357;
-      border-radius: 5px;
-    }
+        hr.rounded {
+            border-top: 4px solid #4d5357;
+            border-radius: 5px;
+        }
 
-    hr.solid {
-      border-top: 3px solid #1e3673;
-    }
+        hr.solid {
+            border-top: 3px solid #1e3673;
+        }
 
-    .dropbtn {
-      background-color: #202020;
-      color: white;
-      padding: 5px;
-      font-size: 14px;
-      border: none;
-      float: right;
-      text-align: right;
-    }
+        .dropbtn {
+            background-color: #202020;
+            color: white;
+            padding: 0px;
+            font-size: 20px;
+            border: none;
+            float: right;
+            text-align: right;
+        }
 
-    .dropup {
-      position: relative;
-      display: inline-block;
-    }
+        .dropup {
+            position: relative;
+            display: inline-block;
+        }
 
-    .dropup-content {
-      display: none;
-      position: absolute;
-      background-color: #4d5357;
-      min-width: 160px;
-      bottom: 35px;
-      z-index: 1;
-      border-radius: 5px;
-    }
+        .dropup-content {
+            display: none;
+            position: absolute;
+            background-color: #4d5357;
+            min-width: 160px;
+            bottom: 35px;
+            z-index: 1;
+            border-radius: 5px;
+        }
 
-    .dropup-content a {
-      color: white;
-      padding: 12px 16px;
-      text-decoration: none;
-      display: block;
-    }
+        .dropup-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
 
-    .dropup-content a:hover {
-      background-color: #62696D;
-    }
+        .dropup-content a:hover {
+            background-color: #62696D;
+        }
 
-    .dropup:hover .dropup-content {
-      display: block;
-    }
+        .dropup:hover .dropup-content {
+            display: block;
+        }
 
-    .dropup:hover .dropbtn {
-      background-color: #4d5357;
-    }
+        .dropup:hover .dropbtn {
+            background-color: #4d5357;
+        }
 
-    #graph-container {
-      width: 950px;
-      height: 520px;
-      margin: 0 auto;
-      border: 1px solid #1e3673;
-    }
+        #graph-container {
+            width: 950px;
+            height: 520px;
+            margin: 0 auto;
+            border: 1px solid #1e3673;
+        }
 
-    .image-container img {
-      margin: 10px 0;
-      display: block;
-    }
-  </style>
+        .image-container img {
+            margin: 10px 0;
+            display: block;
+        }
+        .username {
+            font-size: 24px; /* Adjust font size as needed */
+            color: #005288; /* Adjust text color */
+            font-weight: bold; /* Adjust font weight */
+        }
+    </style>
 </head>
-
 <body>
-  <div id="sidebar">
-    <li class="dash"> &#128202; Dashboard</li>
-    <nav class="nav flex-column">
-      <a class="nav-link" href="#"><button class="sidebar-button">Segmentation & Revenue</button></a>
-      <a class="nav-link" href="reviewanalysis.html"><button class="sidebar-button">Review Analysis</button></a>
-      <a class="nav-link" href="presentation.html"><button class="sidebar-button">Presentation</button></a>
-      <a class="nav-link" href="reportportal1.html"><button class="sidebar-button">Report</button></a>
-      <a class="nav-link" href="decisionn.html"><button class="sidebar-button">Back</button></a>
-    </nav>
-    <footer class="footer flex-column">
-      <a class="nav-link" href="#" data-toggle="modal" data-target="#uploadModal"><button class="sidebar-button">Import File</button></a>
-      <hr class="rounded">
-      <div class="dropup">
-        <button onclick="toggleDropup()" class="dropbtn">⇧</button>
-        <div id="myDropup" class="dropup-content">
-          <a href="settings.php">⚙️ Settings</a>
-          <a href="logout.php">🚪 Log Out</a>
-        </div>
-      </div>
-      <span class="nav-link">SAS Executive</span>
-      <span>🔔</span>
-    </footer>
-  </div>
-  <div class="content">
-    <main role="main">
-      <div id="message" class="text-center mt-5">
-        <h2>Please upload the data set</h2>
-      </div>
-      <hr class="solid">
-      <!-- Main content -->
-      <div id="graph-container" class="image-container">
-        <div>
-          <img src="static/images/mrr_by_bu.png" alt="MRR by BU" id="graphImage">
-          <p id="analysis1">Loading analysis...</p>
-        </div>
-        <div>
-          <img src="static/images/revenue_by_product_bar_chart.png" alt="Revenue by Product" id="barChartImage">
-          <p id="analysis2">Loading analysis...</p>
-        </div>
-        <div>
-          <img src="static/images/churn_rate_stacked_bar_chart.png" alt="Churn Rate" id="churnChartImage">
-          <p id="analysis3">Loading analysis...</p>
-        </div>
-        <div>
-          <img src="static/images/revenue_by_product_pie_chart.png" alt="Revenue by Product" id="pieChartImage">
-          <p id="analysis4">Loading analysis...</p>
-        </div>
-      </div>
-    </main>
-  </div>
-
-  <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="uploadModalLabel">Upload .xlsx File</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form id="uploadForm" action="upload.php" method="post" enctype="multipart/form-data">
-            <div class="form-group">
-              <label for="fileInput">Select .xlsx file</label>
-              <input type="file" class="form-control-file" id="fileInput" name="file" accept=".xlsx" required>
+    <div id="sidebar">
+        <li class="dash"> &#128202; Dashboard</li>
+        <nav class="nav flex-column">
+            <a class="nav-link" href="#"><button class="sidebar-button">Segmentation & Revenue</button></a>
+            <a class="nav-link" href="reviewanalysis.html"><button class="sidebar-button">Review Analysis</button></a>
+            <a class="nav-link" href="presentation.html"><button class="sidebar-button">Presentation</button></a>
+            <a class="nav-link" href="reportportal1.html"><button class="sidebar-button">Report</button></a>
+            <a class="nav-link" href="decisionn.html"><button class="sidebar-button">Back</button></a>
+        </nav>
+        <footer class="footer flex-column">
+            <a class="nav-link" href="#" data-toggle="modal" data-target="#uploadModal"><button class="sidebar-button">Import File</button></a>
+            <hr class="rounded">
+            <div class="dropup">
+                <button onclick="toggleDropup()" class="dropbtn">⇧</button>
+                <div id="myDropup" class="dropup-content">
+                    <a href="settings.php">⚙️ Settings</a>
+                    <a href="logout.php">🚪 Log Out</a>
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary">Upload</button>
-          </form>
-        </div>
-      </div>
+            <span id="username" class="username"></span>
+            <span>🔔</span>
+        </footer>
     </div>
-  </div>
+    <div class="content">
+        <main role="main">
+            <div id="message" class="text-center mt-5">
+                <h2>Please upload the data set</h2>
+            </div>
+            <hr class="solid">
+            <!-- Main content -->
+            <div id="graph-container" class="image-container">
+                <div>
+                    <img src="static/images/mrr_by_bu.png" alt="MRR by BU" id="graphImage">
+                    <p id="analysis1">Loading analysis...</p>
+                </div>
+                <div>
+                    <img src="static/images/revenue_by_product_bar_chart.png" alt="Revenue by Product" id="barChartImage">
+                    <p id="analysis2">Loading analysis...</p>
+                </div>
+                <div>
+                    <img src="static/images/churn_rate_stacked_bar_chart.png" alt="Churn Rate" id="churnChartImage">
+                    <p id="analysis3">Loading analysis...</p>
+                </div>
+                <div>
+                    <img src="static/images/revenue_by_product_pie_chart.png" alt="Revenue by Product" id="pieChartImage">
+                    <p id="analysis4">Loading analysis...</p>
+                </div>
+            </div>
+        </main>
+    </div>
 
-  <script>
-    document.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', function (event) {
-        event.preventDefault();
-        const href = this.getAttribute('href');
-        window.location.href = href;
-      });
-    });
+    <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadModalLabel">Upload .xlsx File</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="uploadForm" action="upload.php" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="fileInput">Select .xlsx file</label>
+                            <input type="file" class="form-control-file" id="fileInput" name="file" accept=".xlsx" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    // Trigger the PHP script to generate the graph when the page loads
-    window.onload = function () {
-      fetch('generate_graph.php')
-        .then(response => response.text())
-        .then(data => {
-          console.log(data);
-          document.getElementById('graphImage').src = 'static/images/mrr_by_bu.png?random=' + new Date().getTime();
-          document.getElementById('barChartImage').src = 'static/images/revenue_by_product_bar_chart.png?random=' + new Date().getTime();
-          document.getElementById('churnChartImage').src = 'static/images/churn_rate_stacked_bar_chart.png?random=' + new Date().getTime();
-          document.getElementById('pieChartImage').src = 'static/images/revenue_by_product_pie_chart.png?random=' + new Date().getTime();
-
-          document.getElementById('message').style.display = 'none';
-          document.getElementById('graph-container').style.display = 'block';
-
-          // Fetch analysis results directly from the Python script output
-          fetch('start_analysis.php')
-            .then(response => response.json())
-            .then(data => {
-              if (data.status === 'success') {
-                const analysisResults = data.results;
-                document.getElementById('analysis1').innerText = analysisResults[0] || 'No analysis result';
-                document.getElementById('analysis2').innerText = analysisResults[1] || 'No analysis result';
-                document.getElementById('analysis3').innerText = analysisResults[2] || 'No analysis result';
-                document.getElementById('analysis4').innerText = analysisResults[3] || 'No analysis result';
-              } else {
-                console.error('Failed to start analysis.');
-              }
+    <script>
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const href = this.getAttribute('href');
+                window.location.href = href;
             });
         });
-    };
 
-    function toggleDropup() {
-      var dropupContent = document.getElementById("myDropup");
-      dropupContent.classList.toggle("show");
-    }
+        window.onload = function() {
+          fetch('session_check.php')
+            .then(response => response.text())
+            .then(data => {
+                if (data === "NA") {
+                    window.location.href = 'loginnnn.html'; // Redirect to login page if NA
+                } else {
+                    document.getElementById('username').innerText = data;
+                }
+            })
+            .catch(error => console.error('Error:', error));
 
-    window.onclick = function (event) {
-      if (!event.target.matches('.dropbtn')) {
-        var dropups = document.getElementsByClassName("dropup-content");
-        for (var i = 0; i < dropups.length; i++) {
-          var openDropup = dropups[i];
-          if (openDropup.classList.contains('show')) {
-            openDropup.classList.remove('show');
-          }
+            fetch('generate_graph.php')
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data);
+                    document.getElementById('graphImage').src = 'static/images/mrr_by_bu.png?random='
+ + new Date().getTime();
+                    document.getElementById('barChartImage').src = 'static/images/revenue_by_product_bar_chart.png?random=' + new Date().getTime();
+                    document.getElementById('churnChartImage').src = 'static/images/churn_rate_stacked_bar_chart.png?random=' + new Date().getTime();
+                    document.getElementById('pieChartImage').src = 'static/images/revenue_by_product_pie_chart.png?random=' + new Date().getTime();
+
+                    document.getElementById('message').style.display = 'none';
+                    document.getElementById('graph-container').style.display = 'block';
+
+                    fetch('start_analysis.php')
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                const analysisResults = data.results;
+                                document.getElementById('analysis1').innerText = analysisResults[0] || 'No analysis result';
+                                document.getElementById('analysis2').innerText = analysisResults[1] || 'No analysis result';
+                                document.getElementById('analysis3').innerText = analysisResults[2] || 'No analysis result';
+                                document.getElementById('analysis4').innerText = analysisResults[3] || 'No analysis result';
+                            } else {
+                                console.error('Failed to start analysis.');
+                            }
+                        });
+                });
+        };
+
+        function toggleDropup() {
+            var dropupContent = document.getElementById("myDropup");
+            dropupContent.classList.toggle("show");
         }
-      }
-    }
-  </script>
-</body>
 
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropups = document.getElementsByClassName("dropup-content");
+                for (var i = 0; i < dropups.length; i++) {
+                    var openDropup = dropups[i];
+                    if (openDropup.classList.contains('show')) {
+                        openDropup.classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
+</body>
 </html>

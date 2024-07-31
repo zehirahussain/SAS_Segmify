@@ -130,25 +130,24 @@ $conn->close();
         <h1>User Settings</h1>
         <form action="update.php" method="post">
             <div class="input-group">
-               <p>Name: </p>
+               <p>Name:</p>
                 <input type="text" class="req" name="name" value="<?php echo $name; ?>">
-                <a href="updatedata.php?id=<?php echo $Id; ?>"><button type="submit">Edit</button></a>
+              <!--  <a href="updatedata.php?id=<?php echo $Id; ?>"><button type="submit">Edit</button></a> -->
             </div>
           <div class="input-group">
                 <p>Email:</p> 
-                <input type="text" class="req" name="email" value="
-                <?php echo $email; ?>">    
+                <input type="text" class="req" name="email" value="<?php echo $email; ?>">    
             </div> 
             <div class="input-group">
                 <p>Password:</p>
                 <input type="text" class="req" name="password" value="<?php echo $password; ?>">
-                <a href="updatedata.php?id=<?php echo $Id; ?>"><button type="submit">Edit</button></a>
+             <!--   <a href="updatedata.php?id=<?php echo $Id; ?>"><button type="submit">Edit</button></a> -->
             </div>
             <!-- <button type="submit" class="button">Submit</button></a> -->
         </form>
 <p style="color: red;">Warning: Deleting your account is permanent!</p> <br>
 <a href="deletedata.php?email=<?php echo $_SESSION['email']; ?>" class="button delete">Delete Account</a><br>
-        <a href="segmentationandrevenue.html"><button class="button">Back</button></a>
+        <a href="decisionn.html"><button class="button">Back</button></a>
     </div>
 </body>
 </html>

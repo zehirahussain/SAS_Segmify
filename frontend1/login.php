@@ -29,6 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $userId = $row['id'];  // Access the fetched ID
         $_SESSION['email'] = $email;
         $_SESSION['user_id'] = $userId;
+        $_SESSION['username'] = $row['name']; // Store the name in the session
         $updateLoginStatus = "UPDATE users SET current_login = TRUE WHERE id = $userId";
         $conn->query($updateLoginStatus);
         header('Location: decisionn.php');

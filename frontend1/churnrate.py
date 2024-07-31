@@ -4,6 +4,8 @@ import os
 import mysql.connector
 from pptx import Presentation
 from pptx.util import Inches
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
 
 # Database connection function
 def get_db_connection():
@@ -97,47 +99,36 @@ if not excel_files:
 excel_file_path = os.path.join(uploads_dir, excel_files[0])
 df = pd.read_excel(excel_file_path)
 
-# Define the churn period (e.g., 6 months)
-churn_period_months = 6
+# Select features for clustering
+features = df[['Revenue Billed', 'SB FX Rate', 'Quantity Billed']].dropna()
 
-# Extract relevant columns and ensure dates are in datetime format
-df['Invoice Date'] = pd.to_datetime(df['Invoice Date'], errors='coerce')
-df['Billing Date'] = pd.to_datetime(df['Billing Date'], errors='coerce')
+# Standardize the features
+scaler = StandardScaler()
+scaled_features = scaler.fit_transform(features)
 
-# Get the current date (assumed to be the date of analysis)
-current_date = pd.Timestamp.now()
+# Define the number of clusters
+optimal_n_clusters = 3  # Set the number of clusters as per your requirement
 
-# Identify the date range for churn calculation
-churn_cutoff_date = current_date - pd.DateOffset(months=churn_period_months)
 
-# Get monthly churn and active customer counts
-df['Month'] = df['Billing Date'].dt.to_period('M')
-monthly_data = df.groupby(['Month', 'Customer Name']).size().reset_index(name='Count')
-monthly_data['Active'] = monthly_data['Month'].apply(lambda x: x >= churn_cutoff_date.to_period('M'))
+# Apply K-means clustering with the defined number of clusters
+kmeans = KMeans(n_clusters=optimal_n_clusters, n_init=10, random_state=42)
+clusters = kmeans.fit_predict(scaled_features)
 
-# Pivot the data for stacked bar chart
-pivot_data = monthly_data.pivot_table(index='Month', columns='Active', values='Count', aggfunc='sum').fillna(0)
+# Add cluster labels to the original dataframe
+df['Cluster'] = clusters
 
-# Plot the stacked bar chart
+# Visualize the clusters
 plt.figure(figsize=(10, 8))
-pivot_data.plot(kind='bar', stacked=True, color=['green', 'red'], edgecolor='black')
-
-plt.xlabel("Month", fontsize=14)
-plt.ylabel("Number of Customers", fontsize=14)
-plt.title("Churn and Active Customers Over Time", fontsize=16)
-plt.xticks(rotation=90)
-plt.legend(["Active", "Churned"], title="Customer Status")
-plt.tight_layout()
-
-# Save the plot as a static image
-output_dir = os.path.join('C:\\xampp\\htdocs\\fyp0.3\\frontend1\\static\\images')
-if not os.path.exists(output_dir):
-    os.makedirs(output_dir)
-plot_path = os.path.join(output_dir, 'churn_rate_stacked_bar_chart.png')
+scatter = plt.scatter(df['Revenue Billed'], df['SB FX Rate'], c=df['Cluster'], cmap='viridis', marker='o')
+plt.colorbar(scatter, label='Cluster')
+plt.title('K-means Clustering of Revenue Billed and SB FX Rate')
+plt.xlabel('Revenue Billed')
+plt.ylabel('SB FX Rate')
+plot_path = os.path.join('C:\\xampp\\htdocs\\fyp0.3\\frontend1\\static\\images', 'churn_rate_stacked_bar_chart.png')
 plt.savefig(plot_path, facecolor='white')
 plt.close()
 
-print(f'Stacked bar chart for churn rate saved to {plot_path}')
+print(f'K-means clustering plot saved to {plot_path}')
 
 # Define user ID and image type
 user_id = 1  # Replace with actual user ID
@@ -146,8 +137,8 @@ image_type = "Churn Rate"
 # Save or update image details in the database
 save_or_update_image_in_db(user_id, plot_path, image_type)
 
-# Example analysis text
-analysis_text = "This chart shows the churn and active customer counts over time. The red portion represents churned customers, while the green portion represents active customers."
+# Example analysis text for the K-means clustering plot
+analysis_text_kmeans = "This scatter plot shows the result of K-means clustering on Revenue Billed and SB FX Rate. Each color represents a different cluster."
 
-# Update PowerPoint presentation with the new image and analysis results
-update_presentation(user_id, plot_path, analysis_text)
+# Update PowerPoint presentation with the K-means clustering plot and analysis results
+update_presentation(user_id, plot_path, analysis_text_kmeans)

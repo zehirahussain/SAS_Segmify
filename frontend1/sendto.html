@@ -3,91 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>notification</title>
+    <title>Notification</title>
     <style>
-      *{
-        margin: 0px;
-        padding: 0px;
-      }
-/* decision buttons */
-      .BOX{
-        border-radius: 27px;
-        font-family: calibri;
-        float: right;
-        background-color: aliceblue;
-        text-align: center;
-        padding: 130px 0px 80px 0px;
-      }
-/* would you like to---heading */
-      h{
-        font-size: 28px;
-        font-family: calibri;
-        font-weight: normal;
-        margin-top: 20px;
-        letter-spacing: -1px;
-      }
-/* decision buttons */
-      .decision{
-        color: white;
-        background-color: #005288;
-        font-family: calibri;
-        font-weight: bold;
-        font-size: 19px;
-        letter-spacing: 0.6px;
-        margin-top: 50px;
-        border: none;
-        border-radius: 5px;
-      }
-      .decision:hover{
-        cursor: pointer;
-        color: lightblue;
-      }
-
-      .input-group {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 15px;
-    }
-    .input-group input {
-        margin-right: 10px;
-    }
-    .input-group button {
-        background-color: #005288;
-        border: none;
-        color: white;
-        padding: 3px 10px;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
-        transition: all 0.3s;
-    }
-    .input-group button:hover {
-        background-color: #003d66;
-        cursor: pointer;
-    }
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+        .BOX {
+            border-radius: 27px;
+            font-family: calibri;
+            float: right;
+            background-color: aliceblue;
+            text-align: center;
+            padding: 130px 0px 80px 0px;
+        }
+        h {
+            font-size: 28px;
+            font-family: calibri;
+            font-weight: normal;
+            margin-top: 20px;
+            letter-spacing: -1px;
+        }
+        .decision {
+            color: white;
+            background-color: #005288;
+            font-family: calibri;
+            font-weight: bold;
+            font-size: 19px;
+            letter-spacing: 0.6px;
+            margin-top: 50px;
+            border: none;
+            border-radius: 5px;
+        }
+        .decision:hover {
+            cursor: pointer;
+            color: lightblue;
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        .input-group input {
+            margin-right: 10px;
+        }
+        .input-group button {
+            background-color: #005288;
+            border: none;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+        .input-group button:hover {
+            background-color: #003d66;
+            cursor: pointer;
+        }
+        .suggestions {
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ccc;
+            z-index: 1000;
+        }
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+        }
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
+        }
+        .popup {
+            display: none; /* Hidden by default */
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 1000;
+            text-align: center;
+        }
+        .popup p {
+            margin: 0 0 10px 0;
+        }
+        .popup button {
+            background-color: #005288;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .popup button:hover {
+            background-color: #003d66;
+        }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        async function fetchUserDetails() {
+            const name = document.querySelector('input[name="name"]').value;
+            if (name.length > 0) {
+                const response = await fetch('search_user.php?name=' + name);
+                const users = await response.json();
+                displaySuggestions(users);
+            } else {
+                clearSuggestions();
+            }
+        }
+
+        function displaySuggestions(users) {
+            const suggestionsBox = document.getElementById('suggestions');
+            suggestionsBox.innerHTML = '';
+            users.forEach(user => {
+                const item = document.createElement('div');
+                item.classList.add('suggestion-item');
+                item.textContent = user.name;
+                item.addEventListener('click', () => {
+                    document.querySelector('input[name="name"]').value = user.name;
+                    document.querySelector('input[name="email"]').value = user.email;
+                    clearSuggestions();
+                });
+                suggestionsBox.appendChild(item);
+            });
+        }
+
+        function clearSuggestions() {
+            const suggestionsBox = document.getElementById('suggestions');
+            suggestionsBox.innerHTML = '';
+        }
+
+        $(document).ready(function() {
+            // Handle form submission via AJAX
+            $('form').submit(function(event) {
+                event.preventDefault();
+                $.ajax({
+                    url: 'send_report.php',
+                    type: 'post',
+                    dataType: 'json',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#popupMessage').text(response.message);
+                        $('#popup').show();
+                    },
+                    error: function(xhr, status, error) {
+                        $('#popupMessage').text('An error occurred: ' + error);
+                        $('#popup').show();
+                    }
+                });
+            });
+        });
+
+        function closePopup() {
+            $('#popup').hide();
+        }
+    </script>
 </head>
 <body>
-<!-- background graph image -->
-    <img src="graph.jpeg" style= "height: 100vh; width: 100vw; position: absolute; z-index: -1;">
-<!-- side box -->
-    <div class= "BOX" style="height: 64.9vh; width: 34vw;">
-<!-- notificatiion bell -->
-      <img src="sendtomsg.png" style="height: 50px; width: 50px; margin-bottom: 5px;"><br>
-      <h> To whom you want to send? </h><br><br>
-      <div class="input-group">
-        <p>Name: </p>
-        <input type="text" class="req" name="name" value="">
+    <img src="graph.jpeg" style="height: 100vh; width: 100vw; position: absolute; z-index: -1;">
+    <div class="BOX" style="height: 64.9vh; width: 34vw;">
+        <img src="sendtomsg.png" style="height: 50px; width: 50px; margin-bottom: 5px;"><br>
+        <h>To whom you want to send?</h><br><br>
+        <form id="sendForm" action="send_report.php" method="post">
+            <div class="input-group" style="position: relative;">
+                <p>Name: </p>
+                <input type="text" class="req" name="name" oninput="fetchUserDetails()">
+                <div id="suggestions" class="suggestions"></div>
+            </div>
+            <div class="input-group">
+                <p>Email:</p> 
+                <input type="text" class="req" name="email">
+            </div>
+            <button class="decision" type="submit" style="height: 35px; width: 220px;">Send</button><br>
+        </form>
+        <a href="logout.php"><button class="decision" type="button" style="margin-top: 22px; height: 35px; width: 220px;">Log Out</button></a><br>
     </div>
-    <div class="input-group">
-        <p>Email:</p> 
-        <input type="text" class="req" name="email" value="">
-    </div>
-
-<!-- decision buttons -->
-        <a href="#"><button class="decision" type="decision" style="height: 35px; width: 220px;"> Send </button></a><br>
-        <a href="index.php"><button class="decision" type="decision" style="margin-top: 22px; height: 35px; width: 220px;"> Log Out </button></a><br>
-
+    <div class="popup" id="popup">
+        <p id="popupMessage"></p>
+        <button onclick="closePopup()">Close</button>
     </div>
 </body>
 </html>

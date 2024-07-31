@@ -97,17 +97,59 @@ if not excel_files:
 excel_file_path = os.path.join(uploads_dir, excel_files[0])
 df = pd.read_excel(excel_file_path)
 
-# Filter relevant columns
-df = df[['Product', 'Revenue Billed']]
+# Ensure that dates are in datetime format
+df['Invoice Date'] = pd.to_datetime(df['Invoice Date'])
+df['Billing Date'] = pd.to_datetime(df['Billing Date'])
 
-# Aggregate Revenue by Product
-revenue_by_product = df.groupby('Product')['Revenue Billed'].sum().reset_index()
+# Calculate Recency
+df['Recency'] = (df['Invoice Date'].max() - df['Invoice Date']).dt.days
 
-# Pie chart
+# Calculate Frequency
+frequency_df = df.groupby('Customer Name').agg({'Invoice': 'nunique'}).reset_index()
+frequency_df.rename(columns={'Invoice': 'Frequency'}, inplace=True)
+
+# Calculate Monetary
+monetary_df = df.groupby('Customer Name').agg({'Revenue Billed': 'sum'}).reset_index()
+monetary_df.rename(columns={'Revenue Billed': 'Monetary'}, inplace=True)
+
+# Merge Recency, Frequency, and Monetary
+rfm_df = df.groupby('Customer Name').agg({
+    'Recency': 'min',
+}).reset_index()
+
+rfm_df = rfm_df.merge(frequency_df, on='Customer Name')
+rfm_df = rfm_df.merge(monetary_df, on='Customer Name')
+
+# Assign RFM Scores
+rfm_df['R'] = pd.qcut(rfm_df['Recency'], 4, labels=False, duplicates='drop')
+rfm_df['F'] = pd.qcut(rfm_df['Frequency'].rank(method="first"), 4, labels=False, duplicates='drop')
+rfm_df['M'] = pd.qcut(rfm_df['Monetary'], 4, labels=False, duplicates='drop')
+
+# Create a combined RFM score
+rfm_df['RFM_Score'] = rfm_df['R'].astype(str) + rfm_df['F'].astype(str) + rfm_df['M'].astype(str)
+
+# Segment customers based on RFM Score
+def segment_customer(df):
+    if df['RFM_Score'] == '333':
+        return 'Best Customers'
+    elif df['RFM_Score'].startswith('33'):
+        return 'Loyal Customers'
+    elif df['RFM_Score'].startswith('3'):
+        return 'Potential Loyalists'
+    elif df['RFM_Score'].startswith('2'):
+        return 'At Risk'
+    else:
+        return 'Others'
+
+rfm_df['Segment'] = rfm_df.apply(segment_customer, axis=1)
+
+# Pie chart for customer segmentation
+segment_counts = rfm_df['Segment'].value_counts()
+
 plt.figure(figsize=(10, 8))
-plt.pie(revenue_by_product['Revenue Billed'], labels=revenue_by_product['Product'], 
-        autopct='%1.1f%%', startangle=140, colors=plt.cm.Paired(range(len(revenue_by_product))))
-plt.title('Revenue Billed by Product', fontsize=12, color='black')  # Set title color to black
+plt.pie(segment_counts, labels=segment_counts.index, autopct='%1.1f%%', startangle=140, 
+        colors=plt.cm.Paired(range(len(segment_counts))), textprops={'fontsize': 12, 'color': 'black'})
+plt.title('Customer Segmentation using RFM', fontsize=14, color='black')
 plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 
 # Save the plot as a static image
@@ -118,7 +160,7 @@ plot_path = os.path.join(output_dir, 'revenue_by_product_pie_chart.png')
 plt.savefig(plot_path, facecolor='white')  # Save the figure with white background
 plt.close()
 
-print(f'Pie chart for revenue billed by product saved to {plot_path}')
+print(f'Pie chart for customer segmentation using RFM saved to {plot_path}')
 
 # Define user ID and image type
 user_id = 1  # Replace with actual user ID
@@ -128,7 +170,7 @@ image_type = "Revenue by Product"
 save_or_update_image_in_db(user_id, plot_path, image_type)
 
 # Example analysis text
-analysis_text = "This pie chart shows the distribution of revenue billed by different products. Each slice represents the proportion of total revenue billed by each product."
+analysis_text = "This pie chart shows the distribution of customers based on their RFM scores. Each segment represents a different customer group such as Best Customers, Loyal Customers, Potential Loyalists, and At Risk."
 
 # Update PowerPoint presentation with the new image and analysis results
 update_presentation(user_id, plot_path, analysis_text)
