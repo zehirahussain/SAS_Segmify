@@ -3,7 +3,7 @@ import json
 import google.generativeai as genai
 
 # Configure API key
-genai.configure(api_key='KEY')
+genai.configure(api_key='AIzaSyB2qHXao8Boj7f07yhshaWpUxGpwjSB_Gc')
 
 def upload_image(file_path, display_name):
     sample_file = genai.upload_file(path=file_path, display_name=display_name)

@@ -6,6 +6,7 @@ from pptx import Presentation
 from pptx.util import Inches
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
+import json
 
 # Database connection function
 def get_db_connection():
@@ -100,7 +101,11 @@ excel_file_path = os.path.join(uploads_dir, excel_files[0])
 df = pd.read_excel(excel_file_path)
 
 # Select features for clustering
-features = df[['Revenue Billed', 'SB FX Rate', 'Quantity Billed']].dropna()
+# Select features for clustering, converting categorical variables using one-hot encoding
+features = df[['Revenue Billed', 'Item Name', 'Quantity Billed']].dropna()
+
+# One-hot encode the 'Item Name' column
+features = pd.get_dummies(features, columns=['Item Name'], drop_first=True)
 
 # Standardize the features
 scaler = StandardScaler()
@@ -108,7 +113,6 @@ scaled_features = scaler.fit_transform(features)
 
 # Define the number of clusters
 optimal_n_clusters = 3  # Set the number of clusters as per your requirement
-
 
 # Apply K-means clustering with the defined number of clusters
 kmeans = KMeans(n_clusters=optimal_n_clusters, n_init=10, random_state=42)
@@ -119,11 +123,11 @@ df['Cluster'] = clusters
 
 # Visualize the clusters
 plt.figure(figsize=(10, 8))
-scatter = plt.scatter(df['Revenue Billed'], df['SB FX Rate'], c=df['Cluster'], cmap='viridis', marker='o')
+scatter = plt.scatter(df['Revenue Billed'], df['Item Name'], c=df['Cluster'], cmap='viridis', marker='o')
 plt.colorbar(scatter, label='Cluster')
-plt.title('K-means Clustering of Revenue Billed and SB FX Rate')
+plt.title('K-means Clustering of Revenue Billed and Item Name')
 plt.xlabel('Revenue Billed')
-plt.ylabel('SB FX Rate')
+plt.ylabel('Item Name')
 plot_path = os.path.join('C:\\xampp\\htdocs\\fyp0.3\\frontend1\\static\\images', 'churn_rate_stacked_bar_chart.png')
 plt.savefig(plot_path, facecolor='white')
 plt.close()
@@ -136,9 +140,12 @@ image_type = "Churn Rate"
 
 # Save or update image details in the database
 save_or_update_image_in_db(user_id, plot_path, image_type)
-
+# Read the analysis results from the file
+results_file = 'static/analysis_results.json'
+with open(results_file, 'r') as file:
+    results = json.load(file)
 # Example analysis text for the K-means clustering plot
-analysis_text_kmeans = "This scatter plot shows the result of K-means clustering on Revenue Billed and SB FX Rate. Each color represents a different cluster."
-
+#analysis_text_kmeans = "This scatter plot shows the result of K-means clustering on Revenue Billed and SB FX Rate. Each color represents a different cluster."
+analysis_text = results['churn_rate_stacked_bar_chart']
 # Update PowerPoint presentation with the K-means clustering plot and analysis results
-update_presentation(user_id, plot_path, analysis_text_kmeans)
+update_presentation(user_id, plot_path, analysis_text)

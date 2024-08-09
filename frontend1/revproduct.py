@@ -4,6 +4,7 @@ import os
 import mysql.connector
 from pptx import Presentation
 from pptx.util import Inches
+import json
 
 # Database connection function
 def get_db_connection():
@@ -169,8 +170,12 @@ image_type = "Revenue by Product"
 # Save or update image details in the database
 save_or_update_image_in_db(user_id, plot_path, image_type)
 
+# Read the analysis results from the file
+results_file = 'static/analysis_results.json'
+with open(results_file, 'r') as file:
+    results = json.load(file)
 # Example analysis text
-analysis_text = "This pie chart shows the distribution of customers based on their RFM scores. Each segment represents a different customer group such as Best Customers, Loyal Customers, Potential Loyalists, and At Risk."
-
+#analysis_text = "This pie chart shows the distribution of customers based on their RFM scores. Each segment represents a different customer group such as Best Customers, Loyal Customers, Potential Loyalists, and At Risk."
+analysis_text = results['revenue_by_product_pie_chart']
 # Update PowerPoint presentation with the new image and analysis results
 update_presentation(user_id, plot_path, analysis_text)
