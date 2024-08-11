@@ -13,6 +13,7 @@
 <li>pip install -U google-generativeai</li>
 <h3>Other Software</h3>
 <li>Install Composer from its official site.</li>
+<ul>for composer after installing, replace php.ini file from xampp/php and where the project is, run this command 'composer require PHPMailer/PHPMailer'</ul>
 <li>Install XAMPP.</li>
 <li>Ensure PHP is installed on your desktop.</li>
 <h3>Localhost Setup</h3>
