@@ -73,11 +73,14 @@ $conn->close();
         }
         .BOX {
             border-radius: 27px;
+            padding: 30px 20px 0px 30px;
             font-family: calibri;
+            /*float: right;*/
             background-color: aliceblue;
             text-align: center;
-            padding: 100px 0px 80px 0px;
-            width: 34vw;
+            width: 630px; /* Adjust the width as needed */
+            margin: 0 auto; /* Centers the div horizontally */
+            padding: 170px 0px 200px 0px;
         }
         form {
             display: flex;

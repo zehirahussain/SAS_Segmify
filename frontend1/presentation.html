@@ -142,7 +142,7 @@
       display: block;
     }
     .username {
-    font-size: 24px; /* Adjust font size as needed */
+    font-size: 20px; /* Adjust font size as needed */
     color: #d9e0e6; /* Adjust text color */
     font-weight: bold; /* Adjust font weight */
 }
@@ -161,7 +161,7 @@
     <footer class="footer">
       <hr class="rounded">
       <div class="dropup">
-        <button onclick="toggleDropup()" class="dropbtn">⇧</button>
+        <button onclick="toggleDropup()" class="dropbtn" style="font-weight: bold;">⇧</button>
         <div id="myDropup" class="dropup-content">
           <a href="settings.php">⚙️ Settings</a>
           <a href="logout.php">🚪 Log Out</a>
@@ -178,8 +178,8 @@
       <div class="container">
         <h2 class="text-center">Your Presentation</h2>
         <div class="text-center">
-          <embed src="static/presentations/user1_presentation.pptx" width="100%" height="600px" />
-
+         <!-- <embed src="static/presentations/user1_presentation.pptx" width="100%" height="600px" /> -->
+          <iframe src="https://onedrive.live.com/embed?resid=5A8CFF27D933579C%21114&authkey=!AMuQ54KBeL_Dp3w&em=2" width="100%" height="600px" frameborder="0" scrolling="no"></iframe>
           <a href="static/presentations/user1_presentation.pptx" class="btn btn-primary" download>Download Presentation</a>
          
         </div>

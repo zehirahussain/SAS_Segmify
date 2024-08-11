@@ -10,6 +10,7 @@
             padding: 0;
             font-family: Arial, sans-serif;
             overflow-x: hidden; /* Prevent horizontal scroll */
+            overflow-y: hidden; /* Prevent vertical scroll */
         }
 
         header {
@@ -28,14 +29,34 @@
             margin-right: 20px;
         }
 
-        .container {
-            position: relative;
-            text-align: center;
-            height: 100vh; /* Set the height of container to full viewport height */
+        .background-image {
+            background-image: url('graph.jpeg');
+            height: 100vh; /* Set the height of background image to full viewport height */
+            background-size: cover;
+            background-position: center;
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%; /* Ensure container takes full height of background image */
             padding: 20px;
+        }
+
+        .BOX {
+            border-radius: 27px;
+            font-family: calibri;
+            background-color: aliceblue;
+            text-align: center;
+            padding: 80px 10px; /* Increased padding for more vertical space */
+            width: 90vw;
+            max-width: 620px;
+            margin-top: -80px; /* Adjust this value to fine-tune the positioning */
+            min-height: 400px; /* Set a minimum height */
         }
 
         .lock {
@@ -44,41 +65,10 @@
             height: auto;
         }
 
-        .background-image {
-            background-image: url('graph.jpeg');
-            height: 100vh; /* Set the height of background image to full viewport height */
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
-
         .description {
-            color: white;
+            color: black;
             font-size: 20px;
             margin-top: 20px;
-        }
-        
-        .BOX {
-            border-radius: 27px;
-            font-family: calibri;
-            background-color: aliceblue;
-            text-align: center;
-            padding: 40px 35px;
-            width: 90vw;
-            max-width: 620px;
-            margin-top: -20px; /* Adjusted to move the box up */
-        }
-
-        @media (max-width: 768px) {
-            .BOX {
-                width: 80vw;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .BOX {
-                width: 90vw;
-            }
         }
 
         .SignIn {
@@ -119,8 +109,8 @@
 
             .BOX {
                 width: 100%;
-                padding: 20px;
-                margin-top: 0; /* Remove top margin on smaller screens */
+                padding: 40px 20px; /* Adjusted for smaller screens */
+                margin-top: -30px; /* Adjust for smaller screens */
             }
 
             .description {
