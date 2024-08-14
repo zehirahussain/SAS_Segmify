@@ -5,6 +5,7 @@
 <li>pip install openpyxl</li>
 <li>pip install pillow</li>
 <li>pip install plotly</li>
+<li>pip install scikit-learn</li>
 <li>pip install flask-sqlalchemy</li>
 <li>pip install fpdf2</li>
 <li>pip install python-pptx</li>
