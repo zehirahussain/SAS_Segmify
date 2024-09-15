@@ -4,17 +4,20 @@ $command1 = escapeshellcmd('python C:\\xampp\\htdocs\\fyp0.3\\frontend1\\segment
 $command2 = escapeshellcmd('python C:\\xampp\\htdocs\\fyp0.3\\frontend1\\productrevLC.py');
 $command3 = escapeshellcmd('python C:\\xampp\\htdocs\\fyp0.3\\frontend1\\churnrate.py');
 $command4 = escapeshellcmd('python C:\\xampp\\htdocs\\fyp0.3\\frontend1\\revproduct.py');
+$command5 = escapeshellcmd('python C:\\xampp\\htdocs\\fyp0.3\\frontend1\\review_analysis.py');
 
 // Execute both commands
 $output1 = shell_exec($command1);
 $output2 = shell_exec($command2);
 $output3 = shell_exec($command3);
 $output4 = shell_exec($command4);
+$output5 = shell_exec($command5);
 
 // Output the results (if needed)
 echo $output1;
 echo $output2;
 echo $output3;
 echo $output4;
+echo $output5;
 
 ?>

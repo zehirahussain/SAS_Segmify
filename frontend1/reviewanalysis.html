@@ -6,148 +6,148 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - review analysis</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+
   <style>
     #sidebar {
-      background-color: #202020;
-      height: 100vh;
-      width: 250px;
-      padding: 20px;
-      position: fixed;
-      left: 0;
-      top: 0;
-      overflow-y: auto;
+        background-color: #202020;
+        height: 100vh;
+        width: 250px;
+        padding: 20px;
+        position: fixed;
+        left: 0;
+        top: 0;
+        overflow-y: auto;
     }
 
     .sidebar-button {
-      background-color: #005288;
-      border: none;
-      color: white;
-      padding: 3px 30px;
-      text-align: center;
-      text-decoration: none;
-      display: block;
-      font-size: 12.5px;
-      margin: -2.5px 0;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-      transition: all 0.3s;
-      flex: 1;
+        background-color: #005288;
+        border: none;
+        color: white;
+        padding: 3px 30px;
+        text-align: center;
+        text-decoration: none;
+        display: block;
+        font-size: 12.5px;
+        margin: -2.5px 0;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        transition: all 0.3s;
+        flex: 1;
     }
 
     .dash {
-      color: white;
-      padding: 10px 25px;
-      font-weight: bold;
-      display: block;
-      font-size: 16px;
-      margin: 10px 10;
+        color: white;
+        padding: 10px 25px;
+        font-weight: bold;
+        display: block;
+        font-size: 16px;
+        margin: 10px 10;
     }
 
     .sidebar-button:hover {
-      background-color: #05424b;
-      box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.3);
-      overflow: hidden;
+        background-color: #05424b;
+        box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.3);
+        overflow: hidden;
     }
 
     .nav-link {
-      border-radius: 5px;
-      padding: 8px 16px;
-      margin: 5px 0;
-      display: inline-flex; 
+        border-radius: 5px;
+        padding: 8px 16px;
+        margin: 5px 0;
+        display: inline-flex;
     }
 
     .footer {
-      color: white;
-      font-size: 12px;
-      background-color: #202020;
-      text-align: center;
-      padding: 10px;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 250px;
+        color: white;
+        font-size: 12px;
+        background-color: #202020;
+        text-align: center;
+        padding: 10px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 250px;
     }
 
     .content {
-      margin-left: 250px;
-      padding: 20px;
-      background-color: #131b2f;
-      height: 100vh;
-      color: white;
+        margin-left: 250px;
+        padding: 20px;
+        background-color: #131b2f;
+        height: 530vh;
+        color: white;
     }
+
     hr.rounded {
-      border-top: 4px solid #4d5357;
-      border-radius: 5px;
+        border-top: 4px solid #4d5357;
+        border-radius: 5px;
     }
+
     hr.solid {
-      border-top: 3px solid #1e3673;
+        border-top: 3px solid #1e3673;
     }
- 
-    /* dropup */
-   /* dropup */
-.dropbtn {
-  background-color: #202020;
-  color: white;
-  padding: 0px;
-  font-size: 20px;
-  border: none;
-  float: right;
-  text-align: right;
-}
 
-.dropup {
-  position: relative;
-  display: inline-block;
-}
+    .dropbtn {
+        background-color: #202020;
+        color: white;
+        padding: 0px;
+        font-size: 20px;
+        border: none;
+        float: right;
+        text-align: right;
+    }
 
-.dropup-content {
-  display: none;
-  position: absolute;
-  background-color: #4d5357;
-  min-width: 160px;
-  bottom: 35px; /* Adjusted to make sure it doesn't overlap with the button */
-  z-index: 1;
-  border-radius: 5px; /* Added border-radius for styling */
-}
+    .dropup {
+        position: relative;
+        display: inline-block;
+    }
 
-.dropup-content a {
-  color: white;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
+    .dropup-content {
+        display: none;
+        position: absolute;
+        background-color: #4d5357;
+        min-width: 160px;
+        bottom: 35px;
+        z-index: 1;
+        border-radius: 5px;
+    }
 
-.dropup-content a:hover {
-  background-color: #62696D; /* Adjusted hover color for better visibility */
-}
+    .dropup-content a {
+        color: white;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
 
-.dropup:hover .dropup-content {
-  display: block;
-}
+    .dropup-content a:hover {
+        background-color: #62696D;
+    }
 
-.dropup:hover .dropbtn {
-  background-color: #4d5357;
-}
+    .dropup:hover .dropup-content {
+        display: block;
+    }
 
+    .dropup:hover .dropbtn {
+        background-color: #4d5357;
+    }
 
     #graph-container {
-      width: 950px;
-      height: 100px;
-      margin: 0 auto;
-      border: 1px solid #1e3673;
-  }
-  #graph-container2 {
-    width: 950px;
-    height: 100px;
-    margin: 0 auto;
-    border: 1px solid #1e3673;
-}
-.username {
-    font-size: 20px; /* Adjust font size as needed */
-    color: #d9e0e6; /* Adjust text color */
-    font-weight: bold; /* Adjust font weight */
-}
-  </style>
+        width: 950px;
+        height: 520px;
+        margin: 0 auto;
+        border: 1px solid #131b2f;
+    }
+
+    .image-container img {
+        margin: 10px 0;
+        display: block;
+    }
+    .username {
+        font-size: 20px; /* Adjust font size as needed */
+        color: #d9e0e6; /* Adjust text color */
+        font-weight: bold; /* Adjust font weight */
+    }
+</style>
 </head>
 
 <body>
@@ -180,16 +180,50 @@
   </div>
   <div class="content">
     <main role="main">
+        <div class="text-center mt-5">
+            <h2>Review Analysis Results</h2>
+                    </div>
+        <hr class="solid">
+        <div id="graph-container" class="image-container">
       
-      <hr class="solid">
-      <!-- Main content -->
-      <div id="graph-container"></div>
-      <div id="graph-container2"></div>
-    </main>
-  </div>
+        
+        <div class="graph">
+            <img src="static/images/sentiment_distribution_bar_chart.png" alt="Sentiment Distribution" id="sentiment_distribution_bar_chart">
+        </div>
+        <p id="analysis5">Loading...</p>
+
+       
+
+    </div>
+</div></div>
+</main>
+</div>
 
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+ 
+  <script>
+    // Function to run the Python script
+  //  function runPythonScript() {
+   //   fetch('run_review_analysis.php')
+    //    .then(response => response.json())
+     //   .then(data => {
+      //    if (data.status === 'success') {
+       //     console.log('Python script executed successfully.');
+            // Optionally, you could update the page content here if needed
+    //      } else {
+    //        console.error('Error:', data.message);
+    //      }
+    //    })
+    //    .catch(error => console.error('Error:', error));
+  //  }
+
+    // Run the Python script when the page loads
+ //   window.onload = runPythonScript;
+
+    // Your existing scripts
+  </script>
+
   <script>
     document.querySelectorAll('.nav-link').forEach(link => {
       link.addEventListener('click', function (event) {
@@ -202,22 +236,7 @@
   
 
   <script>
-   // document.getElementById('generateReportBtn').addEventListener('click', function () {
-     // fetch('generate_report.php')
-       // .then(response => {
-         // if (!response.ok) {
-          //  throw new Error('Failed to generate report');
-         // }
-     //     return response.text();
-   //     })
-   //     .then(data => {
-          // Redirect to reportportal1.html with the generated report
-     //     window.location.href = 'reportportal1.html?report=static/reports/monthly_report.pdf';
-   //     })
-     //   .catch(error => {
-       //   alert('Error: ' + error.message);
-  ///      });
-  //  });
+ 
   fetch('session_check.php')
             .then(response => response.text())
             .then(data => {
@@ -262,7 +281,53 @@ window.onclick = function(event) {
         }
     }
 }
+</script>
+<script>
+//fetch('static/images/semantic_analysis.json')
+  //          .then(response => response.json())
+    //        .then(data => {
+      //          document.getElementById('revenue_by_item_currency').innerText = data.revenue_by_item_currency;
+        //        document.getElementById('quantity_billed_by_item').innerText = data.quantity_billed_by_item;
+          //      document.getElementById('revenue_quantity_by_bu').innerText = data.revenue_quantity_by_bu;
+          //      document.getElementById('top_customers_by_revenue').innerText = data.top_customers_by_revenue;
+          //      document.getElementById('revenue_trend_over_months').innerText = data.revenue_trend_over_months;
+          //  })
+          //  .catch(error => console.error('Error fetching semantic analysis:', error));
+    </script>
+    <script>
+      window.onload = function() {
+        fetch('session_check.php')
+          .then(response => response.text())
+          .then(data => {
+              if (data === "NA") {
+                  window.location.href = 'loginnnn.html'; // Redirect to login page if NA
+              } else {
+                  document.getElementById('username').innerText = data;
+              }
+          })
+          .catch(error => console.error('Error:', error));
 
+          fetch('generate_graph.php')
+              .then(response => response.text())
+              .then(data => {
+                  console.log(data);
+                  document.getElementById('sentiment_distribution_bar_chart').src = 'static/images/sentiment_distribution_bar_chart.png?random='+ new Date().getTime();
+
+                  document.getElementById('message').style.display = 'none';
+                  document.getElementById('graph-container').style.display = 'block';
+
+                  fetch('start_analysis.php')
+                      .then(response => response.json())
+                      .then(data => {
+                          if (data.status === 'success') {
+                              const analysisResults = data.results;
+                              document.getElementById('analysis5').innerText = analysisResults[4] || 'No analysis result';
+                          } else {
+                              console.error('Failed to start analysis.');
+                          }
+                      });
+              });
+      };
 </script>
 </body>
 

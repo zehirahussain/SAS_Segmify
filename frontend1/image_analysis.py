@@ -23,7 +23,8 @@ image_paths = [
     'static/images/mrr_by_bu.png',
     'static/images/revenue_by_product_bar_chart.png',
     'static/images/churn_rate_stacked_bar_chart.png',
-    'static/images/revenue_by_product_pie_chart.png'
+    'static/images/revenue_by_product_pie_chart.png',
+    'static/images/sentiment_distribution_bar_chart'
 ]
 
 # Example prompt
@@ -42,5 +43,6 @@ with open(results_file, 'w') as file:
         'mrr_by_bu': results[0],
         'revenue_by_product_bar_chart': results[1],
         'churn_rate_stacked_bar_chart': results[2],
-        'revenue_by_product_pie_chart': results[3]
-    }, file, indent=4)
+        'revenue_by_product_pie_chart': results[3],
+        'sentiment_distribution_bar_chart' : results[4]
+    }, file, indent=5)

@@ -149,10 +149,10 @@
         <div class="BOX"> 
             <div class="centered">
                 <img src="SAS Segmify logo (1).png" alt="Lock" class="lock">
-                <h1><?php echo "Customer Segmentation and Classification for SAS Company"; ?></h1>
+                <h1><?php echo "Segmentation Simplified, Growth Amplified"; ?></h1>
                 <p class="description" style="color: black;"> 
                     <?php 
-                        $description = "Harness data-driven insights with SAS Segmify for advanced customer segmentation, classification, and review analysis using cutting-edge machine learning.";
+                        $description = "Unlock customer insights and drive growth. With SAS Segmify, segment customers, predict trends, and analyze feedback—all powered by advanced machine learning in one platform.";
                         echo $description; 
                     ?>
                 </p>
