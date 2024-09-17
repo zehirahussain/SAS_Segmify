@@ -3,7 +3,7 @@ import json
 import google.generativeai as genai
 
 # Configure API key
-genai.configure(api_key='KEY')
+genai.configure(api_key='AIzaSyB2qHXao8Boj7f07yhshaWpUxGpwjSB_Gc')
 
 def upload_image(file_path, display_name):
     sample_file = genai.upload_file(path=file_path, display_name=display_name)
@@ -23,8 +23,7 @@ image_paths = [
     'static/images/mrr_by_bu.png',
     'static/images/revenue_by_product_bar_chart.png',
     'static/images/churn_rate_stacked_bar_chart.png',
-    'static/images/revenue_by_product_pie_chart.png',
-    'static/images/sentiment_distribution_bar_chart'
+    'static/images/revenue_by_product_pie_chart.png'
 ]
 
 # Example prompt
@@ -43,6 +42,6 @@ with open(results_file, 'w') as file:
         'mrr_by_bu': results[0],
         'revenue_by_product_bar_chart': results[1],
         'churn_rate_stacked_bar_chart': results[2],
-        'revenue_by_product_pie_chart': results[3],
-        'sentiment_distribution_bar_chart' : results[4]
-    }, file, indent=5)
+        'revenue_by_product_pie_chart': results[3]
+        
+    }, file, indent=4)

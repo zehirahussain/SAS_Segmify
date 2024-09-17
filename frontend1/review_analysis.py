@@ -8,10 +8,6 @@ import json
 from textblob import TextBlob
 from wordcloud import WordCloud
 import seaborn as sns
-from textblob import download_corpora
-#download_corpora()
-import nltk
-
 
 # Database connection function
 def get_db_connection():
@@ -53,14 +49,18 @@ def update_presentation(user_id, image_path):
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    # Fetch or create the presentation for the user
     cursor.execute("SELECT presentation_path FROM user_presentations WHERE user_id = %s", (user_id,))
     result = cursor.fetchone()
 
+    # Absolute path for presentations
+    ppt_dir = "C:\\xampp\\htdocs\\fyp0.3\\frontend1\\static\\presentations"
+    if not os.path.exists(ppt_dir):
+        os.makedirs(ppt_dir)
+        
     if result:
         ppt_path = result[0]
     else:
-        ppt_path = f'static/presentations/user{user_id}_presentation.pptx'
+        ppt_path = os.path.join(ppt_dir, f'user{user_id}_presentation.pptx')
         prs = Presentation()
         prs.save(ppt_path)
         cursor.execute(
@@ -69,29 +69,48 @@ def update_presentation(user_id, image_path):
         )
         conn.commit()
 
+    print(f"Looking for presentation at: {ppt_path}")
+
+    if os.path.exists(ppt_path):
+        print(f"Presentation found at {ppt_path}")
+    else:
+        raise FileNotFoundError(f"Presentation not found at {ppt_path}")
+
     prs = Presentation(ppt_path)
+
+    # Remove old slides with the same image (if needed)
+    for slide in prs.slides:
+        for shape in slide.shapes:
+            if shape.shape_type == 13 and shape.image.filename == os.path.basename(image_path):
+                xml_slides = prs.slides._sldIdLst
+                slide_id = slide.slide_id
+                slides = list(xml_slides)
+                for slide in slides:
+                    if slide.id == slide_id:
+                        xml_slides.remove(slide)
+                        break
+                prs.slides._sldIdLst = xml_slides
+                break
+
+    # Add a new slide with the image
     slide = prs.slides.add_slide(prs.slide_layouts[5])
     slide.shapes.add_picture(image_path, Inches(1), Inches(1), width=Inches(8), height=Inches(5.5))
-    
+
     prs.save(ppt_path)
 
     cursor.close()
     conn.close()
 
-#uploads_dir = "review"
+# Directory setup and file checking
 uploads_dir = "c:\\xampp\\htdocs\\fyp0.3\\frontend1\\review"
 
-# Check if the directory exists
 if not os.path.exists(uploads_dir):
     raise FileNotFoundError(f"The directory {uploads_dir} does not exist.")
 
-# List all files in the review directory
 files = os.listdir(uploads_dir)
 print("Files in directory:", files)  # Debug line to see files in the directory
 
-# Identify the Excel file (assuming there is only one Excel file in the directory)
 excel_files = [file for file in files if file.endswith('.xlsx')]
-
 if not excel_files:
     raise FileNotFoundError("No Excel file found in the review directory.")
 
@@ -99,11 +118,11 @@ excel_file_path = os.path.join(uploads_dir, excel_files[0])
 df = pd.read_excel(excel_file_path)
 
 # Filter relevant columns
-relevant_cols = ["Review Text", "Rating"]
+relevant_cols = ["Comments", "Rating"]
 df = df[relevant_cols]
 
-# Handle missing or NaN values in 'Review Text'
-df['Review Text'] = df['Review Text'].fillna('')
+# Handle missing or NaN values in 'Comments'
+df['Comments'] = df['Comments'].fillna('')
 
 # Sentiment Analysis
 def get_sentiment(text):
@@ -118,7 +137,7 @@ def get_sentiment(text):
     else:
         return 'neutral'
 
-df['Sentiment'] = df['Review Text'].apply(get_sentiment)
+df['Sentiment'] = df['Comments'].apply(get_sentiment)
 
 # Generate sentiment distribution plot
 sentiment_counts = df['Sentiment'].value_counts()
@@ -130,10 +149,6 @@ plt.title("Sentiment Distribution", fontsize=12, color='black')
 plt.xticks(fontsize=10, color='black')
 plt.yticks(fontsize=10, color='black')
 plt.gca().set_facecolor('white')
-plt.gca().spines['top'].set_color('black')
-plt.gca().spines['right'].set_color('black')
-plt.gca().spines['left'].set_color('black')
-plt.gca().spines['bottom'].set_color('black')
 
 plt.tight_layout()
 
@@ -156,7 +171,7 @@ save_or_update_image_in_db(user_id, plot_path, image_type)
 update_presentation(user_id, plot_path)
 
 # Generate word cloud from reviews
-text = " ".join(review for review in df['Review Text'])
+text = " ".join(review for review in df['Comments'])
 wordcloud = WordCloud(width=800, height=400, background_color='white').generate(text)
 
 plt.figure(figsize=(10, 6))
@@ -196,6 +211,9 @@ def append_analysis_to_presentation(user_id, analysis_text):
         cursor.close()
         conn.close()
         return
+
+    # Debugging print to verify the path
+    print(f"Appending analysis to presentation at: {ppt_path}")
 
     prs = Presentation(ppt_path)
     
