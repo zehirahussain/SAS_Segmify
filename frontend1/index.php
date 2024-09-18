@@ -56,7 +56,7 @@
             width: 90vw;
             max-width: 620px;
             margin-top: -80px; /* Adjust this value to fine-tune the positioning */
-            min-height: 400px; /* Set a minimum height */
+            min-height: 518px; /* Set a minimum height */
         }
 
         .lock {
