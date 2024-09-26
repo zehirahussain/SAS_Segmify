@@ -27,7 +27,7 @@
         text-align: center;
         text-decoration: none;
         display: block;
-        font-size: 12.5px;
+        font-size: 13.5px;
         margin: -2.5px 0;
         border-radius: 10px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -162,20 +162,12 @@
     <footer class="footer flex-column">
       <a class="nav-link" href="#"><button class="sidebar-button">Import File</button></a>
 
-      <hr class="rounded">
-
-      <div class="dropup">
-        <button onclick="toggleDropup()" class="dropbtn" style="font-weight: bold;">⇧</button>
-        <div id="myDropup" class="dropup-content">
-          <a href="settings.php">⚙️ Settings</a>
-          <a href="logout.php">🚪 Log Out</a>
-        </div>
-    </div>
-    
-
-    <span id="username" class="username"></span>
-    <span>🔔</span>
-    </footer>
+      <div><a class="nav-link" href="settings.php"><button class="sidebar-button">Settings</button></a></div>
+            <div><a class="nav-link" href="logout.php"><button class="sidebar-button">Log Out</button></a></div>
+            <hr class="rounded">
+            <span id="username" class="username"></span>
+          <span>🔔</span>
+        </footer>
   </div>
   <div class="content">
     <main role="main">
@@ -189,7 +181,7 @@
         <div class="graph">
             <img src="static/images/sentiment_distribution_bar_chart.png" alt="Sentiment Distribution" id="sentiment_distribution_bar_chart">
         </div>
-        <p id="analysis5"></p>
+       <!--<p id="analysis5">Loading...</p> --> 
 
         <div id="json-content">
             <h3>Review Analysis of Most Revenue-Generating Product</h3>
@@ -209,21 +201,18 @@
 
         <!-- Image 1: revenue_by_item_currency -->
         <div class="graph">
-          <br>
             <img src="static/images/revenue_by_item_currency.png" alt="Revenue by Item Currency" id="revenue_by_item_currency">
             <p id="revenue_by_item_currency_analysis">Loading analysis...</p>
           </div>
           
           <!-- Image 2: revenue_quantity_by_bu -->
           <div class="graph">
-            <br>
             <img src="static/images/revenue_quantity_by_bu.png" alt="Revenue Quantity by BU" id="revenue_quantity_by_bu">
             <p id="revenue_quantity_by_bu_analysis">Loading analysis...</p>
           </div>
           
           <!-- Image 3: top_customers_by_revenue -->
           <div class="graph">
-            <br>
             <img src="static/images/top_customers_by_revenue.png" alt="Top Customers by Revenue" id="top_customers_by_revenue">
             <p id="top_customers_by_revenue_analysis">Loading analysis...</p>
           </div>
@@ -341,26 +330,8 @@ window.onclick = function(event) {
           })
           .catch(error => console.error('Error:', error));
 
-          fetch('generate_graph.php')
-              .then(response => response.text())
-              .then(data => {
-                  console.log(data);
-                  document.getElementById('sentiment_distribution_bar_chart').src = 'static/images/sentiment_distribution_bar_chart.png?random='+ new Date().getTime();
 
-                  document.getElementById('message').style.display = 'none';
-                  document.getElementById('graph-container').style.display = 'block';
-
-                  fetch('start_analysis.php')
-                      .then(response => response.json())
-                      .then(data => {
-                          if (data.status === 'success') {
-                              const analysisResults = data.results;
-                              document.getElementById('analysis5').innerText = analysisResults[4] || 'No analysis result';
-                          } else {
-                              console.error('Failed to start analysis.');
-                          }
-                      });
-              });
+      
       
 
       // Fetch and display content from the new JSON file
@@ -375,7 +346,7 @@ window.onclick = function(event) {
           document.getElementById('sentiment-subjectivity').innerText = data.most_revenue_product.analysis.sentiment_subjectivity;
         })
         .catch(error => console.error('Error fetching JSON data:', error));
-
+        
         fetch('review/semantic_analysis.json')
       .then(response => response.json())
       .then(data => {
@@ -384,6 +355,18 @@ window.onclick = function(event) {
         document.getElementById('top_customers_by_revenue_analysis').innerText = data.top_customers_by_revenue || 'No analysis available';
       })
       .catch(error => console.error('Error fetching semantic analysis:', error));
+
+            // Fetch and display content from the new JSON file
+        fetch('static/analysis_results.json') // Update this path as needed
+        .then(response => response.json())
+                      .then(data => {
+                          if (data.status === 'success') {
+                              const analysisResults = data.results;
+                              document.getElementById('analysis5').innerText = analysisResults[4] || 'No analysis result';
+                          } else {
+                              console.error('Failed to start analysis.');
+                          }
+                      });
     };
 </script>
 </body>

@@ -15,7 +15,7 @@ def get_db_connection():
         database="loginandanalysis"
     )
 
-# Function to save or update image details in the database
+# Function to save image details to the database
 def save_image_to_db(user_id, image_path, image_type):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -39,29 +39,8 @@ def save_image_to_db(user_id, image_path, image_type):
     conn.commit()
     cursor.close()
     conn.close()
+##
 
-# Function to create a new PowerPoint presentation with images and analysis
-def create_presentation(user_id, image_path, analysis_text):
-    # Define the path for the new presentation
-    presentation_path = f'static/presentations/user{user_id}_presentation.pptx'
-
-    # Create a new presentation
-    prs = Presentation()
-
-    # Add the image slide
-    slide = prs.slides.add_slide(prs.slide_layouts[5])  # Blank slide layout
-    slide.shapes.add_picture(image_path, Inches(1), Inches(1), width=Inches(8), height=Inches(5.5))
-
-    # Add analysis text on a new slide
-    analysis_slide = prs.slides.add_slide(prs.slide_layouts[5])
-    textbox = analysis_slide.shapes.add_textbox(Inches(1), Inches(1), Inches(8), Inches(5.5))
-    text_frame = textbox.text_frame
-    p = text_frame.add_paragraph()
-    p.text = analysis_text
-    p.font.size = Inches(0.5)  # Adjust font size as needed
-
-    prs.save(presentation_path)
-    print(f"Presentation saved at {presentation_path}")
 
 # Read the dataset from Excel
 uploads_dir = "uploads"
@@ -127,13 +106,4 @@ image_type = "MRR by BU"
 # Save image details to the database
 save_image_to_db(user_id, plot_path, image_type)
 
-# Read the analysis results from the file
-results_file = 'static/analysis_results.json'
-with open(results_file, 'r') as file:
-    results = json.load(file)
 
-# Use the MRR analysis result
-analysis_text = results['mrr_by_bu']
-
-# Create a new PowerPoint presentation with the new image and analysis
-create_presentation(user_id, plot_path, analysis_text)

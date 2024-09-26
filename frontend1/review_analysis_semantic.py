@@ -6,10 +6,6 @@ import mysql.connector
 from pptx import Presentation
 from pptx.util import Inches
 
-
-
-
-
 # Database connection function
 def get_db_connection():
     return mysql.connector.connect(
@@ -45,66 +41,14 @@ def save_or_update_image_in_db(user_id, image_path, image_type):
     cursor.close()
     conn.close()
 
-# Function to update PowerPoint presentation with new image and analysis results
-def update_presentation(user_id, image_path, analysis_text):
-    conn = get_db_connection()
-    cursor = conn.cursor()
-
-    # Fetch or create the presentation for the user
-    cursor.execute("SELECT presentation_path FROM user_presentations WHERE user_id = %s", (user_id,))
-    result = cursor.fetchone()
-
-    if result:
-        ppt_path = result[0]
-    else:
-        ppt_path = f'static/presentations/user{user_id}_presentation.pptx'
-        prs = Presentation()
-        prs.save(ppt_path)
-        cursor.execute(
-            "INSERT INTO user_presentations (user_id, presentation_path) VALUES (%s, %s)",
-            (user_id, ppt_path)
-        )
-        conn.commit()
-# Use absolute path for the presentation file
-    ppt_path = 'C:/xampp/htdocs/fyp0.3/static/presentations/user1_presentation.pptx'
-
-    if os.path.exists(ppt_path):
-        prs = Presentation(ppt_path)
-    # Your code to process the presentation
-    else:
-       print(f"File not found: {ppt_path}")
-    #prs = Presentation(ppt_path)
-
-    # Add the image slide
-    slide = prs.slides.add_slide(prs.slide_layouts[5])
-    slide.shapes.add_picture(image_path, Inches(1), Inches(1), width=Inches(8), height=Inches(5.5))
-
-    # Add analysis text on a new slide
-    analysis_slide = prs.slides.add_slide(prs.slide_layouts[5])
-    textbox = analysis_slide.shapes.add_textbox(Inches(1), Inches(1), Inches(8), Inches(5.5))
-    text_frame = textbox.text_frame
-    p = text_frame.add_paragraph()
-    p.text = analysis_text
-    p.font.size = Inches(0.2)  # Reduced font size for analysis text
-
-    prs.save(ppt_path)
-
-    cursor.close()
-    conn.close()
 
 # Load the dataset
-#file_path = os.path.join(os.getcwd(), 'review', 'Review_analysis.xlsx')
-file_path = 'C:/xampp/htdocs/fyp0.3/frontend1/review/Review_analysis.xlsx'
-
+file_path = 'review/Review_analysis.xlsx'
 df = pd.read_excel(file_path)
 
-#file_path = 'review/Review_analysis.xlsx'
-print(os.path.abspath(file_path))
-#df = pd.read_excel(file_path)
-
 # Ensure static/images/ exists
-output_dir_json = 'C:/xampp/htdocs/fyp0.3/frontend1/review/'
-output_dir = 'C:/xampp/htdocs/fyp0.3/frontend1/static/images/'
+output_dir_json = 'review/'
+output_dir = 'static/images/'
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
@@ -143,8 +87,7 @@ top_currency_x, top_currency_y = top_currencies.get(top_item_x, 'Unknown'), top_
 # Add semantic analysis for revenue by item name and currency
 semantic_analysis['revenue_by_item_currency'] = f"Significant revenue contributions are observed for items '{top_item_x}' and '{top_item_y}', primarily in currencies '{top_currency_x}' and '{top_currency_y}'."
 
-# Update PowerPoint presentation with the image and analysis results
-#update_presentation(user_id, image_path_1, semantic_analysis['revenue_by_item_currency'])
+
 
 # 4. Revenue and Quantity by Business Unit (BU)
 bu_revenue = df.groupby('BU')['Revenue Billed'].sum()
@@ -178,8 +121,7 @@ top_bu_quantity = bu_quantity.idxmax()
 # Add semantic analysis for revenue and quantity by business unit
 semantic_analysis['revenue_quantity_by_bu'] = f"The unit '{top_bu_revenue}' generated the highest revenue, while '{top_bu_quantity}' had the highest quantity billed."
 
-# Update PowerPoint presentation with the image and analysis results
-#update_presentation(user_id, image_path_2, semantic_analysis['revenue_quantity_by_bu'])
+
 
 # 5. Top Customers by Revenue
 top_customers = df.groupby('Customer Name')['Revenue Billed'].sum().nlargest(10)
@@ -200,15 +142,10 @@ top_customer = top_customers.idxmax()
 top_customer_revenue = top_customers.max()
 semantic_analysis['top_customers_by_revenue'] = f"'{top_customer}' is the top customer with a total revenue of {top_customer_revenue:.2f}."
 
-# Update PowerPoint presentation with the image and analysis results
-#update_presentation(user_id, image_path_3, semantic_analysis['top_customers_by_revenue'])
+
 
 # Save semantic analysis to a JSON file
 with open(output_dir_json + 'semantic_analysis.json', 'w') as f:
     json.dump(semantic_analysis, f, indent=4)
 
 print("Review analysis images and semantic analysis have been saved.")
-
-update_presentation(user_id, image_path_1, semantic_analysis['revenue_by_item_currency'])
-update_presentation(user_id, image_path_2, semantic_analysis['revenue_quantity_by_bu'])
-update_presentation(user_id, image_path_3, semantic_analysis['top_customers_by_revenue'])

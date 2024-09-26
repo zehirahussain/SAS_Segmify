@@ -30,12 +30,14 @@
       letter-spacing: -1px;
     }
 /* continue with google,facebook----button */
-    .loginwith{
-      margin-top: px;
-      background-color: aliceblue;
-      margin-bottom: 20px;
-      border: 1px solid;
-      border-radius: 3px;
+.loginwith{
+  margin-top: px;
+  background-color: aliceblue;
+  margin-bottom: 20px;
+  border: 1px solid;
+  border-radius: 3px;
+  font-size: 17px;
+  font-family: 'Times New Roman', Times, serif;
     }
     .loginwith:hover{
       color: #005288;
@@ -64,12 +66,12 @@
     }
 
 /* Forgot Password */
-    .forgot{
-      color: rgb(44, 42, 42);
-      font-size: 13px;
-      font-weight: bold;
-      padding-left: 90px;
-    }
+.forgot{
+  color: rgb(44, 42, 42);
+  font-size: 13px;
+  font-weight: bold;
+  padding-left: 190px;
+}
     .forgot:hover{
       color: #005288;
     }
@@ -104,17 +106,14 @@
         <button class="loginwith" type="google" style="height: 28px; width: 85px; margin: 40px 30px 0px 0px;"> Google </button>
         <button class="loginwith" type="facebook" style="height: 28px; width: 105px;;">Facebook </button><br>
  
-<!-- continue with email -->
-        <a href="#"> Continue with Email </a><br>
+
 
 <!-- email,pswd---input fields -->
     <form action="login.php" method="post">
 		<input class="req" type="email" id="email" name="email" placeholder="Email" style="width:260px; height:30px; margin-top: 60px;" required><br>
 		<input class="req" type="password" id="password" name="password" placeholder="Password" style="width:260px; height:30px" required> <br><br>
 
-		<!-- Checkbox for Remember Me -->
-		<input class="rememberMe" type="checkbox" id="rememberMe">
-		<label class="rememberMe" for="rememberMe"> Remember Me </label>
+	
 
 		<!-- Forgot Password Link -->
 		<a class="forgot" href="forgot_password.php"> Forgot Password? </a> <br>
