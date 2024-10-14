@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
     #sidebar {
-      background-color: #202020;
+      background-color: #000000;
       height: 100vh;
       width: 250px;
       padding: 20px;
@@ -26,7 +26,7 @@
       text-align: center;
       text-decoration: none;
       display: block;
-      font-size: 13.5px;
+      font-size: 14px;
       margin: -2.5px 0;
       border-radius: 10px;
       box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -58,8 +58,8 @@
 
     .footer {
       color: white;
-      font-size: 12px;
-      background-color: #202020;
+      font-size: 14px;
+      background-color: #000000;
       text-align: center;
       padding: 10px;
       position: fixed;
@@ -152,6 +152,31 @@
     color: #d9e0e6; /* Adjust text color */
     font-weight: bold; /* Adjust font weight */
 }
+
+#reports-container {
+    width: 100%; /* Full width of its parent container */
+    margin: 20px 0; /* Add some margin at the top and bottom */
+    padding: 10px; /* Add padding for spacing */
+    background-color: #1e2a38; /* Background color to differentiate it */
+    border-radius: 8px; /* Rounded corners */
+    color: #ffffff; /* White text color */
+}
+
+#reports-container a {
+    color: #17a2b8; /* Change link color to stand out */
+    text-decoration: none; /* Remove underline */
+    font-weight: bold; /* Make the links bold */
+}
+
+#reports-container a:hover {
+    color: #ffffff; /* Change link color on hover */
+    text-decoration: underline; /* Underline on hover */
+}
+
+#reports-container p {
+    margin: 10px 0; /* Add space between paragraphs */
+}
+
   </style>
 </head>
 
@@ -184,7 +209,10 @@
         <div id="pdfContainer">
           <embed id="pdfViewer" src="static/reports/monthly_report.pdf" width="800px" height="2100px" />
 
+          <div id="reports-container"></div>
+
     </main>
+    
   </div>
 
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -197,6 +225,90 @@
         window.location.href = href;
       });
     });
+  </script>
+  
+  
+  <script>
+  //  fetch('fetch_reports.php')
+
+
+   
+  //   .then(response => response.json())
+  //   .then(data => {
+  //       const reportsContainer = document.getElementById('reports-container');
+  //       reportsContainer.innerHTML = ''; // Clear the container before appending
+
+  //       if (data.length > 0) {
+  //           data.forEach(report => {
+  //               const reportLink = document.createElement('a');
+  //               reportLink.href = report.report_path; // Link to the report PDF
+  //               reportLink.innerText = 'View Report - ' + report.created_at; // Display the report creation date
+  //               reportLink.target = '_blank'; // Open in a new tab
+  //               reportsContainer.appendChild(reportLink);
+  //               reportsContainer.appendChild(document.createElement('br')); // Add spacing
+  //           });
+  //       } else {
+  //           reportsContainer.innerText = 'No reports available.';
+  //       }
+  //   })
+  //   .catch(error => console.error('Error fetching reports:', error));
+
+
+  // fetch('fetch_reports.php')
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       const reportsContainer = document.getElementById('reports-container');
+  //       reportsContainer.innerHTML = '';
+
+  //       if (data.length > 0) {
+  //         data.forEach(report => {
+  //           const reportLink = document.createElement('a');
+  //           reportLink.href = report.report_path;
+  //           reportLink.innerText = 'View Report - ' + report.created_at;
+  //           reportLink.target = '_blank';
+  //           reportsContainer.appendChild(reportLink);
+  //           reportsContainer.appendChild(document.createElement('br'));
+  //         });
+  //       } else {
+  //         reportsContainer.innerText = 'No reports available.';
+  //       }
+  //     })
+  //     .catch(error => console.error('Error fetching reports:', error));
+
+
+
+  </script>
+  
+  <script>
+    // Fetch reports when the page loads
+    fetch('fetch_reports.php')
+    .then(response => response.json())
+    .then(data => {
+        const reportsContainer = document.getElementById('reports-container');
+        reportsContainer.innerHTML = ''; // Clear any previous content
+
+        if (data.length === 0) {
+            reportsContainer.innerHTML = '<p>No reports available.</p>'; // Message for no reports
+            // Optionally, hide the PDF viewer if no reports are available
+            document.getElementById('pdfContainer').style.display = 'none';
+            return;
+        } else {
+            document.getElementById('pdfContainer').style.display = 'block'; // Show PDF container if reports are available
+        }
+
+        data.forEach(report => {
+            const reportLink = document.createElement('a');
+            reportLink.href = report.report_path; // Set the path to the report
+            reportLink.textContent = `Report created on ${report.created_at}`; // Display the creation date
+            reportLink.target = '_blank'; // Open in new tab
+            reportsContainer.appendChild(reportLink); // Add link to container
+            reportsContainer.appendChild(document.createElement('br')); // Add line break for spacing
+        });
+    })
+    .catch(error => {
+        console.error('Error fetching reports:', error);
+    });
+
   </script>
   
 

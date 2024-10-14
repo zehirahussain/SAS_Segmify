@@ -6,7 +6,7 @@
     <title>About Us</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: Arial, sans-serif, calibri;
             margin: 0;
             padding: 0;
             display: flex;
@@ -19,26 +19,38 @@
 
         h1 {
             text-align: center;
-            font-family: Times New Roman;
+            font-family: calibri;
             padding-bottom: 22px;
+        }
+        h3{
+            padding-left: 40px;
         }
 
         p {
             padding: 15px 35px 5px 40px;
             margin-bottom: 10px;
-            font-family: serif;
+            font-family: calibri;
+            font-size: 17px;
         }
 
         .BOX {
             border-radius: 27px;
             font-family: calibri;
             background-color: aliceblue;
-            text-align: center;
-            padding: 142px 10px; /* Increased padding for more vertical space */
+            text-align: left; /* Align text to the left */
+            padding: 85px 20px; /* Reduced padding for smaller box */
             width: 90vw;
-            max-width: 620px;
-            margin-top: 86px; /* Adjust this value to fine-tune the positioning */
-            min-height: 200px; /* Set a minimum height */
+            max-width: 600px; /* Reduced max width for smaller box */
+            margin-top: 44px; /* Adjust this value to fine-tune the positioning */
+        }
+
+        ul {
+            padding-left: 60px; /* Added padding to left-align list items */
+            margin: 10px 0;
+        }
+
+        li {
+            margin-bottom: 5px; /* Space between list items */
         }
 
     @media (max-width: 768px) {
@@ -139,21 +151,36 @@
     <header>
         <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
             <div style="display: flex; align-items: center;">
-                <a href="index.php"><img src="SAS Segmify logo (2).png" style="width: 60px;"></a>
-                <a href="#"><button class="SignIn" style="height: 28px; width: 80px; margin-left: 10px; font-weight: bold;">About Us</button></a>
-                <a href="contactus.html"><button class="SignIn" style="height: 28px; width: 100px; margin-left: 10px; font-weight: bold;">Contact Us</button></a>
+                <a href="index.php"><button class="SignIn" style="height: 28px; width: 80px; margin-left: 20px; font-weight: bold;">Home</button></a>
+                                <a href="#"><button class="SignIn" style="height: 28px; width: 80px; margin-left: 0px; font-weight: bold;">About Us</button></a>
+                <a href="contactus.html"><button class="SignIn" style="height: 28px; width: 100px; margin-left: 0px; font-weight: bold;">Contact Us</button></a>
             </div>
             <div>
-                <a href="signuppppp.html"><button class="SignIn" style="height: 28px; width: 80px; margin-right: 20px; font-weight: bold;">Sign Up</button></a>
+                <a href="signuppppp.html"><button class="SignIn" style="height: 28px; width: 80px; margin-right: -5px; font-weight: bold;">Sign Up</button></a>
+                <a href="loginnnn.html"><button class="SignIn" style="height: 28px; width: 80px; margin-right: 20px; font-weight: bold;">Sign In</button></a>
+
             </div>
         </div>
     </header>
 
     <div class="BOX">
-        <h1>About Us</h1>
-        <p><strong>Empowering Businesses Through Data Insights</strong></p>
-        <p>Our purpose is to revolutionize the way businesses understand and leverage data to drive growth and innovation. Our team is composed of passionate individuals dedicated to delivering exceptional results and value to our clients. We are driven by our passion for data analytics and its potential to transform businesses and industries.</p>
-        <p>We are committed to delivering high-performance solutions that exceed our clients' expectations and drive tangible results. We recognize the importance of sustainability and strive to minimize our environmental footprint through responsible practices.</p>
+        
+            <h1>About Us</h1>
+            <p>Welcome to <strong>SAS Segmify</strong>!</p>
+            
+            <p>At SAS Segmify, we empower businesses to gain deeper insights into their customers through simplified segmentation and classification. Our mission is to help you understand and predict customer behavior trends for sustainable growth.</p>
+            
+            <h3>What We Offer:</h3>
+            <ul>
+                <li><strong>Customer Segmentation</strong></li>
+                <li><strong>RFM Analysis</strong></li>
+                <li><strong>Customer Classification</strong></li>
+                <li><strong>Feedback Analysis</strong></li>
+            </ul>
+            
+            <p>Our passionate team is dedicated to utilizing data to help you succeed. Join us in transforming how you understand and engage with your customers. With SAS Segmify, segmentation is simplified, and growth is amplified.</p>
+        
+        
     </div>
 </body>
 </html>

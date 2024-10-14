@@ -9,7 +9,7 @@
   <script src="https://d3js.org/d3.v6.min.js"></script>
   <style>
     #sidebar {
-        background-color: #202020;
+        background-color: #000000;
         height: 100vh;
         width: 250px;
         padding: 20px;
@@ -27,7 +27,7 @@
         text-align: center;
         text-decoration: none;
         display: block;
-        font-size: 13.5px;
+        font-size: 14px;
         margin: -2.5px 0;
         border-radius: 10px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -59,8 +59,8 @@
 
     .footer {
         color: white;
-        font-size: 12px;
-        background-color: #202020;
+        font-size: 14px;
+        background-color: #000000;
         text-align: center;
         padding: 10px;
         position: fixed;
@@ -160,7 +160,7 @@
       <a class="nav-link" href="decisionn.html"><button class="sidebar-button">Back</button></a>
     </nav>
     <footer class="footer flex-column">
-      <a class="nav-link" href="#"><button class="sidebar-button">Import File</button></a>
+     <!----<a class="nav-link" href="#"><button class="sidebar-button">Import File</button></a>  -->
 
       <div><a class="nav-link" href="settings.php"><button class="sidebar-button">Settings</button></a></div>
             <div><a class="nav-link" href="logout.php"><button class="sidebar-button">Log Out</button></a></div>
@@ -198,19 +198,20 @@
               <p id="sentiment-subjectivity">Loading...</p>
             </div>
         </div>
+        <br>
 
         <!-- Image 1: revenue_by_item_currency -->
         <div class="graph">
             <img src="static/images/revenue_by_item_currency.png" alt="Revenue by Item Currency" id="revenue_by_item_currency">
             <p id="revenue_by_item_currency_analysis">Loading analysis...</p>
           </div>
-          
+          <br>
           <!-- Image 2: revenue_quantity_by_bu -->
           <div class="graph">
             <img src="static/images/revenue_quantity_by_bu.png" alt="Revenue Quantity by BU" id="revenue_quantity_by_bu">
             <p id="revenue_quantity_by_bu_analysis">Loading analysis...</p>
           </div>
-          
+          <br>
           <!-- Image 3: top_customers_by_revenue -->
           <div class="graph">
             <img src="static/images/top_customers_by_revenue.png" alt="Top Customers by Revenue" id="top_customers_by_revenue">

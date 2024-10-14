@@ -14,13 +14,14 @@
         }
 
         header {
-            background-color: #1b1b1c;
+            background-color: #000000;
             color: white;
             padding: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
+            
         }
 
         header a {
@@ -31,12 +32,13 @@
 
         .background-image {
             background-image: url('graph.jpeg');
-            height: 100vh; /* Set the height of background image to full viewport height */
+            height: 165vh; /* Set the height of background image to full viewport height */
             background-size: cover;
             background-position: center;
             display: flex;
             justify-content: center;
             align-items: center;
+           
         }
 
         .container {
@@ -55,8 +57,9 @@
             padding: 80px 10px; /* Increased padding for more vertical space */
             width: 90vw;
             max-width: 620px;
-            margin-top: -80px; /* Adjust this value to fine-tune the positioning */
-            min-height: 518px; /* Set a minimum height */
+            margin-top: -534px; /* Adjust this value to fine-tune the positioning */
+            min-height: 535px; /* Set a minimum height */
+            /* opacity: 0.5; */
         }
 
         .lock {
@@ -134,12 +137,14 @@
 <header>
     <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
         <div style="display: flex; align-items: center;">
-            <a href="#"><img src="SAS Segmify logo (2).png" style="width: 60px;"></a>
-            <a href="aoutus.html"><button class="SignIn" style="height: 28px; width: 80px; margin-left: 10px; font-weight: bold;">About Us</button></a>
+        <a href="#"><button class="SignIn" style="height: 28px; width: 80px; margin-left: 10px; font-weight: bold;">Home</button></a>
+                    <a href="aoutus.html"><button class="SignIn" style="height: 28px; width: 80px; margin-left: 10px; font-weight: bold;">About Us</button></a>
             <a href="contactus.html"><button class="SignIn" style="height: 28px; width: 100px; margin-left: 10px; font-weight: bold;">Contact Us</button></a>
         </div>
         <div>
-            <a href="signuppppp.html"><button class="SignIn" style="height: 28px; width: 80px; margin-right: 20px; font-weight: bold;">Sign Up</button></a>
+            <a href="signuppppp.html"><button class="SignIn" style="height: 28px; width: 80px; margin-right: 5px; font-weight: bold;">Sign Up</button></a>
+            <a href="loginnnn.html"><button class="SignIn" style="height: 28px; width: 80px; margin-right: 20px; font-weight: bold;">Sign In</button></a>
+
         </div>
     </div>
 </header>
@@ -152,7 +157,7 @@
                 <h1><?php echo "Segmentation Simplified, Growth Amplified"; ?></h1>
                 <p class="description" style="color: black;"> 
                     <?php 
-                        $description = "Unlock customer insights and drive growth. With SAS Segmify, segment customers, predict trends, and analyze feedback—all powered by advanced machine learning in one platform.";
+                        $description = "Unlock customer insights and drive growth. With SAS Segmify, segment customers, predict trends, and analyze feedback, all powered by advanced machine learning in one platform.";
                         echo $description; 
                     ?>
                 </p>

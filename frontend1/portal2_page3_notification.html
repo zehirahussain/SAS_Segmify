@@ -16,9 +16,9 @@
       font-family: calibri;
       background-color: aliceblue;
       text-align: center;
-      width: 50%; /* Adjust the width as needed */
+      width: 90px; /* Adjust the width as needed */
       margin: 0 auto; /* Centers the div horizontally */
-      padding: 174px 0px 90px 0px; /* Vertical padding remains */
+      padding: 174px 33px 85px 33px; /* Vertical padding remains */
       
       }
 /* would you like to---heading */
@@ -108,30 +108,55 @@
   //    });
    
 
-  document.getElementById('generateReportBtn').addEventListener('click', function () {
-    // Path to the report
-    const reportPath = 'static/reports/monthly_report.pdf';
+//   document.getElementById('generateReportBtn').addEventListener('click', function () {
+//     // Path to the report
+//     const reportPath = 'static/reports/monthly_report.pdf';
 
-    // Create a new request to check if the report exists
-    fetch(reportPath, { method: 'HEAD' })
-        .then(response => {
-            if (response.ok) {
-                // If the response is OK, redirect to the report viewing page
-                window.location.href = 'portal2_page1_report.html';
-            } else {
-                // If the response is not OK, alert the user that the report does not exist
-                alert('Report not found.');
-            }
-        })
-        .catch(error => {
-            // Handle any errors that occur during the fetch request
-            alert('Error: ' + error.message);
-        });
-});
+//     // Create a new request to check if the report exists
+//     fetch(reportPath, { method: 'HEAD' })
+//         .then(response => {
+//             if (response.ok) {
+//                 // If the response is OK, redirect to the report viewing page
+//                 window.location.href = 'portal2_page1_report.html';
+//             } else {
+//                 // If the response is not OK, alert the user that the report does not exist
+//                 alert('Report not found.');
+//             }
+//         })
+//         .catch(error => {
+//             // Handle any errors that occur during the fetch request
+//             alert('Error: ' + error.message);
+//         });
+// });
 
-    </script>
+//     </script>
   
-
+  <script>
+    document.getElementById('generateReportBtn').addEventListener('click', function () {
+      const reportPath = 'static/reports/monthly_report.pdf';
+  
+      // Display loading message or spinner
+      const loadingMessage = document.createElement('div');
+      loadingMessage.innerText = 'Checking report availability...';
+      document.body.appendChild(loadingMessage);
+  
+      fetch(reportPath, { method: 'HEAD' })
+          .then(response => {
+              // Remove loading message
+              document.body.removeChild(loadingMessage);
+              if (response.ok) {
+                  window.location.href = 'portal2_page1_report.html';
+              } else {
+                  alert('Report not found.');
+              }
+          })
+          .catch(error => {
+              document.body.removeChild(loadingMessage);
+              alert('Error: ' + error.message);
+          });
+  });
+  </script>
+  
     
 </body>
 </html>
