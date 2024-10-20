@@ -1,7 +1,4 @@
-import pandas as pd
-
-# Read the dataset from Excel
-df = pd.read_excel("SampleData (2).xlsx")
-
-# Print out column names
-print(df.columns)
+import nltk
+nltk.download('punkt')
+nltk.download('punkt_tab')
+nltk.download('stopwords')

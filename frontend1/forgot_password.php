@@ -19,7 +19,7 @@
         }
         .BOX {
             border-radius: 27px;
-            padding: 40px; /* Reduced padding for better fit */
+            padding: 245px 40px; /* Reduced padding for better fit */
             background-color: aliceblue;
             text-align: center;
             width: 625px; /* Adjust the width as needed */
@@ -39,12 +39,13 @@
             background-color: #003d66;
             cursor: pointer;
         }
+      
     </style>
 </head>
 <body>
 <div class="BOX">
     <div class="container mt-5">
-        <h2>Forgot Password</h2>
+        <h1>Forgot Password</h1>
 
         <!-- Display notification message -->
         <?php if (isset($_GET['message'])): ?>

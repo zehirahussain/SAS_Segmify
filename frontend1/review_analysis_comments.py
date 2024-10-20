@@ -9,10 +9,29 @@ from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.lsa import LsaSummarizer
 import matplotlib.pyplot as plt
 import re
+import os
 
 # Load your review data
-#data = pd.read_excel('review/Review_analysis.xlsx')
-data = pd.read_excel('C:/xampp/htdocs/fyp0.3/frontend1/review/Review_analysis.xlsx')
+#uploads_dir = "review"
+uploads_dir = "c:\\xampp\\htdocs\\fyp0.3\\frontend1\\uploads"
+
+# Check if the directory exists
+if not os.path.exists(uploads_dir):
+    raise FileNotFoundError(f"The directory {uploads_dir} does not exist.")
+
+# List all files in the review directory
+files = os.listdir(uploads_dir)
+print("Files in directory:", files)  # Debug line to see files in the directory
+
+# Identify the Excel file (assuming there is only one Excel file in the directory)
+excel_files = [file for file in files if file.endswith('.xlsx')]
+
+if not excel_files:
+    raise FileNotFoundError("No Excel file found in the review directory.")
+
+excel_file_path = os.path.join(uploads_dir, excel_files[0])
+data = pd.read_excel(excel_file_path)
+# data = pd.read_excel('uploads/SampleData (2).xlsx')
 
 # Identify key products/items
 most_revenue_product = data.groupby('Product')['Revenue Billed'].sum().idxmax()
@@ -92,7 +111,7 @@ def generate_sentiment_graph(text):
     plt.grid(True)
 
     # Save the plot
-    plt.savefig('static/images/sentiment_polarity_graph.png')
+    plt.savefig('images/sentiment_polarity_graph.png')
     plt.close()
 
 # Generate JSON output with sentiment analysis and summaries
@@ -100,12 +119,11 @@ results = {
     'most_revenue_product': analyze_condition('Most Revenue-Generating Product', most_revenue_product, collect_reviews(most_revenue_product))
 }
 
-
-with open('C:/xampp/htdocs/fyp0.3/frontend1/review/review_analysis_results.json', 'w', encoding='utf-8') as f:
+with open('review/review_analysis_results.json', 'w', encoding='utf-8') as f:
     json.dump(results, f, indent=4, ensure_ascii=False)  # Ensure proper encoding
 
 # Generate sentiment polarity graph
 generate_sentiment_graph(results['most_revenue_product']['analysis']['summary'])
 
 print("Review analysis results have been saved to review/review_analysis_results.json")
-print("Sentiment polarity graph has been saved to static/images/sentiment_polarity_graph.png")
+print("Sentiment polarity graph has been saved to images/sentiment_polarity_graph.png")

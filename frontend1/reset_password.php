@@ -24,7 +24,7 @@
         }
         .BOX {
             border-radius: 27px;
-            padding: 185px 20px;
+            padding: 220px 20px;
             background-color: aliceblue;
             text-align: center;
             width: 625px; /* Adjust the width as needed */

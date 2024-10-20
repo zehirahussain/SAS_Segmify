@@ -81,49 +81,79 @@
 </head>
 <body>
 
+  <img src="graph.jpeg" style="height: 100vh; width: 100vw; position: absolute; z-index: -1;">
+  <div class="SIGNUP" style="height: 100%; width: 38%;">
+    <h1> Create your Account </h1><br>
 
-  <script>
-    document.getElementById('signup-form').addEventListener('submit', function(e) {
-     
-  fetch('signup.php', { /* ... */ })
-  .then(response => response.json())
-  .then(data => {
-      if (data.message === 'Signup successful!') {
-          alert(data.message); 
-          window.location.href = "loginnnn.html"; // Redirect to login
-      } else if (data.message === 'Email already exists') {
-          alert(data.message); 
-      } else {
-          alert(data.message); // Display other potential error messages
-      }
-  })
+    <button class="signupwith" type="google" style="height: 28px; width: 280px; margin: 60px 0px 0px 0px;">Google </button>
 
- // ... (your complete JavaScript code for signup.php interaction) ...
-    });
-  </script>
+    <form id="signup-form">
+      <input type="text" id="name" name="name" placeholder="User Name" style="width:260px; height:30px; margin: 55px 0px 0px 0px;" required><br>
+      <input type="email" id="email" name="email" placeholder="Email" style="width:260px; height:30px" required><br>
+      <input type="password" id="password" name="password" placeholder="Password" style="width:260px; height:30px" required><br><br>
+      <button class="signUp" type="submit" style="height: 35px; width: 288px;"> Sign up </button>
+      <p class="error" id="error-message"></p>
+    </form>
 
-
-  <img src="graph.jpeg" style= "height: 100vh; width: 100vw; position: absolute; z-index: -1;">
-    <div class= "SIGNUP" style="height: 100%; width: 38%;">
-      <h1> Create your Account </h1><br>
-
-      <button class="signupwith" type="google" style="height: 28px; width: 280px; margin: 60px 0px 0px 0px;">Google </button>
-      <!-- <button class="signupwith" type="facebook" style="height: 28px; width: 105px;;">Facebook </button><br> -->
-       <!-- <p> - OR - </p> -->
-
-		<form action="signup.php" method="post">
-			<input type="text" id="name" name="name" placeholder="User Name" style="width:260px; height:30px; margin: 55px 0px 0px 0px;" required><br>
-			<input type="email" id="email" name="email" placeholder="Email" style="width:260px; height:30px" required><br>
-			<input type="password" id="password" name="password" placeholder="Password" style="width:260px; height:30px" required><br><br>
-			<button class="signUp" type="submit" style="height: 35px; width: 288px;"> Sign up </button>
-		</form>
-
-      <p> Already have an account? 
+    <p> Already have an account? 
       <a href="loginnnn.html"> Log in </a>
     </p>
-    </div>
+  </div>
+
+  <script>
+    // document.getElementById('signup-form').addEventListener('submit', function(e) {
+    //   e.preventDefault();  // Prevent the form from submitting the traditional way
+
+    //   const formData = new FormData(this);
+
+    //   fetch('signup.php', {
+    //     method: 'POST',
+    //     body: formData,
+    //   })
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     const errorMessageElement = document.getElementById('error-message');
+    //     if (data.message === 'Signup successful!') {
+    //       alert(data.message);  // Optional: You can show success messages as popups or inline
+    //       window.location.href = "loginnnn.html"; // Redirect to login
+    //     } else if (data.message === 'Email already exists') {
+    //       errorMessageElement.textContent = data.message;  // Show error message
+    //     } else {
+    //       errorMessageElement.textContent = data.message;  // Show other error messages
+    //     }
+    //   })
+    //   .catch(error => {
+    //     console.error('Error:', error);
+    //   });
+    // });
+
+    document.getElementById('signup-form').addEventListener('submit', function(e) {
+    e.preventDefault();  // Prevent the form from submitting the traditional way
+
+    const formData = new FormData(this);
+
+    fetch('signup.php', {
+      method: 'POST',
+      body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+      const errorMessageElement = document.getElementById('error-message');
+      if (data.message === 'Signup successful!') {
+        alert(data.message);  // Show success message in a pop-up
+        window.location.href = "loginnnn.html"; // Redirect to login page
+      } else if (data.message === 'Email already exists') {
+        alert(data.message);  // Show error message in a pop-up
+      } else {
+        alert(data.message);  // Show other error messages in a pop-up
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('An unexpected error occurred. Please try again.');  // Show general error as a pop-up
+    });
+  });
+  </script>
 
 </body>
-   
-    
 </html>

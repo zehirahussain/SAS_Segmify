@@ -50,7 +50,7 @@ def save_or_update_image_in_db(user_id, image_path, image_type):
 
 
 #uploads_dir = "review"
-uploads_dir = "c:\\xampp\\htdocs\\fyp0.3\\frontend1\\review"
+uploads_dir = "c:\\xampp\\htdocs\\fyp0.3\\frontend1\\uploads"
 
 # Check if the directory exists
 if not os.path.exists(uploads_dir):

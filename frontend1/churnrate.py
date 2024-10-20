@@ -74,7 +74,7 @@ scaler = StandardScaler()
 scaled_features = scaler.fit_transform(features)
 
 # Define the number of clusters
-optimal_n_clusters = 3  # Set the number of clusters as per your requirement
+optimal_n_clusters = 5  # Set the number of clusters as per your requirement
 
 # Apply K-means clustering with the defined number of clusters
 kmeans = KMeans(n_clusters=optimal_n_clusters, n_init=10, random_state=42)
@@ -84,7 +84,7 @@ clusters = kmeans.fit_predict(scaled_features)
 df['Cluster'] = clusters
 
 # Visualize the clusters
-plt.figure(figsize=(10, 8))
+plt.figure(figsize=(10, 9))
 scatter = plt.scatter(df['Revenue Billed'], df['Item Name'], c=df['Cluster'], cmap='viridis', marker='o')
 plt.colorbar(scatter, label='Cluster')
 plt.title('K-means Clustering of Revenue Billed and Item Name')

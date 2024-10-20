@@ -43,8 +43,25 @@ def save_or_update_image_in_db(user_id, image_path, image_type):
 
 
 # Load the dataset
-file_path = 'review/Review_analysis.xlsx'
-df = pd.read_excel(file_path)
+#uploads_dir = "review"
+uploads_dir = "c:\\xampp\\htdocs\\fyp0.3\\frontend1\\uploads"
+
+# Check if the directory exists
+if not os.path.exists(uploads_dir):
+    raise FileNotFoundError(f"The directory {uploads_dir} does not exist.")
+
+# List all files in the review directory
+files = os.listdir(uploads_dir)
+print("Files in directory:", files)  # Debug line to see files in the directory
+
+# Identify the Excel file (assuming there is only one Excel file in the directory)
+excel_files = [file for file in files if file.endswith('.xlsx')]
+
+if not excel_files:
+    raise FileNotFoundError("No Excel file found in the review directory.")
+
+excel_file_path = os.path.join(uploads_dir, excel_files[0])
+df = pd.read_excel(excel_file_path)
 
 # Ensure static/images/ exists
 output_dir_json = 'review/'
@@ -64,10 +81,12 @@ user_id = 1  # Replace with actual user ID
 
 # 1. Revenue by Item Name and Currency
 revenue_item_currency = df.groupby(['Item Name', 'Currency'])['Revenue Billed'].sum().unstack()
-ax = revenue_item_currency.plot(kind='bar', stacked=True, figsize=(20, 12))
-plt.title('Revenue by Item Name and Currency')
-plt.ylabel('Revenue Billed')
+ax = revenue_item_currency.plot(kind='bar', stacked=True, figsize=(20, 16))
+plt.title('Revenue by Item Name and Currency',fontsize=20)
+plt.ylabel('Revenue Billed',fontsize=20)
 plt.xticks(rotation=90)  # Rotate x-axis labels
+plt.xticks( fontsize=20, color='black')
+plt.yticks(fontsize=20, color='black')
 plt.tight_layout()  # Adjust layout to prevent clipping
 image_path_1 = output_dir + 'revenue_by_item_currency.png'
 plt.savefig(image_path_1, bbox_inches='tight', dpi=50)
@@ -93,7 +112,7 @@ semantic_analysis['revenue_by_item_currency'] = f"Significant revenue contributi
 bu_revenue = df.groupby('BU')['Revenue Billed'].sum()
 bu_quantity = df.groupby('BU')['Quantity Billed'].sum()
 
-fig, ax1 = plt.subplots(figsize=(12, 8))
+fig, ax1 = plt.subplots(figsize=(15, 16))
 ax1.set_xlabel('Business Unit')
 ax1.set_ylabel('Revenue Billed', color='tab:blue')
 ax1.bar(bu_revenue.index, bu_revenue, color='tab:blue', label='Revenue Billed')
@@ -125,7 +144,7 @@ semantic_analysis['revenue_quantity_by_bu'] = f"The unit '{top_bu_revenue}' gene
 
 # 5. Top Customers by Revenue
 top_customers = df.groupby('Customer Name')['Revenue Billed'].sum().nlargest(10)
-ax = top_customers.plot(kind='bar', figsize=(10, 6))
+ax = top_customers.plot(kind='bar', figsize=(10, 26))
 plt.title('Top 10 Customers by Revenue')
 plt.ylabel('Revenue Billed')
 plt.xticks(rotation=90)  # Rotate x-axis labels
