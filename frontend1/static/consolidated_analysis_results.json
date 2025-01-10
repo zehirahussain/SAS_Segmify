@@ -1,0 +1,10 @@
+{
+    "mrr_by_bu": "The bar chart displays the Monthly Recurring Revenue ( MRR) for various business units. The y-axis represents MRR in millions, and the x-axis lists the different business units. The data shows a wide range of MRR across the units, with some exceeding 1. 9 million and others below 0. 25 million.",
+    "revenue_by_product_bar_chart": "The bar chart displays the total revenue billed per product. ERP has the highest revenue ( around 40 million) , followed by Web ( around 9 million) . All other products generated significantly less revenue.",
+    "churn_rate_stacked_bar_chart": "The image is a scatter plot showing the relationship between revenue billed and item name, colored by cluster. Each point represents an item, and its position shows its revenue and cluster assignment. The color gradient indicates different clusters identified through a clustering algorithm. High revenue items are mostly found in darker clusters at the right side.",
+    "revenue_by_product_pie_chart": "The pie chart displays customer segmentation using RFM analysis. The largest segment is Others ( 50) , followed by At Risk ( 25. 4) , Potential Loyalists ( 19. 4) , Best Customers ( 3. 9) , and Loyal Customers ( 1. 2) . This shows the distribution of customer types within a business.",
+    "sentiment_distribution_bar_chart": "Thats a bar chart showing the distribution of sentiment in a dataset. The vast majority of sentiments are neutral, with a smaller number classified as positive, and a very small number as negative.",
+    "revenue_by_item_currency": "Significant revenue contributions are observed for items 'Enterprise ERP' and 'Annual Maintenance', primarily in currencies 'USD' and 'USD'.",
+    "revenue_quantity_by_bu": "The unit 'HAuto' generated the highest revenue, while 'IProperty' had the highest quantity billed.",
+    "top_customers_by_revenue": "'A & M Sesto Mason Contracting' is the top customer with a total revenue of 296945.50."
+}
