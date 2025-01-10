@@ -1,3 +1,5 @@
+<h1>SAS Segmify</h1>
+Software as Service based webapp for customer segmentation, product performance and revenue generation using rfm, kmeans and nlp.
 <h1>Project Setup Instructions</h1>
 <h3>Python Package Installation</h3>
 <li>pip install pandas</li>
