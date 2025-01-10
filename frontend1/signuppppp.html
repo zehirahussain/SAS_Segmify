@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      margin: 0px;
+      padding: 0px;
+    }
+
+    .SIGNUP {
+      border-radius: 27px;
+      font-family: calibri;
+      background-color: aliceblue;
+      text-align: center;
+      width: 30.5%; /* Adjust the width as needed */
+      margin: 0 auto; /* Centers the div horizontally */
+      padding: 210px 0px 145px 0px; /* Vertical padding remains */
+      opacity: 0; /* Start transparent */
+      transform: translateY(30px); /* Start slightly lower */
+      animation: fadeIn 1.5s ease-out forwards; /* Animation */
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1; /* Fade to visible */
+        transform: translateY(0); /* Move to original position */
+      }
+    }
+
+    h {
+      font-size: 39px;
+      font-family: calibri;
+      letter-spacing: -1px;
+    }
+
+    input {
+      margin-top: 15px;
+      padding-left: 20px;
+    }
+
+    button {
+      border: 1px solid;
+      border-radius: 3px;
+      font-family: inter;
+      background-color: #005288;
+    }
+
+    .signUp {
+      color: white;
+      font-family: calibri;
+      font-weight: bold;
+      font-size: 17px;
+      letter-spacing: 0.6px;
+      margin-top: 35px;
+      border: none;
+      height: 35px;
+      width: 288px;
+    }
+
+    .signUp:hover {
+      cursor: pointer;
+    }
+
+    p {
+      margin-top: 71px;
+    }
+
+    a {
+      color: rgb(50, 50, 50);
+      font-weight: bold;
+    }
+
+    a:hover {
+      color: #005288;
+    }
+
+    /* Background image */
+    body {
+      background: url('graph.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="SIGNUP">
+    <h1>Create your Account</h1><br>
+
+    <form id="signup-form">
+      <input type="text" id="name" name="name" placeholder="User Name" style="width:260px; height:30px;" required><br>
+      <input type="email" id="email" name="email" placeholder="Email" style="width:260px; height:30px;" required><br>
+      <input type="password" id="password" name="password" placeholder="Password" style="width:260px; height:30px;" required><br><br>
+      <button class="signUp" type="submit">Sign up</button>
+      <p class="error" id="error-message"></p>
+    </form>
+
+    <p>Already have an account? 
+      <a href="loginnnn.html">Log in</a>
+    </p>
+  </div>
+
+  <script>
+
+function validateEmail(email) {
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailPattern.test(email);
+}
+function validatePassword(password) {
+  // Password must be at least 8 characters long and contain at least one number and one special character
+  const passwordPattern = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
+  return passwordPattern.test(password);
+}
+
+
+
+
+
+    document.getElementById('signup-form').addEventListener('submit', function(e) {
+      e.preventDefault();  // Prevent the form from submitting the traditional way
+
+
+
+
+
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const errorMessage = document.getElementById('error-message');
+
+  if (!validateEmail(email)) {
+    errorMessage.textContent = 'Invalid email format';
+    return;
+  }
+
+  if (!validatePassword(password)) {
+    errorMessage.textContent = 'Password must be at least 8 characters long and contain at least one number and one special character';
+    return;
+  }
+
+
+
+      
+      const formData = new FormData(this);
+
+      fetch('signup.php', {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.message === 'Signup successful!') {
+          alert(data.message);  // Show success message in a pop-up
+          window.location.href = "loginnnn.html"; // Redirect to login page
+        } else {
+          alert(data.message);  // Show error message in a pop-up
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('An unexpected error occurred. Please try again.');  // Show general error as a pop-up
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+      * {
+        margin: 0px;
+        padding: 0px;
+      }
+    
+      h {
+        font-size: 28px;
+        font-family: calibri;
+        font-weight: normal;
+        margin-top: 20px;
+        letter-spacing: -1px;
+      }
+      .decision {
+        color: white;
+        background-color: #005288;
+        font-family: calibri;
+        font-weight: bold;
+        font-size: 19px;
+        letter-spacing: 0.6px;
+        margin-top: 22px;
+        border: none;
+        border-radius: 5px;
+        width: 220px;
+        height: 35px;
+      }
+      .decision:hover {
+        cursor: pointer;
+        color: lightblue;
+      }
+      .username {
+        font-size: 28px;
+        color: #000000;
+      }
+      p{
+        font-size: 14px;
+      }
+
+        /* Sidebar and background styles */
+        #sidebar {
+        background-color: #000000;
+        height: 100vh;
+        width: 250px;
+        padding: 20px;
+        position: fixed;
+        left: 0;
+        top: 0;
+        overflow-y: auto;
+      }
+
+      .sidebar-button {
+        background-color: #005288;
+        border: none;
+        color: white;
+        padding: 3px 30px;
+        text-align: center;
+        text-decoration: none;
+        display: block;
+        font-size: 15px;
+        margin: -2.5px 0;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        transition: all 0.3s;
+        flex: 1;
+        font-family: Arial;
+
+      }
+
+      .dash {
+        color: white;
+        padding: 10px 25px;
+        font-weight: bold;
+        display: block;
+        font-size: 18px;
+        margin: 10px 10;
+        font-family: Arial;
+
+      }
+
+      .sidebar-button:hover {
+        background-color: #05424b;
+        box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.3);
+      }
+
+      .content {
+        margin-left: 250px;
+        padding: 20px;
+        background-color: #001f3f;
+        height: 110vh;
+        color: white;
+      }
+
+      .nav-link {
+        border-radius: 5px;
+        padding: 8px 16px;
+        margin: 5px 0;
+        display: inline-flex;
+      }
+
+      .footer {
+        color: white;
+        font-size: 14px;
+        background-color: #000000;
+        text-align: center;
+        padding: 31px 10px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 250px;
+      }
+
+      /* White Box animation */
+      .BOX {
+        border-radius: 27px;
+        padding: 80px 50px 50px 53px;
+        background-color: aliceblue;
+        text-align: center;
+        width: 34vw;
+        margin: 50px auto 0 auto; /* Adjusted margin to move the box up */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+
+        /* Animation Defaults */
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 1s ease-out;
+      }
+
+      .BOX.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      hr.solid {
+            border-top: 3px solid #1e3673;
+        }
+        hr.rounded {
+            border-top: 4px solid #4d5357;
+            border-radius: 5px;
+        }
+
+    </style>
+</head>
+<body>
+
+     <!-- Sidebar -->
+     <div id="sidebar">
+        <li class="dash"> &#128202; Dashboard</li>
+        <nav class="nav flex-column">
+            <a class="nav-link" ><button class="sidebar-button">Segmentation & Revenue</button></a>
+            <a class="nav-link" ><button class="sidebar-button">Review Analysis</button></a>
+            <a class="nav-link" ><button class="sidebar-button">Visualize Data</button></a>
+            <a class="nav-link" ><button class="sidebar-button">Presentation</button></a>
+            <a class="nav-link" ><button class="sidebar-button">Report</button></a>
+            <a class="nav-link" ><button class="sidebar-button">Back</button></a>
+        </nav>
+        <footer class="footer flex-column">
+            <div><a class="nav-link" ><button class="sidebar-button">Settings</button></a></div>
+            <div><a class="nav-link" ><button class="sidebar-button">Log Out</button></a></div>
+            <hr class="rounded">
+            <span id="username" class="username loading-name"></span>
+
+        </footer>
+    </div>
+    <!-- <img src="graph.jpeg" style="height: 100vh; width: 100vw; position: absolute; z-index: -1;"> -->
+    <div class="content">
+        <main role="main">
+    <div class="BOX" style="height: 80vh;">
+        <img src="bells.png" style="height: 50px; width: 50px; margin-bottom: 5px;"><br>
+        <p> <span id="username_login" class="username"></span></p>
+        <div id="notifications"></div> <!-- Dedicated container for dynamic content -->
+    </div>
+</main>
+</div>
+
+
+    <!-- Script for session checking -->
+    <script>
+      fetch('session_check.php')
+          .then(response => response.text())
+          .then(data => {
+              if (data === "NA") {
+                  window.location.href = 'loginnnn.html'; // Redirect to login page if NA
+              } else {
+                  const usernameElement = document.getElementById('username_login');
+                  if (usernameElement) {
+                      usernameElement.innerText = data; // Set the logged-in user's name
+                  } else {
+                      console.error("Element with id 'username_login' not found.");
+                  }
+              }
+          })
+          .catch(error => {
+              console.error("Error during session check:", error);
+          });
+    </script>
+
+    <!-- Script for loading and updating notifications -->
+    <script>
+        async function loadNotifications() {
+            const response = await fetch('fetch_notifications.php');
+            const notifications = await response.json();
+
+            const notificationsContainer = document.getElementById('notifications');
+            notificationsContainer.innerHTML = ''; // Clear only the notifications content
+
+            if (notifications.length > 0) {
+                notifications.forEach(notification => {
+                    const div = document.createElement('div');
+                    div.innerHTML = `
+                        <p style="color: black;">Report sent by <strong>${notification.sender_name}</strong></p>
+                        <button class="decision" onclick="updateStatus(${notification.id}, 'accepted')" style="height: 35px; width: 220px;">Accept</button><br>
+                        <button class="decision" onclick="updateStatus(${notification.id}, 'rejected')" style="margin-top: 22px; height: 35px; width: 220px;">Reject</button><br>
+                    `;
+                    notificationsContainer.appendChild(div);
+                });
+            } else {
+              notificationsContainer.innerHTML = `
+            <p style="color: black;">No Report Received</p>
+            <button class="decision" onclick="window.location.href='decisionn.php'" style="height: 35px; width: 220px;">Back</button><br>
+            <button class="decision" onclick="window.location.href='logout.php'" style="margin-top: 22px; height: 35px; width: 220px;">Logout</button>
+        `;
+            }
+        }
+
+        async function updateStatus(notificationId, status) {
+            const response = await fetch('update_notification_status.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ notification_id: notificationId, status })
+            });
+
+            const result = await response.json();
+            alert(result.message);
+
+            if (status === 'accepted') {
+                // Redirect to the specified page after successful acceptance
+                window.location.href = 'portal2_page1_report.html';
+            } else if (status === 'rejected') {
+                // After rejection, show Home and Logout buttons or redirect
+                const notificationsContainer = document.getElementById('notifications');
+                notificationsContainer.innerHTML = `
+                    <button class="decision" onclick="window.location.href='decisionn.php'" style="height: 35px; width: 220px;">Home</button><br>
+                    <button class="decision" onclick="window.location.href='logout.php'" style="margin-top: 22px; height: 35px; width: 220px;">Logout</button>
+                `;
+            }
+        }
+        loadNotifications();
+    </script>
+
+
+
+    <!-- jQuery Script -->
+    <script>
+        $(document).ready(function() {
+            setTimeout(function() {
+                $('.BOX').addClass('active');
+            }, 300);
+        });
+
+
+        
+    </script>
+</body>
+</html>
