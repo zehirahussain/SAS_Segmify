@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - review analysis</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+  <style>
+    #sidebar {
+        background-color: #000000;
+        height: 100vh;
+        width: 250px;
+        padding: 20px;
+        position: fixed;
+        left: 0;
+        top: 0;
+        overflow-y: auto;
+    }
+
+    .sidebar-button {
+        background-color: #005288;
+        border: none;
+        color: white;
+        padding: 3px 30px;
+        text-align: center;
+        text-decoration: none;
+        display: block;
+        font-size: 15px;
+        margin: -2.5px 0;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        transition: all 0.3s;
+        flex: 1;
+        font-family: Arial;
+    }
+
+    .dash {
+        color: white;
+        padding: 10px 25px;
+        font-weight: bold;
+        display: block;
+        font-size: 18px;
+        margin: 10px 10;
+        font-family: Arial;
+    }
+
+    .sidebar-button:hover {
+        background-color: #05424b;
+        box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+    }
+
+    .nav-link {
+        border-radius: 5px;
+        padding: 8px 16px;
+        margin: 5px 0;
+        display: inline-flex;
+    }
+
+    .footer {
+        color: white;
+        font-size: 14px;
+        background-color: #000000;
+        text-align: center;
+        padding: 10px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 250px;
+    }
+
+    .content {
+        margin-left: 250px;
+        padding: 20px;
+        background-color: #001f3f;
+        height: 530vh;
+        color: white;
+    }
+
+    hr.rounded {
+        border-top: 4px solid #4d5357;
+        border-radius: 5px;
+    }
+
+    hr.solid {
+        border-top: 3px solid #1e3673;
+    }
+
+    .dropbtn {
+        background-color: #202020;
+        color: white;
+        padding: 0px;
+        font-size: 20px;
+        border: none;
+        float: right;
+        text-align: right;
+    }
+
+    .dropup {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropup-content {
+        display: none;
+        position: absolute;
+        background-color: #4d5357;
+        min-width: 160px;
+        bottom: 35px;
+        z-index: 1;
+        border-radius: 5px;
+    }
+
+    .dropup-content a {
+        color: white;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropup-content a:hover {
+        background-color: #62696D;
+    }
+
+    .dropup:hover .dropup-content {
+        display: block;
+    }
+
+    .dropup:hover .dropbtn {
+        background-color: #4d5357;
+    }
+
+    #graph-container {
+        width: 950px;
+        height: 520px;
+        margin: 0 auto;
+        border: 1px solid #131b2f;
+    }
+
+    .image-container img {
+        margin: 10px 0;
+        display: block;
+    }
+    .username {
+        font-size: 20px; /* Adjust font size as needed */
+        color: #d9e0e6; /* Adjust text color */
+        font-weight: bold; /* Adjust font weight */
+    }
+
+
+    /* Style for the loading box */
+.loading-box {
+    display: inline-block;
+    background-color: #003f63; /* Dark blue background color */
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-align: center;
+    transition: all 0.5s ease-in-out;
+    animation: growBox 1s ease-in-out forwards;
+    overflow: hidden; /* Hide any overflow during animation */
+}
+
+/* Keyframe for the growing effect */
+@keyframes growBox {
+    0% {
+        width: 50px;
+        height: 20px;
+        opacity: 0.5;
+    }
+    50% {
+        width: 120px;
+        height: 30px;
+        opacity: 0.8;
+    }
+    100% {
+        width: auto; /* Adjust to fit content */
+        height: auto;
+        opacity: 1;
+    }
+}
+.glowing-button {
+    background-color: #007bbb; /* Lighter blue */
+    transform: scale(1.05); /* Slight enlargement */
+}
+.loading-name {
+    display: inline-block;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border-color: #007bbb;
+    border-width: 3px;
+    border-style: solid;
+    font-size: 1rem;
+    text-align: center;
+    transition: all 0.5s ease-in-out;
+    animation: growBox 1s ease-in-out forwards;
+    overflow: hidden; /* Hide any overflow during animation */
+}
+</style>
+</head>
+
+<body>
+  <div id="sidebar">
+    <li class="dash"> &#128202; Dashboard</li>
+    <nav class="nav flex-column">
+      <a class="nav-link" href="segmentationandrevenue.html"><button class="sidebar-button">Segmentation & Revenue</button></a>
+      <a class="nav-link" href="#"><button class="sidebar-button glowing-button">Review Analysis</button></a>
+      <a class="nav-link" href="visualize_data.html"><button class="sidebar-button">Visualize Data</button></a>
+      <a class="nav-link" href="presentation.html"><button class="sidebar-button">Presentation</button></a>
+      <a class="nav-link" href="reportportal1.html" id="generateReportBtn"><button class="sidebar-button">Report</button></a>
+      <a class="nav-link" href="decisionn.html"><button class="sidebar-button">Back</button></a>
+    </nav>
+    <footer class="footer flex-column">
+     <!----<a class="nav-link" href="#"><button class="sidebar-button">Import File</button></a>  -->
+
+      <div><a class="nav-link" href="settings.php"><button class="sidebar-button">Settings</button></a></div>
+            <div><a class="nav-link" href="logout.php"><button class="sidebar-button">Log Out</button></a></div>
+            <hr class="rounded">
+            <span id="username" class="username loading-name"></span>
+        </footer>
+  </div>
+  <div class="content">
+    <main role="main">
+        <!-- <div class="text-center mt-5">
+            <h2>Review Analysis Results</h2>
+                    </div> -->
+        <hr class="solid">
+        <div id="graph-container" class="image-container">
+      
+        
+        <div class="graph">
+            <img src="static/images/sentiment_distribution_bar_chart.png" alt="Sentiment Distribution" id="sentiment_distribution_bar_chart">
+        </div>
+       <p id="analysis5"></p> 
+
+        <div class="loading-box" id="json-content">
+            <h3>Review Analysis of Most Revenue-Generating Product</h3>
+            <div id="analysis-details">
+              <h4>Condition</h4>
+              <p id="condition">Loading...</p>
+              <h4>Product</h4>
+              <p id="identifier">Loading...</p>
+              <h4>Review Analysis</h4>
+              <p id="summary">Loading...</p>
+              <h4>Sentiment Polarity</h4>
+              <p id="sentiment-polarity">Loading...</p>
+              <h4>Sentiment Subjectivity</h4>
+              <p id="sentiment-subjectivity">Loading...</p>
+            </div>
+        </div>
+        <br>
+
+        <!-- Image 1: revenue_by_item_currency -->
+        <div class="graph">
+            <img src="static/images/revenue_by_item_currency.png" alt="Revenue by Item Currency" id="revenue_by_item_currency">
+            <p id="revenue_by_item_currency_analysis" class="loading-box">Loading analysis...</p>
+          </div>
+          <br>
+          <!-- Image 2: revenue_quantity_by_bu -->
+          <!-- <div class="graph">
+            <img src="static/images/revenue_quantity_by_bu.png" alt="Revenue Quantity by BU" id="revenue_quantity_by_bu">
+            <p id="revenue_quantity_by_bu_analysis">Loading analysis...</p>
+          </div>
+          <br> -->
+          <!-- Image 3: top_customers_by_revenue -->
+          <!-- <div class="graph">
+            <img src="static/images/top_customers_by_revenue.png" alt="Top Customers by Revenue" id="top_customers_by_revenue">
+            <p id="top_customers_by_revenue_analysis">Loading analysis...</p>
+          </div> -->
+        </div>
+    </div>
+</div></div>
+</main>
+</div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+ 
+  <script>
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', function (event) {
+        event.preventDefault(); 
+        const href = this.getAttribute('href');
+        window.location.href = href;
+      });
+    });
+  </script>
+  
+
+  <script>
+ 
+  fetch('session_check.php')
+            .then(response => response.text())
+            .then(data => {
+                if (data === "NA") {
+                    window.location.href = 'loginnnn.html'; // Redirect to login page if NA
+                } else {
+                    document.getElementById('username').innerText = data;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    document.getElementById('generateReportBtn').addEventListener('click', function () {
+      fetch('generate_report.php')
+        .then(response => response.text())
+        .then(data => {
+          alert(data);  // Show the result of the report generation
+          // Redirect to reportportal1.php after the report is generated
+          window.location.href = 'reportportal1.php';
+        })
+        .catch(error => {
+          alert('Error: ' + error.message);
+        });
+    });
+ 
+  </script>
+
+
+  <script>
+    /* for dropup */
+function toggleDropup() {
+    var dropupContent = document.getElementById("myDropup");
+    dropupContent.classList.toggle("show");
+}
+
+window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
+        var dropups = document.getElementsByClassName("dropup-content");
+        for (var i = 0; i < dropups.length; i++) {
+            var openDropup = dropups[i];
+            if (openDropup.classList.contains('show')) {
+                openDropup.classList.remove('show');
+            }
+        }
+    }
+}
+</script>
+<script>
+//fetch('static/images/semantic_analysis.json')
+  //          .then(response => response.json())
+    //        .then(data => {
+      //          document.getElementById('revenue_by_item_currency').innerText = data.revenue_by_item_currency;
+        //        document.getElementById('quantity_billed_by_item').innerText = data.quantity_billed_by_item;
+          //      document.getElementById('revenue_quantity_by_bu').innerText = data.revenue_quantity_by_bu;
+          //      document.getElementById('top_customers_by_revenue').innerText = data.top_customers_by_revenue;
+          //      document.getElementById('revenue_trend_over_months').innerText = data.revenue_trend_over_months;
+          //  })
+          //  .catch(error => console.error('Error fetching semantic analysis:', error));
+
+          document.addEventListener("DOMContentLoaded", () => {
+    const loadingBox = document.querySelector(".loading-box");
+    
+    // Start the animation
+    loadingBox.classList.add("loading-active");
+});
+    </script>
+    <script>
+      window.onload = function() {
+        fetch('session_check.php')
+          .then(response => response.text())
+          .then(data => {
+              if (data === "NA") {
+                  window.location.href = 'loginnnn.html'; // Redirect to login page if NA
+              } else {
+                  document.getElementById('username').innerText = data;
+              }
+          })
+          .catch(error => console.error('Error:', error));
+
+
+      
+      
+
+      // Fetch and display content from the new JSON file
+      fetch('review/review_analysis_results.json') // Update this path as needed
+        .then(response => response.json())
+        .then(data => {
+          // Update content based on the JSON data
+          document.getElementById('condition').innerText = data.most_revenue_product.condition;
+          document.getElementById('identifier').innerText = data.most_revenue_product.identifier;
+          document.getElementById('summary').innerText = data.most_revenue_product.analysis.summary;
+          document.getElementById('sentiment-polarity').innerText = data.most_revenue_product.analysis.sentiment_polarity;
+          document.getElementById('sentiment-subjectivity').innerText = data.most_revenue_product.analysis.sentiment_subjectivity;
+        })
+        .catch(error => console.error('Error fetching JSON data:', error));
+        
+        fetch('review/semantic_analysis.json')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('revenue_by_item_currency_analysis').innerText = data.revenue_by_item_currency || 'No analysis available';
+        document.getElementById('revenue_quantity_by_bu_analysis').innerText = data.revenue_quantity_by_bu || 'No analysis available';
+        document.getElementById('top_customers_by_revenue_analysis').innerText = data.top_customers_by_revenue || 'No analysis available';
+      })
+      .catch(error => console.error('Error fetching semantic analysis:', error));
+
+            // Fetch and display content from the new JSON file
+        fetch('static/analysis_results.json') // Update this path as needed
+        .then(response => response.json())
+                      .then(data => {
+                          if (data.status === 'success') {
+                              const analysisResults = data.results;
+                              document.getElementById('analysis5').innerText = analysisResults[4] || 'No analysis result';
+                          } else {
+                              console.error('Failed to start analysis.');
+                          }
+                      });
+    };
+</script>
+</body>
+
+</html>

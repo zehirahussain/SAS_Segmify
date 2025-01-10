@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+
+/* Style for the loading box */
+.loading-box {
+    display: inline-block;
+    background-color: #003f63; /* Dark blue background color */
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-align: center;
+    transition: all 0.5s ease-in-out;
+    animation: growBox 1s ease-in-out forwards;
+    overflow: hidden; /* Hide any overflow during animation */
+}
+
+.loading-name {
+    display: inline-block;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border-color: #007bbb;
+    border-width: 3px;
+    border-style: solid;
+    font-size: 1rem;
+    text-align: center;
+    transition: all 0.5s ease-in-out;
+    animation: growBox 1s ease-in-out forwards;
+    overflow: hidden; /* Hide any overflow during animation */
+}
+
+/* Keyframe for the growing effect */
+@keyframes growBox {
+    0% {
+        width: 50px;
+        height: 20px;
+        opacity: 0.5;
+    }
+    50% {
+        width: 120px;
+        height: 30px;
+        opacity: 0.8;
+    }
+    100% {
+        width: auto; /* Adjust to fit content */
+        height: auto;
+        opacity: 1;
+    }
+}
+
+
+        #sidebar {
+            background-color: #000000;
+            height: 100vh;
+            width: 250px;
+            padding: 20px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar-button {
+            background-color: #005288;
+            border: none;
+            color: white;
+            padding: 3px 30px;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            font-size: 15px;
+            margin: -2.5px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            flex: 1;
+            font-family: Arial;
+        }
+
+        .dash {
+            color: white;
+            padding: 10px 25px;
+            font-weight: bold;
+            display: block;
+            font-size: 18px;
+            margin: 10px 10;
+        }
+
+        .sidebar-button:hover {
+            background-color: #05424b;
+            box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .nav-link {
+            border-radius: 5px;
+            padding: 8px 16px;
+            margin: 5px 0;
+            display: inline-flex;
+        }
+
+        .footer {
+            color: white;
+            font-size: 14px;
+            background-color: #000000;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 250px;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            background-color: #001f3f;
+            height: 700vh;
+            color: white;
+        }
+
+        hr.rounded {
+            border-top: 4px solid #4d5357;
+            border-radius: 5px;
+        }
+
+        hr.solid {
+            border-top: 3px solid #1e3673;
+        }
+        
+        vr.solid {
+            border-top: 4px solid #4d5357;
+            border-radius: 5px;       
+        }
+        .dropbtn {
+            background-color: #202020;
+            color: white;
+            padding: 0px;
+            font-size: 20px;
+            border: none;
+            float: right;
+            text-align: right;
+        }
+
+        .dropup {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropup-content {
+            display: none;
+            position: absolute;
+            background-color: #4d5357;
+            min-width: 160px;
+            bottom: 35px;
+            z-index: 1;
+            border-radius: 5px;
+        }
+
+        .dropup-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropup-content a:hover {
+            background-color: #62696D;
+        }
+
+        .dropup:hover .dropup-content {
+            display: block;
+        }
+
+        .dropup:hover .dropbtn {
+            background-color: #4d5357;
+        }
+
+        #graph-container {
+            width: 950px;
+            height: 520px;
+            margin: 0 auto;
+            border: 1px solid #131b2f;
+        }
+
+        .image-container img {
+            margin: 10px 0;
+            display: block;
+        }
+        .username {
+            font-size: 16px; /* Adjust font size as needed */
+            color: #d9e0e6; /* Adjust text color */
+            font-weight: bold; /* Adjust font weight */
+        }
+        .glowing-button {
+    background-color: #007bbb; /* Lighter blue */
+    transform: scale(1.05); /* Slight enlargement */
+}
+    </style>
+</head>
+<body>
+    <div id="sidebar">
+        <vr class="solid"></vr>
+        <li class="dash"> &#128202; Dashboard</li>
+        <nav class="nav flex-column">
+            <a class="nav-link" href="#"><button class="sidebar-button glowing-button">Segmentation & Revenue</button></a>
+            <a class="nav-link" href="reviewanalysis.html"><button class="sidebar-button">Review Analysis</button></a>
+            <a class="nav-link" href="visualize_data.html"><button class="sidebar-button">Visualize Data</button></a>
+            <a class="nav-link" href="presentation.html"><button class="sidebar-button">Presentation</button></a>
+            <a class="nav-link" href="reportportal1.html"><button class="sidebar-button">Report</button></a>
+            <a class="nav-link" href="decisionn.html"><button class="sidebar-button">Back</button></a>
+        </nav>
+        <footer class="footer flex-column">
+            <!-- <a class="nav-link" href="#" data-toggle="modal" data-target="#uploadModal"><button class="sidebar-button">Import File</button></a> -->
+            <div><a class="nav-link" href="settings.php"><button class="sidebar-button">Settings</button></a></div>
+            <div><a class="nav-link" href="logout.php"><button class="sidebar-button">Log Out</button></a></div>
+            <hr class="rounded">
+            <span id="username" class="username loading-name"></span>
+        </footer>
+    </div>
+    <div class="content">
+        <main role="main">
+
+            <hr class="solid">
+            <!-- Main content -->
+            <div id="graph-container" class="image-container">
+                <div>
+                    <img src="static/images/mrr_by_bu.png" alt="MRR by BU" id="graphImage">
+                    <p id="analysis1" class="loading-box">Loading analysis...</p>
+
+                    
+
+                </div>
+                <br>
+                <div>
+                    <img src="static/images/revenue_by_product_bar_chart.png" alt="Revenue by Product" id="barChartImage">
+                    <p id="analysis2" class="loading-box">Loading analysis...</p>
+    
+                                    </div>
+                                    <br>
+                <div>
+                    <img src="static/images/churn_rate_stacked_bar_chart.png" alt="Churn Rate" id="churnChartImage">
+                    <p id="analysis3" class="loading-box">Loading analysis...</p>
+    
+                                    </div>
+                                    <br>
+                <div>
+                    <img src="static/images/revenue_by_product_pie_chart.png" alt="Revenue by Product" id="pieChartImage">
+                    <p id="analysis4" class="loading-box">Loading analysis...</p>
+  
+                                    </div>
+            </div>
+        </main>
+    </div>
+
+
+    <script>
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const href = this.getAttribute('href');
+                window.location.href = href;
+            });
+        });
+
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+    const loadingBox = document.querySelector(".loading-box");
+    
+    // Start the animation
+    loadingBox.classList.add("loading-active"); 
+    });
+
+
+
+        window.onload = function() {
+          fetch('session_check.php')
+            .then(response => response.text())
+            .then(data => {
+                if (data === "NA") {
+                    window.location.href = 'loginnnn.html'; // Redirect to login page if NA
+                } else {
+                    document.getElementById('username').innerText = data;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+
+            fetch('generate_graph.php')
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data);
+                    document.getElementById('graphImage').src = 'static/images/mrr_by_bu.png?random='+ new Date().getTime();
+                    document.getElementById('barChartImage').src = 'static/images/revenue_by_product_bar_chart.png?random=' + new Date().getTime();
+                    document.getElementById('churnChartImage').src = 'static/images/churn_rate_stacked_bar_chart.png?random=' + new Date().getTime();
+                    document.getElementById('pieChartImage').src = 'static/images/revenue_by_product_pie_chart.png?random=' + new Date().getTime();
+
+                   
+                    document.getElementById('graph-container').style.display = 'block';
+
+                    fetch('start_analysis.php')
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                const analysisResults = data.results;
+                                document.getElementById('analysis1').innerText = analysisResults['mrr_by_bu'] || 'No analysis result';
+                                //console.log(analysisResults['mrr_by_bu']); // Log the actual result
+                                document.getElementById('analysis2').innerText = analysisResults['revenue_by_product_bar_chart'] || 'No analysis result';
+                                //console.log(analysisResults['revenue_by_product_bar_chart']);
+                                document.getElementById('analysis3').innerText = analysisResults['churn_rate_stacked_bar_chart'] || 'No analysis result';
+                                //console.log(analysisResults['churn_rate_stacked_bar_chart']);
+                                document.getElementById('analysis4').innerText = analysisResults['revenue_by_product_pie_chart'] || 'No analysis result';
+                                //console.log(analysisResults['revenue_by_product_pie_chart']);
+        
+                            } else {
+                                console.error('Failed to start analysis.');
+                            }
+                        });
+                });
+        };
+
+        function toggleDropup() {
+            var dropupContent = document.getElementById("myDropup");
+            dropupContent.classList.toggle("show");
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropups = document.getElementsByClassName("dropup-content");
+                for (var i = 0; i < dropups.length; i++) {
+                    var openDropup = dropups[i];
+                    if (openDropup.classList.contains('show')) {
+                        openDropup.classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
+    
+</body>
+</html>

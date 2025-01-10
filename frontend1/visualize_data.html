@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualize Data</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.0.1"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <style>
+        .container {
+            padding-top: 50px;
+        }
+
+        #sidebar {
+            background-color: #000000;
+            height: 100vh;
+            width: 250px;
+            padding: 20px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+        }
+        hr.rounded {
+            border-top: 4px solid #4d5357;
+            border-radius: 5px;
+        }
+
+        hr.solid {
+            border-top: 3px solid #1e3673;
+        }
+
+        .sidebar-button {
+            background-color: #005288;
+            border: none;
+            color: white;
+            padding: 3px 30px;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            font-size: 15px;
+            margin: -2.5px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            flex: 1;
+            font-family: Arial;
+        }
+
+        .dash {
+            color: white;
+            padding: 10px 25px;
+            font-weight: bold;
+            display: block;
+            font-size: 18px;
+            margin: 10px 10;
+            font-family: Arial;
+        }
+
+        .sidebar-button:hover {
+            background-color: #05424b;
+            box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .nav-link {
+            border-radius: 5px;
+            padding: 8px 16px;
+            margin: 5px 0;
+            display: inline-flex;
+        }
+
+        .footer {
+            color: white;
+            font-size: 14px;
+            background-color: #000000;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 250px;
+        }
+
+        .content {
+            margin-left: 150px;
+            padding: 20px; /* Reduced padding for right side */
+            background-color: #001f3f;
+            min-height: 100vh; /* Ensures full height */
+            color: white;
+        }
+
+        hr.rounded {
+            border-top: 4px solid #4d5357;
+            border-radius: 5px;
+        }
+
+        hr.solid {
+            border-top: 3px solid #1e3673;
+        }
+
+        .dropbtn {
+            background-color: #202020;
+            color: white;
+            padding: 0px;
+            font-size: 20px;
+            border: none;
+            float: right;
+            text-align: right;
+        }
+
+        .dropup {
+            position: relative;
+            display: inline-block;
+        }
+
+      
+
+        #graph-container {
+            width: 950px;
+            height: 520px;
+            margin: 0 auto;
+            border: 1px solid #131b2f;
+        }
+
+        .image-container img {
+            margin: 10px 0;
+            display: block;
+        }
+
+        .username {
+            font-size: 20px;
+            color: #d9e0e6;
+            font-weight: bold;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        .glowing-button {
+    background-color: #007bbb; /* Lighter blue */
+    transform: scale(1.05); /* Slight enlargement */
+}
+.loading-name {
+    display: inline-block;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border-color: #007bbb;
+    border-width: 3px;
+    border-style: solid;
+    font-size: 1rem;
+    text-align: center;
+    transition: all 0.5s ease-in-out;
+    animation: growBox 1s ease-in-out forwards;
+    overflow: hidden; /* Hide any overflow during animation */
+}
+    </style>
+</head>
+<body>
+    <div id="sidebar">
+        <li class="dash"> &#128202; Dashboard</li>
+        <nav class="nav flex-column">
+            <a class="nav-link" href="segmentationandrevenue.html"><button class="sidebar-button" aria-label="Segmentation and Revenue">Segmentation & Revenue</button></a>
+            <a class="nav-link" href="reviewanalysis.html"><button class="sidebar-button" aria-label="Review Analysis">Review Analysis</button></a>
+            <a class="nav-link" href="#"><button class="sidebar-button glowing-button" aria-label="Visualize Data">Visualize Data</button></a>
+            <a class="nav-link" href="presentation.html"><button class="sidebar-button" aria-label="Presentation">Presentation</button></a>
+            <a class="nav-link" href="reportportal1.html"><button class="sidebar-button" aria-label="Report">Report</button></a>
+            <a class="nav-link" href="decisionn.html"><button class="sidebar-button" aria-label="Back">Back</button></a>
+        </nav>
+        <footer class="footer flex-column">
+            <div><a class="nav-link" href="settings.php"><button class="sidebar-button" aria-label="Settings">Settings</button></a></div>
+            <div><a class="nav-link" href="logout.php"><button class="sidebar-button" aria-label="Log Out">Log Out</button></a></div>
+            <hr class="rounded">
+            <span id="username" class="username loading-name"></span>
+        </footer>
+    </div>
+    <div class="content">
+        <hr class="solid">
+
+    <div class="container content">
+        <h2 class="text-center">Data Visualization</h2>
+        <div class="form-group">
+            <label for="column1">Select Column 1:</label>
+            <select id="column1" class="form-control"></select>
+        </div>
+        <div class="form-group">
+            <label for="column2">Select Column 2:</label>
+            <select id="column2" class="form-control"></select>
+        </div>
+        <div class="form-group">
+            <label for="column3">Select Comments/Review/Rating Column:</label>
+            <select id="column3" class="form-control"></select>
+        </div>
+        <button id="visualizeBtn" class="btn btn-primary">Visualize</button>
+        <!-- <button id="resetZoomBtn" class="btn btn-secondary" style="margin-left:10px;">Reset Zoom</button> -->
+        <canvas id="chartCanvas" width="400" height="200" style="margin-top:20px;"></canvas>
+    </div>
+</div>
+    <script>
+
+      document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const href = this.getAttribute('href');
+                window.location.href = href;
+            });
+        });
+
+        window.onload = function() {
+          fetch('session_check.php')
+            .then(response => response.text())
+            .then(data => {
+                if (data === "NA") {
+                    window.location.href = 'loginnnn.html'; // Redirect to login page if NA
+                } else {
+                    document.getElementById('username').innerText = data;
+                }
+            })
+            .catch(error => console.error('Error:', error));}
+
+
+        let chart; // Store chart instance
+
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('uploads/CleanedData.xlsx')
+                .then(response => response.arrayBuffer())
+                .then(data => {
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const sheetName = workbook.SheetNames[0];
+                    const sheet = workbook.Sheets[sheetName];
+                    const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+                    const columns = jsonData[0];
+
+                    const column1Select = document.getElementById('column1');
+                    const column2Select = document.getElementById('column2');
+                    const column3Select = document.getElementById('column3'); // Third column for comments
+
+                    columns.forEach(col => {
+                        const option1 = document.createElement('option');
+                        const option2 = document.createElement('option');
+                        const option3 = document.createElement('option');
+                        option1.text = option2.text = option3.text = col;
+                        column1Select.add(option1);
+                        column2Select.add(option2);
+                        column3Select.add(option3);
+                    });
+
+                    document.getElementById('visualizeBtn').addEventListener('click', function() {
+                        const col1Index = column1Select.selectedIndex;
+                        const col2Index = column2Select.selectedIndex;
+                        const col3Index = column3Select.selectedIndex; // Comments column
+
+                        const labels = [];
+                        const dataPoints1 = [];
+                        const comments = []; // Store comments data for tooltips
+
+                        jsonData.slice(1).forEach(row => {
+                            labels.push(row[col1Index]);
+                            dataPoints1.push(row[col2Index]);
+                            comments.push(row[col3Index]); // Get comments
+                        });
+
+                        const ctx = document.getElementById('chartCanvas').getContext('2d');
+
+                        // Destroy existing chart if it exists
+                        if (chart) {
+                            chart.destroy();
+                        }
+
+                        // Create new chart with zoom, pan, and custom tooltips
+                        chart = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    label: `${columns[col1Index]} vs ${columns[col2Index]}`,
+                                    data: dataPoints1,
+                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                    borderColor: 'rgb(0, 50, 192)',  // Dark blue line color
+                                    borderWidth: 1
+          
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                
+                                scales: {
+                                    y: {
+                                    ticks: {
+                                        color: 'white'},
+                                        beginAtZero: true
+                                    },
+
+                                    x: {
+                                    ticks: {
+                                        color: 'white'},
+                                    },
+                                },
+                                plugins: {
+                                    zoom: {
+                                        pan: {
+                                            enabled: true,
+                                            mode: 'xy'
+                                        },
+                                        zoom: {
+                                            enabled: true,
+                                            mode: 'xy'
+                                        }
+                                    },
+                                    tooltip: {
+                                        callbacks: {
+                                            label: function(context) {
+                                                let label = `${context.dataset.label}: ${context.parsed.y}`;
+                                                let comment = comments[context.dataIndex];
+                                                return label + (comment ? ` | Comment: ${comment}` : '');
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    });
+
+                    // Reset zoom on button click
+                    document.getElementById('resetZoomBtn').addEventListener('click', function() {
+                        if (chart) {
+                            chart.resetZoom();
+                        }
+                    });
+                })
+                .catch(error => console.error('Error loading Excel file:', error));
+        });
+    </script>
+</body>
+</html>
