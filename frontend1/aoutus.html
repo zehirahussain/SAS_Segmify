@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <style>
+       body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('graph.jpeg');
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header Styling */
+        header {
+            background-color: #1a1a1a;
+            color: white;
+            padding: 5px -5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            z-index: 999;
+            width: 100%;
+        }
+
+        header a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Make logo bigger */
+        .logo img {
+            width: 80px; /* Increase size */
+            height: auto;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .SignIn {
+            border: none;
+            border-radius: 6px;
+            background-color: #0077cc;
+            color: white;
+            font-family: Calibri, sans-serif;
+            font-weight: bold;
+            font-size: 15px;
+            padding: 8px 15px;
+            letter-spacing: 0.5px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .SignIn:hover {
+            background-color: #005288;
+            cursor: pointer;
+            transform: translateY(-2px);
+        }
+
+        /* Main Content Box */
+        .BOX {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            max-width: 600px;
+            margin: 160px auto 20px; /* Leave space for header */
+            text-align: left;
+            font-family: 'Calibri', sans-serif;
+            animation: fadeIn 1s ease;
+        }
+
+        h1 {
+            color: #2575fc;
+            font-size: 32px;
+            text-align: center;
+            margin-top: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        h3 {
+            color: #333;
+            font-size: 20px;
+            margin-top: 20px;
+            padding-left: 20px;
+        }
+
+        /* Paragraph and List Styling */
+        p {
+            color: #555;
+            font-size: 17px;
+            line-height: 1.7;
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+
+        ul {
+            list-style-type: square;
+            padding-left: 40px;
+            color: #333;
+        }
+
+        li {
+            font-size: 17px;
+            margin: 5px 0;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            .BOX {
+                padding: 30px 20px;
+            }
+            h1 {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 24px;
+            }
+            p, h3 {
+                font-size: 16px;
+            }
+        }
+
+        section {
+            scroll-margin-top: 80px; /* Adjust based on your header height */
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        footer {
+            background-color: rgb(0, 0, 0);
+            color: #fff;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 10%; /* Push footer to the bottom */
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <!-- Logo and Site Name on the Left -->
+        <div class="logo">
+            <img src="SAS Segmify logo (2).png" alt="Logo">
+            <span style="font-size: 24px; font-weight: bold; color: white;">SAS Segmify</span>
+        </div>
+    
+        <!-- Navigation Buttons on the Right -->
+        <div class="nav-buttons">
+            <a href="index.php"><button class="SignIn">Home</button></a>
+            <a href="#"><button class="SignIn">About Us</button></a>
+            <a href="contactus.html"><button class="SignIn">Contact Us</button></a>
+            <a href="signuppppp.html"><button class="SignIn">Sign Up</button></a>
+            <a href="loginnnn.html"><button class="SignIn">Sign In</button></a>
+        </div>
+    </header>
+
+    <!-- Main Content Box -->
+    <div class="BOX">
+        <h1>About Us</h1>
+        <p>Welcome to <strong>SAS Segmify</strong>!</p>
+        
+        <p>At SAS Segmify, we empower businesses to gain deeper insights into their customers through simplified segmentation and classification. Our mission is to help you understand and predict customer behavior trends for sustainable growth.</p>
+        
+        <h3>What We Offer:</h3>
+        <ul>
+            <li><strong>Customer Segmentation</strong></li>
+            <li><strong>RFM Analysis</strong></li>
+            <li><strong>Customer Classification</strong></li>
+            <li><strong>Feedback Analysis</strong></li>
+        </ul>
+        
+        <p>Our passionate team is dedicated to utilizing data to help you succeed. Join us in transforming how you understand and engage with your customers. With SAS Segmify, segmentation is simplified, and growth is amplified.</p>
+    </div>
+
+    <footer>
+        <div class="footer-top" style="display: flex; flex-wrap: wrap; justify-content: space-between; max-width: 1200px; margin: 0 auto; gap: 20px;">
+            <!-- Quick Links -->
+            <div class="footer-links" style="flex: 1; min-width: 200px;">
+                <h3 style="color: #f3f6fa; margin-bottom: 20px;">Quick Links</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li><a href="index.php" style="color: #fff; text-decoration: none;">Features</a></li>
+                    <li><a href="index.php" style="color: #fff; text-decoration: none;">How It Works</a></li>
+                    <li><a href="#" style="color: #fff; text-decoration: none;">About Us</a></li>
+                    <li><a href="contactus.html" style="color: #fff; text-decoration: none;">Contact Us</a></li>
+                </ul>
+            </div>
+    
+            <!-- Contact Info -->
+            <div class="footer-contact" style="flex: 1; min-width: 200px;">
+                <h3 style="color: #f3f6fa; margin-bottom: 20px;">Contact Us</h3>
+                <p style="color: #fff;">Email: <a href="mailto:info@sassegmify.com" style="color: #fff; text-decoration: none;">service@nexoskills.com</a></p>
+            </div>
+        </div>
+    
+        <!-- Footer Bottom -->
+        <div class="footer-bottom" style="margin-top: 40px; border-top: 1px solid #f3f6fa; padding-top: 20px;">
+            <p style="margin: 0; font-size: 14px; color: #fff;">© 2024 SAS Segmify. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('graph.jpeg');
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header Styling */
+        header {
+            background-color: #1a1a1a;
+            color: white;
+            padding: 5px -5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            z-index: 999;
+            width: 100%;
+        }
+
+        header a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Make logo bigger */
+        .logo img {
+            width: 80px; /* Increase size */
+            height: auto;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .SignIn {
+            border: none;
+            border-radius: 6px;
+            background-color: #0077cc;
+            color: white;
+            font-family: Calibri, sans-serif;
+            font-weight: bold;
+            font-size: 15px;
+            padding: 8px 15px;
+            letter-spacing: 0.5px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .SignIn:hover {
+            background-color: #005288;
+            cursor: pointer;
+            transform: translateY(-2px);
+        }
+
+        /* Main Content Box */
+        .BOX {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            padding: 50px; /* Increase padding for a larger box */
+            width: 35.5%; /* Adjust the width as needed */
+            max-width: none; /* Remove the max-width restriction */
+            height: auto; /* Adjust height dynamically */
+            margin: 160px auto; /* Center the box with auto margins */
+            text-align: left;
+            font-family: 'Calibri', sans-serif;
+            animation: fadeIn 1s ease;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2em;
+            margin-top: 20px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1em;
+        }
+
+        input[type="submit"] {
+            background-color: #005288;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #003e56;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            .BOX {
+                padding: 30px 20px;
+            }
+            h1 {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 24px;
+            }
+            p, h3 {
+                font-size: 16px;
+            }
+        }
+
+        section {
+            scroll-margin-top: 80px; /* Adjust based on your header height */
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        footer {
+            background-color: rgb(0, 0, 0);
+            color: #fff;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 6.5%; /* Push footer to the bottom */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Logo and Site Name on the Left -->
+        <div class="logo">
+            <img src="SAS Segmify logo (2).png" alt="Logo">
+            <span style="font-size: 24px; font-weight: bold; color: white;">SAS Segmify</span>
+        </div>
+    
+        <!-- Navigation Buttons on the Right -->
+        <div class="nav-buttons">
+            <a href="index.php"><button class="SignIn">Home</button></a>
+            <a href="aoutus.html"><button class="SignIn">About Us</button></a>
+            <a href="#"><button class="SignIn">Contact Us</button></a>
+            <a href="signuppppp.html"><button class="SignIn">Sign Up</button></a>
+            <a href="loginnnn.html"><button class="SignIn">Sign In</button></a>
+        </div>
+    </header>
+
+    <div class="BOX">
+        <h1 style="text-align: center; color: #2575fc;">Contact Us</h1>
+        <form id="contactForm" method="POST">
+            <input type="text" id="name" name="name" placeholder="Your Name" required><br>
+            <input type="email" id="email" name="email" placeholder="Your Email" required><br>
+            <textarea id="comment" name="comment" rows="4" placeholder="Your Comment or Question" required></textarea><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <div id="popup"></div>
+    
+    <script>
+        $(document).ready(function() {
+            $('#contactForm').on('submit', function(event) {
+                event.preventDefault();
+                
+                $.ajax({
+                    url: 'contact_form_handler.php', // PHP file to handle the form submission
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#popup').html(response).fadeIn().delay(3000).fadeOut();
+                        $('#contactForm')[0].reset();
+                    },
+                    error: function() {
+                        $('#popup').html('Oops! Something went wrong. Please try again later.').fadeIn().delay(3000).fadeOut();
+                    }
+                });
+            });
+        });
+    </script>
+
+    <footer>
+        <div class="footer-top" style="display: flex; flex-wrap: wrap; justify-content: space-between; max-width: 1200px; margin: 0 auto; gap: 20px;">
+            <!-- Quick Links -->
+            <div class="footer-links" style="flex: 1; min-width: 200px;">
+                <h3 style="color: #f3f6fa; margin-bottom: 20px;">Quick Links</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li><a href="index.php#features" style="color: #fff; text-decoration: none;">Features</a></li>
+                    <li><a href="index.php#how-it-works" style="color: #fff; text-decoration: none;">How It Works</a></li>
+                    <li><a href="aoutus.html" style="color: #fff; text-decoration: none;">About Us</a></li>
+                    <li><a href="#" style="color: #fff; text-decoration: none;">Contact Us</a></li>
+                </ul>
+            </div>
+    
+            <!-- Contact Info -->
+            <div class="footer-contact" style="flex: 1; min-width: 200px;">
+                <h3 style="color: #f3f6fa; margin-bottom: 20px;">Contact Us</h3>
+                <p>Email: <a href="mailto:info@sassegmify.com" style="color: #fff; text-decoration: none;">service@nexoskills.com</a></p>
+            </div>
+        </div>
+    
+        <!-- Footer Bottom -->
+        <div class="footer-bottom" style="margin-top: 40px; border-top: 1px solid #f3f6fa; padding-top: 20px;">
+            <p style="margin: 0; font-size: 14px;">© 2024 SAS Segmify. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
