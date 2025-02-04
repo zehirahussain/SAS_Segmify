@@ -56,8 +56,17 @@ uploads_dir = "uploads"
 # List all files in the uploads directory
 files = os.listdir(uploads_dir)
 
-# Identify the Excel file (assuming there is only one Excel file in the directory)
-excel_files = [file for file in files if file.endswith('.xlsx')]
+# Identify Excel files that contain "CleanedData" (case-insensitive) in the filename
+excel_files = [file for file in files if file.endswith('.xlsx') and 'cleaneddata' in file.lower()]
+
+# Ensure we have at least one matching file
+if not excel_files:
+    raise FileNotFoundError("No Excel file containing 'CleanedData' found in the uploads directory.")
+
+# Pick the first matched file
+selected_file = os.path.join(uploads_dir, excel_files[0])
+
+
 
 # Check if there is at least one Excel file
 if not excel_files:
@@ -67,16 +76,15 @@ if not excel_files:
 excel_file_path = os.path.join(uploads_dir, excel_files[0])
 df = pd.read_excel(excel_file_path)
 
-# Select features for clustering
 # Select features for clustering, converting categorical variables using one-hot encoding
-features = df[['Revenue Billed', 'Item Name', 'Quantity Billed']].dropna()
+filtered_df = df[['Revenue Billed', 'Item Name', 'Quantity Billed']].dropna().copy()
 
 # One-hot encode the 'Item Name' column
-features = pd.get_dummies(features, columns=['Item Name'], drop_first=True)
+filtered_df = pd.get_dummies(filtered_df, columns=['Item Name'], drop_first=True)
 
 # Standardize the features
 scaler = StandardScaler()
-scaled_features = scaler.fit_transform(features)
+scaled_features = scaler.fit_transform(filtered_df)
 
 # Define the number of clusters
 optimal_n_clusters = 5  # Set the number of clusters as per your requirement
@@ -85,16 +93,26 @@ optimal_n_clusters = 5  # Set the number of clusters as per your requirement
 kmeans = KMeans(n_clusters=optimal_n_clusters, n_init=10, random_state=42)
 clusters = kmeans.fit_predict(scaled_features)
 
-# Add cluster labels to the original dataframe
-df['Cluster'] = clusters
+# Ensure the number of rows match before assignment
+filtered_df['Cluster'] = clusters
+
+# Merge the clustered data back into the original DataFrame
+df = df.merge(filtered_df[['Cluster']], left_index=True, right_index=True, how='left')
+# Ensure 'Item Name' is a string and fill NaN values with a placeholder
+df['Item Name'] = df['Item Name'].astype(str).fillna("Unknown")
 
 # Visualize the clusters
 plt.figure(figsize=(10, 9))
 scatter = plt.scatter(df['Revenue Billed'], df['Item Name'], c=df['Cluster'], cmap='viridis', marker='o')
 plt.colorbar(scatter, label='Cluster')
-plt.title('Item name by Revenue Billed')
+plt.title('Item Name by Revenue Billed')
 plt.xlabel('Revenue Billed')
 plt.ylabel('Item Name')
+plt.xticks(rotation=45)  # Rotate x-axis labels for better visibility if needed
+plt.subplots_adjust(left=0.3, right=1, top=0.9, bottom=0.1)  # More space on left, less on right
+
+
+# Save the plot
 plot_path = os.path.join('C:\\xampp\\htdocs\\fyp0.3\\frontend1\\static\\images', 'churn_rate_stacked_bar_chart.png')
 plt.savefig(plot_path, facecolor='white')
 plt.close()
@@ -107,4 +125,3 @@ image_type = "Churn Rate"
 
 # Save or update image details in the database
 save_or_update_image_in_db(user_id, plot_path, image_type)
-

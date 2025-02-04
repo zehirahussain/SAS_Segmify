@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Load your dataset
-df = pd.read_excel('SampleData (2).xlsx')
+df = pd.read_excel('uploads/CleanedData.xlsx')
 
 # Debugging: Check dataset before processing
 print("Initial Dataset:")
