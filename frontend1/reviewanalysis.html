@@ -75,7 +75,7 @@
         margin-left: 250px;
         padding: 20px;
         background-color: #001f3f;
-        height: 530vh;
+        height: 610vh;
         color: white;
     }
 
@@ -227,9 +227,12 @@
   </div>
   <div class="content">
     <main role="main">
-        <!-- <div class="text-center mt-5">
-            <h2>Review Analysis Results</h2>
-                    </div> -->
+        <div class="dropdown-container">
+            <label for="productDropdown">Select Product: </label>
+            <select id="productDropdown">
+                <option value="">Loading products...</option>
+            </select>
+        </div>
         <hr class="solid">
         <div id="graph-container" class="image-container">
       
@@ -263,16 +266,16 @@
           </div>
           <br>
           <!-- Image 2: revenue_quantity_by_bu -->
-          <!-- <div class="graph">
+          <div class="graph">
             <img src="static/images/revenue_quantity_by_bu.png" alt="Revenue Quantity by BU" id="revenue_quantity_by_bu">
-            <p id="revenue_quantity_by_bu_analysis">Loading analysis...</p>
+            <p id="revenue_quantity_by_bu_analysis" class="loading-box">Loading analysis...</p>
           </div>
-          <br> -->
+          <br>
           <!-- Image 3: top_customers_by_revenue -->
-          <!-- <div class="graph">
+          <div class="graph">
             <img src="static/images/top_customers_by_revenue.png" alt="Top Customers by Revenue" id="top_customers_by_revenue">
-            <p id="top_customers_by_revenue_analysis">Loading analysis...</p>
-          </div> -->
+            <p id="top_customers_by_revenue_analysis" class="loading-box">Loading analysis...</p>
+          </div>
         </div>
     </div>
 </div></div>
@@ -341,16 +344,7 @@ window.onclick = function(event) {
 }
 </script>
 <script>
-//fetch('static/images/semantic_analysis.json')
-  //          .then(response => response.json())
-    //        .then(data => {
-      //          document.getElementById('revenue_by_item_currency').innerText = data.revenue_by_item_currency;
-        //        document.getElementById('quantity_billed_by_item').innerText = data.quantity_billed_by_item;
-          //      document.getElementById('revenue_quantity_by_bu').innerText = data.revenue_quantity_by_bu;
-          //      document.getElementById('top_customers_by_revenue').innerText = data.top_customers_by_revenue;
-          //      document.getElementById('revenue_trend_over_months').innerText = data.revenue_trend_over_months;
-          //  })
-          //  .catch(error => console.error('Error fetching semantic analysis:', error));
+
 
           document.addEventListener("DOMContentLoaded", () => {
     const loadingBox = document.querySelector(".loading-box");
@@ -411,6 +405,52 @@ window.onclick = function(event) {
                       });
     };
 </script>
+<script>
+    // Populate the dropdown with products by fetching from get_products.php
+    fetch('get_products.php')
+      .then(response => response.json())
+      .then(products => {
+          const dropdown = document.getElementById('productDropdown');
+          dropdown.innerHTML = ""; // Clear initial loading option
+          products.forEach(product => {
+              const option = document.createElement('option');
+              option.value = product;
+              option.text = product;
+              dropdown.appendChild(option);
+          });
+          // Optionally, trigger analysis for the first product by default
+          if (products.length > 0) {
+              dropdown.value = products[0];
+              updateAnalysis(products[0]);
+          }
+      })
+      .catch(error => console.error('Error fetching products:', error));
+
+    // When a product is selected, call the update endpoint
+    document.getElementById('productDropdown').addEventListener('change', function() {
+        const selectedProduct = this.value;
+        updateAnalysis(selectedProduct);
+    });
+
+    function updateAnalysis(product) {
+        // Call the PHP backend endpoint to run the analysis for the selected product.
+        fetch('update_review_analysis.php?product=' + encodeURIComponent(product))
+            .then(response => response.json())
+            .then(data => {
+                // Update the sentiment distribution chart image (add a timestamp to avoid caching)
+                document.getElementById('sentiment_distribution_bar_chart').src = data.chart_url;
+                
+                // Update the semantic analysis details
+                document.getElementById('condition').innerText = data.analysis.condition || '';
+                document.getElementById('identifier').innerText = data.analysis.identifier || '';
+                document.getElementById('summary').innerText = data.analysis.analysis.summary || '';
+                document.getElementById('sentiment-polarity').innerText = data.analysis.analysis.sentiment_polarity || '';
+                document.getElementById('sentiment-subjectivity').innerText = data.analysis.analysis.sentiment_subjectivity || '';
+            })
+            .catch(error => console.error('Error updating analysis:', error));
+    }
+  </script>
+
 </body>
 
 </html>

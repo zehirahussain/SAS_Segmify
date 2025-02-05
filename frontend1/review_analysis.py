@@ -9,6 +9,7 @@ from textblob import TextBlob
 from wordcloud import WordCloud
 import seaborn as sns
 from textblob import download_corpora
+import sys
 #download_corpora()
 
 # Database connection function
@@ -25,7 +26,7 @@ def get_db_connection():
         database=database
     )
 
-# Function to save or update image details in the database
+
 def save_or_update_image_in_db(user_id, image_path, image_type):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -51,21 +52,12 @@ def save_or_update_image_in_db(user_id, image_path, image_type):
     cursor.close()
     conn.close()
 
-
-
-
-#uploads_dir = "review"
-uploads_dir = "c:\\xampp\\htdocs\\fyp0.3\\frontend1\\uploads"
-
-# Check if the directory exists
+# Set the uploads directory
+uploads_dir = r"uploads"
 if not os.path.exists(uploads_dir):
     raise FileNotFoundError(f"The directory {uploads_dir} does not exist.")
 
-# List all files in the review directory
 files = os.listdir(uploads_dir)
-print("Files in directory:", files)  # Debug line to see files in the directory
-
-# Identify the Excel file (assuming there is only one Excel file in the directory)
 excel_files = [file for file in files if file.endswith('.xlsx')]
 
 if not excel_files:
@@ -74,16 +66,22 @@ if not excel_files:
 excel_file_path = os.path.join(uploads_dir, excel_files[0])
 df = pd.read_excel(excel_file_path)
 
-# Filter relevant columns
+# If the Excel file has a Product column and a product filter is given, filter the DataFrame.
+product_filter = None
+if len(sys.argv) > 1:
+    product_filter = sys.argv[1]
+
+if product_filter and 'Product' in df.columns:
+    df = df[df['Product'] == product_filter]
+
+# Filter relevant columns (assuming Comments and Rating exist)
 relevant_cols = ["Comments", "Rating"]
 df = df[relevant_cols]
 
-# Handle missing or NaN values in 'Comments'
 df['Comments'] = df['Comments'].fillna('')
 
-# Sentiment Analysis
 def get_sentiment(text):
-    if not isinstance(text, str):  # Ensure text is a string
+    if not isinstance(text, str):
         text = str(text)
     analysis = TextBlob(text)
     polarity = analysis.sentiment.polarity
@@ -96,7 +94,6 @@ def get_sentiment(text):
 
 df['Sentiment'] = df['Comments'].apply(get_sentiment)
 
-# Generate sentiment distribution plot
 sentiment_counts = df['Sentiment'].value_counts()
 plt.figure(figsize=(10, 8), facecolor='white')
 plt.bar(sentiment_counts.index, sentiment_counts.values, color='skyblue')
@@ -106,29 +103,21 @@ plt.title("Sentiment Distribution", fontsize=12, color='black')
 plt.xticks(fontsize=10, color='black')
 plt.yticks(fontsize=10, color='black')
 plt.gca().set_facecolor('white')
-plt.gca().spines['top'].set_color('black')
-plt.gca().spines['right'].set_color('black')
-plt.gca().spines['left'].set_color('black')
-plt.gca().spines['bottom'].set_color('black')
-
+for spine in plt.gca().spines.values():
+    spine.set_color('black')
 plt.tight_layout()
 
-# Save the plot as a static image
-output_dir = os.path.join('C:\\xampp\\htdocs\\fyp0.3\\frontend1\\static\\images')
+output_dir = r"C:\xampp\htdocs\fyp0.3\frontend1\static\images"
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 plot_path = os.path.join(output_dir, 'sentiment_distribution_bar_chart.png')
 plt.savefig(plot_path, facecolor='white')
 plt.close()
 
-# Define user ID and image type
-user_id = 1  # Replace with actual user ID
+# Save image details to the database (using a dummy user_id for now)
+user_id = 1  
 image_type = "Sentiment Distribution"
-
-# Save image details to the database
 save_or_update_image_in_db(user_id, plot_path, image_type)
-
-
 
 # Generate word cloud from reviews
 text = " ".join(review for review in df['Comments'])
